@@ -54,8 +54,8 @@ class PloomberNotebookClient(NotebookClient):
                                     cell_index: int) -> None:
         assert self.kc is not None
 
-        # why does it break if I remove this?
-        time.sleep(0.5)
+        # FIXME: quick hack
+        time.sleep(1)
 
         # looks like this sometimes returns false
         msg_received = await self.kc.stdin_channel.msg_ready()
