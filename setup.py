@@ -13,7 +13,10 @@ with open('src/ploomber_engine/__init__.py', 'rb') as f:
         ast.literal_eval(
             _version_re.search(f.read().decode('utf-8')).group(1)))
 
-REQUIRES = []
+REQUIRES = [
+    'papermill',
+    'ipykernel',
+]
 
 DEV = [
     'pytest',
@@ -39,5 +42,8 @@ setup(
     extras_require={
         'dev': DEV,
     },
-    entry_points={},
+    entry_points={
+        "papermill.engine":
+        ["ploomber-engine=ploomber_engine.engine:PloomberClientEngine"],
+    },
 )
