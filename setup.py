@@ -22,6 +22,7 @@ DEV = [
     'pytest',
     'flake8',
     'invoke',
+    'twine',
 ]
 
 setup(
