@@ -23,6 +23,8 @@ DEV = [
     'flake8',
     'invoke',
     'twine',
+    # for testing PloomberShell
+    'matplotlib',
 ]
 
 setup(

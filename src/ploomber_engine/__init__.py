@@ -5,6 +5,9 @@ __version__ = '0.0.2dev'
 
 import typing as t
 
+# NOTE: fully initialize papermill here to prevent circular import
+import papermill  # noqa
+
 from jupyter_client import KernelManager
 from nbformat import NotebookNode
 
