@@ -1,3 +1,4 @@
+<!-- #region -->
 # ploomber-engine
 
 A custom papermill engine to enable debugging. 🐞
@@ -14,7 +15,7 @@ papermill crash.ipynb tmp.ipynb --engine ploomber-engine
 
 Once the notebook crashes, it'll start the debugging session:
 
-```python
+```pytb
 Input Notebook:  crash.ipynb
 Output Notebook: tmp.ipynb
 ---------------------------------------------------------------------------
@@ -32,9 +33,21 @@ ZeroDivisionError: division by zero
 
 ipdb>
 ```
+<!-- #endregion -->
 
-## Installation
+## Example
 
 ```sh
 pip install ploomber-engine
+
+# get the example notebook
+curl -O https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/crash.ipynb
 ```
+
+<!-- #region -->
+Run the notebook with the custom engine:
+
+```sh
+papermill crash.ipynb tmp.ipynb --engine ploomber-engine
+```
+<!-- #endregion -->
