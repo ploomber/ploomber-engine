@@ -1,3 +1,5 @@
 # CHANGELOG
 
-## 0.1dev
+## 0.0.1dev
+
+* First release
