@@ -47,7 +47,7 @@ setup(
     },
     entry_points={
         "papermill.engine": [
-            "debug=ploomber_engine.engine:DebugEgine",
+            "debug=ploomber_engine.engine:DebugEngine",
             "debuglater=ploomber_engine.engine:DebugLaterEngine"
         ],
     },
