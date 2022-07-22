@@ -64,6 +64,13 @@ class PloomberShell(InteractiveShell):
         self._current_output.clear()
         return current_output
 
+    def enable_matplotlib(self, gui=None):
+        # if we don't put this, we'll lose some display_data messages. found
+        # about this trick via fastai/execnb
+        from matplotlib_inline.backend_inline import configure_inline_support
+        configure_inline_support.current_backend = 'unset'
+        return super().enable_matplotlib(gui)
+
 
 class PloomberClient():
     """
