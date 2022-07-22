@@ -16,6 +16,7 @@ with open('src/ploomber_engine/__init__.py', 'rb') as f:
 REQUIRES = [
     'papermill',
     'ipykernel',
+    'debuglater',
 ]
 
 DEV = [

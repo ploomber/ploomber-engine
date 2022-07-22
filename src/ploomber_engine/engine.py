@@ -1,6 +1,7 @@
 from papermill.engines import Engine
 from papermill.utils import merge_kwargs, remove_args
 from papermill.log import logger
+from papermill.clientwrap import PapermillNotebookClient
 
 from ploomber_engine.client import PapermillPloomberNotebookClient
 
@@ -62,7 +63,8 @@ class DebugLaterEngine(Engine):
         # Exclude parameters that named differently downstream
         safe_kwargs = remove_args(['timeout', 'startup_timeout'], **kwargs)
 
-        # Nicely handle preprocessor arguments prioritizing values set by engine
+        # Nicely handle preprocessor arguments prioritizing values set by
+        # engine
         final_kwargs = merge_kwargs(
             safe_kwargs,
             timeout=execution_timeout

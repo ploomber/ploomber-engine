@@ -5,9 +5,7 @@ import papermill as pm
 
 
 def test_sample_notebook(tmp_assets):
-    pm.execute_notebook('sample.ipynb',
-                        'out.ipynb',
-                        engine_name='ploomber-engine')
+    pm.execute_notebook('sample.ipynb', 'out.ipynb', engine_name='debug')
 
 
 def test_crashing_notebook(tmp_assets, monkeypatch, capsys):
@@ -19,7 +17,7 @@ def test_crashing_notebook(tmp_assets, monkeypatch, capsys):
         with pytest.raises(SystemExit):
             pm.execute_notebook('crash.ipynb',
                                 'out.ipynb',
-                                engine_name='ploomber-engine')
+                                engine_name='debug')
 
     out, _ = capsys.readouterr()
 
