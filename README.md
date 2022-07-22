@@ -75,13 +75,16 @@ ZeroDivisionError: division by zero
 ipdb>
 ```
 
-## [Coming Soon] Notebook profiling (CPU, GPU, RAM)
+## [Experimental] Notebook profiling (CPU, GPU, RAM)
 
 Papermill executes the notebook in an independent process. Consequently,
-resources like CPU/GPU usage or RAM cannot be monitored. We're working on a
-new engine that executes the notebook in the same process to fix this.
+resources like CPU/GPU usage or RAM cannot be monitored. We have an
+experimental engine that runs a notebook in the same process.
 
-If you wish to beta test this engine, [join our community](https://ploomber.io/community) and send us a message.
+[See the profiling demo here.](doc/profiling.ipynb)
+
+
+If you give it a try, please share your feedback: [join our community](https://ploomber.io/community) and send us a message.
 ## Support
 
 For support, feature requests, and product updates: [join our community](https://ploomber.io/community) or follow us on [Twitter](https://twitter.com/ploomber)/[LinkedIn](https://www.linkedin.com/company/ploomber/).
