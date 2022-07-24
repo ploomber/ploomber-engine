@@ -109,18 +109,13 @@ def test_client_execute(tmp_assets):
         'execution_count': None
     }]
 
-    assert nb_out.cells[1]['outputs'] == [{
-        'output_type': 'execute_result',
-        'metadata': {},
-        'data': {
-            'text/plain': 'None'
+    assert nb_out.cells[1]['outputs'] == [
+        {
+            'output_type': 'stream',
+            'name': 'stdout',
+            'text': 'stuff\n'
         },
-        'execution_count': None
-    }, {
-        'output_type': 'stream',
-        'name': 'stdout',
-        'text': 'stuff\n'
-    }]
+    ]
 
     assert nb_out.cells[2]['outputs'] == [{
         'output_type': 'execute_result',
@@ -175,15 +170,10 @@ print('error', file=sys.stderr)
 
     out = PloomberClient(nb).execute()
 
-    assert out.cells[0]['outputs'] == [{
-        'output_type': 'execute_result',
-        'metadata': {},
-        'data': {
-            'text/plain': 'None'
+    assert out.cells[0]['outputs'] == [
+        {
+            'output_type': 'stream',
+            'name': 'stderr',
+            'text': 'error\n'
         },
-        'execution_count': None
-    }, {
-        'output_type': 'stream',
-        'name': 'stderr',
-        'text': 'error\n'
-    }]
+    ]

@@ -22,9 +22,10 @@ class CustomDisplayHook(DisplayHook):
     """
 
     def __call__(self, result=None):
-        out = nbformat.v4.new_output(output_type='execute_result',
-                                     data={'text/plain': str(result)})
-        self.shell._current_output.append(out)
+        if result is not None:
+            out = nbformat.v4.new_output(output_type='execute_result',
+                                         data={'text/plain': str(result)})
+            self.shell._current_output.append(out)
 
 
 class CustomDisplayPublisher(DisplayPublisher):
