@@ -50,7 +50,12 @@ class PloomberShell(InteractiveShell):
         super().__init__(display_pub_class=CustomDisplayPublisher,
                          displayhook_class=CustomDisplayHook)
         InteractiveShell._instance = self
-        self.enable_matplotlib('inline')
+
+        try:
+            self.enable_matplotlib('inline')
+        except ModuleNotFoundError:
+            pass
+
         # all channels send the output here
         self._current_output = []
 
@@ -90,7 +95,7 @@ class PloomberClient():
         # and return them
 
         with patch_sys_std_out_err() as (stdout_stream, stderr_stream):
-            _ = self._shell.run_cell(cell['source'])
+            result = self._shell.run_cell(cell['source'])
             stdout = stdout_stream.getvalue()
             stderr = stderr_stream.getvalue()
 
@@ -105,6 +110,9 @@ class PloomberClient():
         # add outputs to the cell object
         cell.outputs = output
         cell.execution_count = execution_count
+
+        if not result.success:
+            result.raise_error()
 
         return output
 
