@@ -8,8 +8,10 @@ from IPython.core.displaypub import DisplayPublisher
 from IPython.core.displayhook import DisplayHook
 
 
-def _make_stream_output(out):
-    return nbformat.v4.new_output(output_type='stream', text=str(out))
+def _make_stream_output(out, name):
+    return nbformat.v4.new_output(output_type='stream',
+                                  text=str(out),
+                                  name=name)
 
 
 class CustomDisplayHook(DisplayHook):
@@ -94,10 +96,10 @@ class PloomberClient():
         output = self._shell._get_output()
 
         if stdout:
-            output.append(_make_stream_output(stdout))
+            output.append(_make_stream_output(stdout, name='stdout'))
 
         if stderr:
-            output.append(_make_stream_output(stderr))
+            output.append(_make_stream_output(stderr, name='stderr'))
 
         # add outputs to the cell object
         cell.outputs = output

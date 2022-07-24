@@ -163,3 +163,27 @@ def test_client_gets_clean_shell():
 
     assert ("name 'some_variable' is not defined"
             in nb2.cells[0].outputs[0]['text'])
+
+
+def test_output_to_sys_stderr():
+    nb = nbformat.v4.new_notebook()
+    cell = nbformat.v4.new_code_cell(source="""
+import sys
+print('error', file=sys.stderr)
+""")
+    nb.cells.append(cell)
+
+    out = PloomberClient(nb).execute()
+
+    assert out.cells[0]['outputs'] == [{
+        'output_type': 'execute_result',
+        'metadata': {},
+        'data': {
+            'text/plain': 'None'
+        },
+        'execution_count': None
+    }, {
+        'output_type': 'stream',
+        'name': 'stderr',
+        'text': 'error\n'
+    }]
