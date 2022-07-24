@@ -16,15 +16,15 @@ def _make_stream_output(out, name):
 
 class CustomDisplayHook(DisplayHook):
     """
-    Hook when receiving plain text messages. For example, when the last line
-    in the cell has a string/number or anything that doesn't have a rich
-    representation
+    Hook when receiving text messages (plain text, HTML, etc)
     """
 
     def __call__(self, result=None):
         if result is not None:
+            data, metadata = self.shell.display_formatter.format(result)
             out = nbformat.v4.new_output(output_type='execute_result',
-                                         data={'text/plain': str(result)})
+                                         data=data,
+                                         metadata=metadata)
             self.shell._current_output.append(out)
 
 
