@@ -4,6 +4,11 @@ Add debugging and profiling capabilities to [papermill](https://github.com/ntera
 
 `ploomber-engine` adds new capabilities to papermill via custom engines, they're described below.
 
+## Engines
+
+- [debuglater](#debug-later)
+- [debug](#debug-now)
+- [notebook-profiling-cpu-gpu-ram](#notebook-profiling-cpu-gpu-ram)
 ## Installation
 
 ```sh
@@ -84,7 +89,7 @@ ZeroDivisionError: division by zero
 ipdb>
 ```
 
-## [Beta] Notebook profiling (CPU, GPU, RAM)
+## Notebook profiling (CPU, GPU, RAM)
 
 Papermill executes the notebook in an independent process. We built an engine that runs a notebook in the same process, which enables resource monitoring.
 
