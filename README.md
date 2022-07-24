@@ -8,7 +8,7 @@ Add debugging and profiling capabilities to [papermill](https://github.com/ntera
 
 - [debuglater](#debug-later)
 - [debug](#debug-now)
-- [notebook-profiling-cpu-gpu-ram](#notebook-profiling-cpu-gpu-ram)
+- [profiling](#notebook-profiling-cpu-gpu-ram)
 ## Installation
 
 ```sh
