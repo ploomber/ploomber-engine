@@ -15,6 +15,8 @@ This engine uses our [debuglater](https://github.com/ploomber/debuglater) packag
 
 So, for example, if you're running notebooks in production or remote servers, you can debug them upon crashing. Likewise, you can use the generated file to debug on a different machine (assuming the environment is the same) without having access to the source code.
 
+![debuglater](https://ploomber.io/images/doc/ploomber-engine-demo/debuglater.gif)
+
 ### Debug later example
 
 ```sh
@@ -42,6 +44,8 @@ dltr jupyter.dump
 ## Debug now
 
 This engine will automatically start a debugging session upon notebook crash.
+
+![debug](https://ploomber.io/images/doc/ploomber-engine-demo/debug.gif)
 ### Debug now example
 
 ```sh
@@ -83,6 +87,8 @@ ipdb>
 ## [Beta] Notebook profiling (CPU, GPU, RAM)
 
 Papermill executes the notebook in an independent process. We built an engine that runs a notebook in the same process, which enables resource monitoring.
+
+![profiling](https://ploomber.io/images/doc/ploomber-engine-demo/profiling.gif)
 
 [See the profiling demo here.](doc/profiling.ipynb)
 
