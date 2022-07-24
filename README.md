@@ -1,11 +1,8 @@
 # ploomber-engine
 
-[Papermill](https://github.com/nteract/papermill) does not support debugging notebooks when they crash. For example, if you enable debugging mode (using `%pdb on`) and the notebook crashes, you'll see this:
+Add debugging and profiling capabilities to [papermill](https://github.com/nteract/papermill).
 
-> IPython.core.error.StdinNotImplementedError: raw_input was called, but this frontend does not support input requests.
-
-`ploomber-engine` adds debugging capabilities to Papermill by adding custom execution engines.
-
+`ploomber-engine` adds new capabilities to papermill via custom engines, they're described below.
 ## Debug later
 
 The `debuglater` engine serializes the error traceback so you can start a debugging session whenever possible. So, for example, if you're running notebooks in production or remote servers, you can debug them upon crashing. Likewise, you can use the generated file to debug on a different machine (assuming the environment is the same) without having access to the source code.
