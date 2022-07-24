@@ -1,6 +1,11 @@
 # CHANGELOG
-
 ## 0.0.3dev
+* Correctly identifying `stderr` stream (displayed with red background in the notebook file)
+* Capturing HTML outputs
+* Adds execution count to cells
+* Ignoring non-code cells from execution
+* Catching exception when enabling matplotlib failed upon shell initialization (due to matplotlib not installed in the env)
+* Fixes an error that displayed empty messages from the shell
 
 ## 0.0.2 (2022-07-22)
 * Renames `ploomber-engine` to `debug`
