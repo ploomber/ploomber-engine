@@ -26,6 +26,7 @@ DEV = [
     'twine',
     # for testing PloomberShell
     'matplotlib',
+    'pandas',
 ]
 
 setup(

@@ -1,6 +1,9 @@
+import pytest
+from copy import copy
 from unittest.mock import ANY
 import nbformat
 from ploomber_engine.ipython import PloomberShell, PloomberClient
+from ploomber_engine import ipython
 
 
 def test_captures_display_data():
@@ -73,22 +76,21 @@ plt.plot([1, 2, 3])
     assert len(result) == 3
 
 
-def test_client_captures_tracebacks():
+def test_reports_exceptions():
     nb = nbformat.v4.new_notebook()
-    cell = nbformat.v4.new_code_cell(source="""
-raise ValueError('something went wrong')
-""")
-    nb.cells.append(cell)
+    nb.cells.append(
+        nbformat.v4.new_code_cell(source="""
+def crash():
+    raise ValueError("something went wrong")
 
-    client = PloomberClient(nb)
+crash()
+"""))
 
-    result = client.execute_cell(cell,
-                                 cell_index=0,
-                                 execution_count=0,
-                                 store_history=False)
+    with pytest.raises(ValueError) as excinfo:
+        PloomberClient(nb).execute()
 
-    assert len(result) == 1
-    assert 'something went wrong' in result[0]['text']
+    assert str(excinfo.value) == 'something went wrong'
+    assert 'something went wrong' in nb.cells[0].outputs[0]['text']
 
 
 def test_client_execute(tmp_assets):
@@ -154,10 +156,9 @@ def test_client_gets_clean_shell():
 
     nb2 = nbformat.v4.new_notebook()
     nb2.cells.append(nbformat.v4.new_code_cell(source='print(some_variable)'))
-    PloomberClient(nb2).execute()
 
-    assert ("name 'some_variable' is not defined"
-            in nb2.cells[0].outputs[0]['text'])
+    with pytest.raises(NameError):
+        PloomberClient(nb2).execute()
 
 
 def test_output_to_sys_stderr():
@@ -202,10 +203,38 @@ pd.DataFrame({'x': [1, 2, 3]})
     }]
 
 
-# TODO: test if matplolib not installed
+def test_matplotlib_is_optional(monkeypatch):
+    # raise ModuleNotFoundError when importing matplotlib
+    def mock_import(name, globals=None, locals=None, fromlist=(), level=0):
+        if name == 'matplotlib':
+            raise ModuleNotFoundError
+        else:
+            return __import__(name,
+                              globals=globals,
+                              locals=locals,
+                              fromlist=fromlist,
+                              level=level)
+
+    builtins = copy(ipython.__builtins__)
+    builtins['__import__'] = mock_import
+
+    # path builtins in ipython modfule
+    monkeypatch.setattr(ipython, '__builtins__', builtins)
+
+    # should not raise ModuleNotFoundError
+    assert PloomberShell()
 
 
 def test_adds_execution_count():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell())
+    nb.cells.append(nbformat.v4.new_code_cell())
+    out = PloomberClient(nb).execute()
+
+    assert [c['execution_count'] for c in out.cells] == [1, 2]
+
+
+def test_keeps_same_std_out_err_order_as_jupyter():
     nb = nbformat.v4.new_notebook()
     nb.cells.append(nbformat.v4.new_code_cell())
     nb.cells.append(nbformat.v4.new_code_cell())
