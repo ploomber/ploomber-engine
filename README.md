@@ -75,11 +75,9 @@ ZeroDivisionError: division by zero
 ipdb>
 ```
 
-## [Experimental] Notebook profiling (CPU, GPU, RAM)
+## [Beta] Notebook profiling (CPU, GPU, RAM)
 
-Papermill executes the notebook in an independent process. Consequently,
-resources like CPU/GPU usage or RAM cannot be monitored. We have an
-experimental engine that runs a notebook in the same process.
+Papermill executes the notebook in an independent process. We built an engine that runs a notebook in the same process, which enables resource monitoring.
 
 [See the profiling demo here.](doc/profiling.ipynb)
 
