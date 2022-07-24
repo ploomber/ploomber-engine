@@ -180,8 +180,6 @@ print('error', file=sys.stderr)
     ]
 
 
-# test for all mimetypes
-# https://github.com/ipython/ipython/blob/66aeb3fc55c8ac04242e566172af5de5cc6fe71e/IPython/core/displaypub.py#L61
 def test_displays_html_repr():
     nb = nbformat.v4.new_notebook()
     cell = nbformat.v4.new_code_cell(source="""
@@ -241,3 +239,114 @@ def test_keeps_same_std_out_err_order_as_jupyter():
     out = PloomberClient(nb).execute()
 
     assert [c['execution_count'] for c in out.cells] == [1, 2]
+
+
+def test_ignores_non_code_cells():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_markdown_cell('this is markdown'))
+    nb.cells.append(nbformat.v4.new_code_cell('1 + 1'))
+    out = PloomberClient(nb).execute()
+
+    assert out.cells[1] == {
+        'id':
+        ANY,
+        'cell_type':
+        'code',
+        'metadata': {},
+        'execution_count':
+        1,
+        'source':
+        '1 + 1',
+        'outputs': [{
+            'output_type': 'execute_result',
+            'metadata': {},
+            'data': {
+                'text/plain': '2'
+            },
+            'execution_count': None
+        }]
+    }
+
+
+@pytest.mark.parametrize('source, expected', [
+    [
+        "from IPython.display import HTML; HTML('<br>some html</br>')",
+        {
+            'output_type': 'execute_result',
+            'metadata': {},
+            'data': {
+                'text/plain': '<IPython.core.display.HTML object>',
+                'text/html': '<br>some html</br>'
+            },
+            'execution_count': None
+        },
+    ],
+    [
+        "from IPython.display import Markdown; Markdown('# some md')",
+        {
+            'output_type': 'execute_result',
+            'metadata': {},
+            'data': {
+                'text/plain': '<IPython.core.display.Markdown object>',
+                'text/markdown': '# some md'
+            },
+            'execution_count': None
+        },
+    ],
+    [
+        "from IPython.display import JSON; JSON(dict(a=1))",
+        {
+            'output_type': 'execute_result',
+            'metadata': {
+                'application/json': {
+                    'expanded': False,
+                    'root': 'root'
+                }
+            },
+            'data': {
+                'text/plain': '<IPython.core.display.JSON object>',
+                'application/json': {
+                    'a': 1
+                }
+            },
+            'execution_count': None
+        },
+    ],
+    [
+        "from IPython.display import Javascript; Javascript('let x = 1')",
+        {
+            'output_type': 'execute_result',
+            'metadata': {},
+            'data': {
+                'text/plain': '<IPython.core.display.Javascript object>',
+                'application/javascript': 'let x = 1'
+            },
+            'execution_count': None
+        },
+    ],
+    [
+        "from IPython.display import Latex; Latex('$ x = 1$')",
+        {
+            'output_type': 'execute_result',
+            'metadata': {},
+            'data': {
+                'text/plain': '<IPython.core.display.Latex object>',
+                'text/latex': '$ x = 1$'
+            },
+            'execution_count': None
+        },
+    ],
+],
+                         ids=[
+                             'html',
+                             'md',
+                             'json',
+                             'js',
+                             'latex',
+                         ])
+def test_display_formats(source, expected):
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell(source=source))
+    out = PloomberClient(nb).execute()
+
+    assert out.cells[0]['outputs'][0] == expected

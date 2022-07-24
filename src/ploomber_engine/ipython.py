@@ -117,11 +117,15 @@ class PloomberClient():
         return output
 
     def execute(self):
+        execution_count = 1
+
         for index, cell in enumerate(self._nb.cells):
-            self.execute_cell(cell,
-                              cell_index=index,
-                              execution_count=index + 1,
-                              store_history=False)
+            if cell.cell_type == 'code':
+                self.execute_cell(cell,
+                                  cell_index=index,
+                                  execution_count=execution_count,
+                                  store_history=False)
+                execution_count += 1
 
         return self._nb
 
