@@ -3,6 +3,12 @@
 Add debugging and profiling capabilities to [papermill](https://github.com/nteract/papermill).
 
 `ploomber-engine` adds new capabilities to papermill via custom engines, they're described below.
+
+## Installation
+
+```sh
+pip install ploomber-engine
+```
 ## Debug later
 
 The `debuglater` engine serializes the error traceback so you can start a debugging session whenever possible. So, for example, if you're running notebooks in production or remote servers, you can debug them upon crashing. Likewise, you can use the generated file to debug on a different machine (assuming the environment is the same) without having access to the source code.
