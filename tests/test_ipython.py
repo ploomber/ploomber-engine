@@ -203,3 +203,12 @@ pd.DataFrame({'x': [1, 2, 3]})
 
 
 # TODO: test if matplolib not installed
+
+
+def test_adds_execution_count():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell())
+    nb.cells.append(nbformat.v4.new_code_cell())
+    out = PloomberClient(nb).execute()
+
+    assert [c['execution_count'] for c in out.cells] == [1, 2]

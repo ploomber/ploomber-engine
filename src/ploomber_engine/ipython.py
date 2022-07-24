@@ -104,6 +104,7 @@ class PloomberClient():
 
         # add outputs to the cell object
         cell.outputs = output
+        cell.execution_count = execution_count
 
         return output
 
@@ -111,7 +112,7 @@ class PloomberClient():
         for index, cell in enumerate(self._nb.cells):
             self.execute_cell(cell,
                               cell_index=index,
-                              execution_count=index,
+                              execution_count=index + 1,
                               store_history=False)
 
         return self._nb
