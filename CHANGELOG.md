@@ -1,5 +1,5 @@
 # CHANGELOG
-## 0.0.3dev
+## 0.0.3 (2022-07-24)
 * Correctly identifying `stderr` stream (displayed with red background in the notebook file)
 * Capturing HTML outputs
 * Adds execution count to cells
