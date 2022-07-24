@@ -177,3 +177,29 @@ print('error', file=sys.stderr)
             'text': 'error\n'
         },
     ]
+
+
+# test for all mimetypes
+# https://github.com/ipython/ipython/blob/66aeb3fc55c8ac04242e566172af5de5cc6fe71e/IPython/core/displaypub.py#L61
+def test_displays_html_repr():
+    nb = nbformat.v4.new_notebook()
+    cell = nbformat.v4.new_code_cell(source="""
+import pandas as pd
+pd.DataFrame({'x': [1, 2, 3]})
+""")
+    nb.cells.append(cell)
+
+    out = PloomberClient(nb).execute()
+
+    assert out.cells[0]['outputs'] == [{
+        'output_type': 'execute_result',
+        'metadata': {},
+        'data': {
+            'text/plain': '   x\n0  1\n1  2\n2  3',
+            'text/html': ANY,
+        },
+        'execution_count': None
+    }]
+
+
+# TODO: test if matplolib not installed
