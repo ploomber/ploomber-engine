@@ -1,7 +1,10 @@
-import pytest
+from pathlib import Path
 from copy import copy
 from unittest.mock import ANY
+
+import pytest
 import nbformat
+
 from ploomber_engine.ipython import PloomberShell, PloomberClient
 from ploomber_engine import ipython
 
@@ -350,3 +353,15 @@ def test_display_formats(source, expected):
     out = PloomberClient(nb).execute()
 
     assert out.cells[0]['outputs'][0] == expected
+
+
+def test_adds_current_directory_to_sys_path(no_sys_modules_cache):
+    Path('some_new_module.py').write_text("""
+def x():
+    pass
+""")
+
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell(source='import some_new_module'))
+
+    assert PloomberClient(nb).execute()

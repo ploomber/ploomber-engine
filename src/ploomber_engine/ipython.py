@@ -1,3 +1,4 @@
+import os
 import sys
 import contextlib
 from io import StringIO
@@ -119,13 +120,16 @@ class PloomberClient():
     def execute(self):
         execution_count = 1
 
-        for index, cell in enumerate(self._nb.cells):
-            if cell.cell_type == 'code':
-                self.execute_cell(cell,
-                                  cell_index=index,
-                                  execution_count=execution_count,
-                                  store_history=False)
-                execution_count += 1
+        # make sure that the current working directory is in the sys.path
+        # in case the user has local modules
+        with add_to_sys_path('.'):
+            for index, cell in enumerate(self._nb.cells):
+                if cell.cell_type == 'code':
+                    self.execute_cell(cell,
+                                      cell_index=index,
+                                      execution_count=execution_count,
+                                      store_history=False)
+                    execution_count += 1
 
         return self._nb
 
@@ -146,3 +150,26 @@ def patch_sys_std_out_err():
     finally:
         # revert
         sys.stdout, sys.stderr = stdout, stderr
+
+
+@contextlib.contextmanager
+def add_to_sys_path(path, chdir=False):
+    """
+    Add directory to sys.path, optionally making it the working directory
+    temporarily
+    """
+    cwd_old = os.getcwd()
+
+    if path is not None:
+        path = os.path.abspath(path)
+        sys.path.insert(0, path)
+
+        if chdir:
+            os.chdir(path)
+
+    try:
+        yield
+    finally:
+        if path is not None:
+            sys.path.remove(path)
+            os.chdir(cwd_old)

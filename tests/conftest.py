@@ -1,3 +1,4 @@
+import sys
 from functools import wraps
 import os
 import tempfile
@@ -45,3 +46,20 @@ def fixture_tmp_dir(source, **kwargs):
 @fixture_tmp_dir(_path_to_tests() / 'assets')
 def tmp_assets():
     pass
+
+
+@pytest.fixture
+def no_sys_modules_cache():
+    """
+    Removes modules from sys.modules that didn't exist before the test
+    """
+    mods = set(sys.modules)
+
+    yield
+
+    current = set(sys.modules)
+
+    to_remove = current - mods
+
+    for a_module in to_remove:
+        del sys.modules[a_module]
