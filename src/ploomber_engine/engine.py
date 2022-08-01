@@ -82,10 +82,10 @@ class DebugLaterEngine(Engine):
             stderr_file=stderr_file,
         )
 
-        task_name = kwargs.get('task_name')
+        path_to_dump = kwargs.get('path_to_dump')
 
-        if task_name is None:
-            warnings.warn('Did not pass task_name to '
+        if path_to_dump is None:
+            warnings.warn('Did not pass path_to_dump to '
                           'DebugLaterEngine.execute_managed_notebook, '
                           'the default value will be used')
             source = """
@@ -93,10 +93,9 @@ from debuglater import patch_ipython
 patch_ipython()
 """
         else:
-            dump_filename = task_name + '.dump'
             source = f"""
 from debuglater import patch_ipython
-patch_ipython({dump_filename!r})
+patch_ipython({path_to_dump!r})
 """
 
         cell = nbformat.versions[nb_man.nb['nbformat']].new_code_cell(
