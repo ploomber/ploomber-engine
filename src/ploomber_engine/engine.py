@@ -1,3 +1,5 @@
+import warnings
+
 import nbformat
 
 from papermill.engines import Engine
@@ -80,12 +82,25 @@ class DebugLaterEngine(Engine):
             stderr_file=stderr_file,
         )
 
-        cell = nbformat.versions[nb_man.nb['nbformat']].new_code_cell(
-            source="""
+        task_name = kwargs.get('task_name')
+
+        if task_name is None:
+            warnings.warn('Did not pass task_name to '
+                          'DebugLaterEngine.execute_managed_notebook, '
+                          'the default value will be used')
+            source = """
 from debuglater import patch_ipython
 patch_ipython()
-""",
-            metadata=dict(tags=[], papermill=dict()))
+"""
+        else:
+            dump_filename = task_name + '.dump'
+            source = f"""
+from debuglater import patch_ipython
+patch_ipython({dump_filename!r})
+"""
+
+        cell = nbformat.versions[nb_man.nb['nbformat']].new_code_cell(
+            source=source, metadata=dict(tags=[], papermill=dict()))
         nb_man.nb.cells.insert(0, cell)
 
         return PapermillNotebookClient(nb_man, **final_kwargs).execute()
