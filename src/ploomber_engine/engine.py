@@ -44,6 +44,10 @@ class DebugEngine(Engine):
             stderr_file=stderr_file,
         )
 
+        cell = nbformat.versions[nb_man.nb['nbformat']].new_code_cell(
+            source='%pdb on', metadata=dict(tags=[], papermill=dict()))
+        nb_man.nb.cells.insert(0, cell)
+
         #  use our Papermill client
         return PapermillPloomberNotebookClient(nb_man,
                                                **final_kwargs).execute()
