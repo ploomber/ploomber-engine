@@ -1,8 +1,8 @@
 # CHANGELOG
 
-## 0.0.4dev
+## 0.0.4 (2022-08-02)
 * `debuglater` engine accepts `path_to_dump` argument
-* `PloomberClient` adds current path to `sys.path` while executing (#4)
+* `PloomberClient` adds current path to `sys.path` while executing ([#4](https://github.com/ploomber/ploomber-engine/issues/4))
 * `DebugEngine` adds a `%pdb on` cell at the top before execution
 
 ## 0.0.3 (2022-07-24)
