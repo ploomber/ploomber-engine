@@ -8,6 +8,7 @@ import papermill as pm
     'debug',
     'debuglater',
     'profiling',
+    'embedded',
 ])
 def test_sample_notebook(tmp_assets, engine):
     pm.execute_notebook('sample.ipynb', 'out.ipynb', engine_name=engine)

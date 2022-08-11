@@ -53,6 +53,8 @@ setup(
         "papermill.engine": [
             "debug=ploomber_engine.engine:DebugEngine",
             "debuglater=ploomber_engine.engine:DebugLaterEngine",
+            "embedded=ploomber_engine.engine:ProfilingEngine",
+            # we keep this here for backwards compatibility
             "profiling=ploomber_engine.engine:ProfilingEngine",
         ],
     },

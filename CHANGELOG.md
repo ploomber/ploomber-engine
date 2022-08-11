@@ -1,6 +1,11 @@
 # CHANGELOG
 
 ## 0.0.5dev
+* Renames `profiling` engine to `embedded` (keeping `profiling` as alias for backwards compatibility)
+* Adds execution count to cell outputs
+* Adds `PloomberManagedClient` so papermill can keep track of status and progress
+* Catching exceptions
+* Fixes output display order
 
 ## 0.0.4 (2022-08-02)
 * `debuglater` engine accepts `path_to_dump` argument
