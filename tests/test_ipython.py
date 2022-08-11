@@ -93,7 +93,45 @@ crash()
         PloomberClient(nb).execute()
 
     assert str(excinfo.value) == 'something went wrong'
-    assert 'something went wrong' in nb.cells[0].outputs[0]['text']
+    assert nb.cells[0].outputs[0] == {
+        'output_type': 'error',
+        'ename': 'ValueError',
+        'evalue': 'something went wrong',
+        'traceback': ANY
+    }
+    assert 'something went wrong' in '\n'.join(
+        nb.cells[0].outputs[0]['traceback'])
+
+
+def test_displays_then_raises_exception():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(
+        nbformat.v4.new_code_cell(source="""
+print("hello!")
+print("hello!")
+
+def crash():
+    raise ValueError("something went wrong")
+
+crash()
+"""))
+
+    with pytest.raises(ValueError) as excinfo:
+        PloomberClient(nb).execute()
+
+    assert str(excinfo.value) == 'something went wrong'
+    assert nb.cells[0].outputs == [{
+        'output_type': 'stream',
+        'name': 'stdout',
+        'text': 'hello!\nhello!'
+    }, {
+        'output_type': 'error',
+        'ename': 'ValueError',
+        'evalue': 'something went wrong',
+        'traceback': ANY
+    }]
+    assert 'something went wrong' in '\n'.join(
+        nb.cells[0].outputs[1]['traceback'])
 
 
 def test_client_execute(tmp_assets):

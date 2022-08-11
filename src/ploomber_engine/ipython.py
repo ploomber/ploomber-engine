@@ -15,6 +15,35 @@ def _make_stream_output(out, name):
                                   name=name)
 
 
+def _process_stdout(out, result):
+    if not result.success:
+        exception = out[-2]
+        # ignore newlines
+        out = out[:-2:2]
+
+        cells = []
+
+        if out:
+            cells.append(
+                nbformat.v4.new_output(output_type='stream',
+                                       text='\n'.join(out),
+                                       name='stdout'))
+
+        cells.append(
+            nbformat.v4.new_output("error",
+                                   ename=type(result.error_in_exec).__name__,
+                                   evalue=str(result.error_in_exec),
+                                   traceback=exception.splitlines()))
+        return cells
+
+    else:
+        return [
+            nbformat.v4.new_output(output_type='stream',
+                                   text=''.join(out),
+                                   name='stdout')
+        ]
+
+
 class CustomDisplayHook(DisplayHook):
     """
     Hook when receiving text messages (plain text, HTML, etc)
@@ -94,7 +123,6 @@ class PloomberClient():
     def execute_cell(self, cell, cell_index, execution_count, store_history):
         # results are published in different places. Here we grab all of them
         # and return them
-
         with patch_sys_std_out_err() as (stdout_stream, stderr_stream):
             result = self._shell.run_cell(cell['source'])
             stdout = stdout_stream.getvalue()
@@ -103,7 +131,7 @@ class PloomberClient():
         output = []
 
         if stdout:
-            output.append(_make_stream_output(stdout, name='stdout'))
+            output.extend(_process_stdout(stdout, result=result))
 
         if stderr:
             output.append(_make_stream_output(stderr, name='stderr'))
@@ -178,6 +206,18 @@ class PloomberManagedClient(PloomberClient):
         return self._nb
 
 
+class IO:
+
+    def __init__(self):
+        self._values = []
+
+    def write(self, s):
+        self._values.append(s)
+
+    def getvalue(self):
+        return self._values[:]
+
+
 @contextlib.contextmanager
 def patch_sys_std_out_err():
     """
@@ -186,7 +226,7 @@ def patch_sys_std_out_err():
     stdout, stderr = sys.stdout, sys.stderr
 
     # patch them
-    stdout_stream, stderr_stream = StringIO(), StringIO()
+    stdout_stream, stderr_stream = IO(), StringIO()
     sys.stdout, sys.stderr = stdout_stream, stderr_stream
 
     try:
