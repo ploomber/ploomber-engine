@@ -111,7 +111,7 @@ def test_client_execute(tmp_assets):
         'data': {
             'text/plain': '3'
         },
-        'execution_count': None
+        'execution_count': 1
     }]
 
     assert nb_out.cells[1]['outputs'] == [
@@ -134,7 +134,7 @@ def test_client_execute(tmp_assets):
             'data': {
                 'text/plain': '2'
             },
-            'execution_count': None
+            'execution_count': 3
         },
     ]
 
@@ -144,7 +144,7 @@ def test_client_execute(tmp_assets):
         'data': {
             'text/plain': ANY,
         },
-        'execution_count': None
+        'execution_count': 4
     }, {
         'output_type': 'display_data',
         'metadata': {},
@@ -203,7 +203,7 @@ pd.DataFrame({'x': [1, 2, 3]})
             'text/plain': '   x\n0  1\n1  2\n2  3',
             'text/html': ANY,
         },
-        'execution_count': None
+        'execution_count': 1
     }]
 
 
@@ -263,14 +263,16 @@ def test_ignores_non_code_cells():
         1,
         'source':
         '1 + 1',
-        'outputs': [{
-            'output_type': 'execute_result',
-            'metadata': {},
-            'data': {
-                'text/plain': '2'
+        'outputs': [
+            {
+                'output_type': 'execute_result',
+                'metadata': {},
+                'data': {
+                    'text/plain': '2'
+                },
+                'execution_count': 1
             },
-            'execution_count': None
-        }]
+        ]
     }
 
 
@@ -284,7 +286,7 @@ def test_ignores_non_code_cells():
                 'text/plain': '<IPython.core.display.HTML object>',
                 'text/html': '<br>some html</br>'
             },
-            'execution_count': None
+            'execution_count': 1
         },
     ],
     [
@@ -296,7 +298,7 @@ def test_ignores_non_code_cells():
                 'text/plain': '<IPython.core.display.Markdown object>',
                 'text/markdown': '# some md'
             },
-            'execution_count': None
+            'execution_count': 1
         },
     ],
     [
@@ -315,7 +317,7 @@ def test_ignores_non_code_cells():
                     'a': 1
                 }
             },
-            'execution_count': None
+            'execution_count': 1
         },
     ],
     [
@@ -327,7 +329,7 @@ def test_ignores_non_code_cells():
                 'text/plain': '<IPython.core.display.Javascript object>',
                 'application/javascript': 'let x = 1'
             },
-            'execution_count': None
+            'execution_count': 1
         },
     ],
     [
@@ -339,7 +341,7 @@ def test_ignores_non_code_cells():
                 'text/plain': '<IPython.core.display.Latex object>',
                 'text/latex': '$ x = 1$'
             },
-            'execution_count': None
+            'execution_count': 1
         },
     ],
 ],

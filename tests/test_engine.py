@@ -22,13 +22,3 @@ def test_crashing_notebook(tmp_assets, monkeypatch, capsys):
     out, _ = capsys.readouterr()
 
     assert "x is 1\n" in out
-
-
-# def test_profiling_engine(tmp_assets):
-#     pm.execute_notebook('different-outputs.ipynb', 'pm.ipynb')
-#     pm.execute_notebook('different-outputs.ipynb',
-#                         'profiling.ipynb',
-#                         engine_name='profiling')
-
-#     from IPython import embed
-#     embed()

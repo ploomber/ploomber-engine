@@ -110,7 +110,14 @@ class PloomberClient():
 
         # order is important, this should be the last one to match
         # what jupyter does
-        output = output + self._shell._get_output()
+        out = self._shell._get_output()
+
+        # NOTE: is there any situation where we receive more than one?
+        for current in out:
+            if current['output_type'] == 'execute_result':
+                current['execution_count'] = execution_count
+
+        output = output + out
 
         # add outputs to the cell object
         cell.outputs = output
