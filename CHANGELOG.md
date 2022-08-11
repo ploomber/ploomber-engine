@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.5dev
+## 0.0.5 (2022-08-11)
 * Renames `profiling` engine to `embedded` (keeping `profiling` as alias for backwards compatibility)
 * Adds execution count to cell outputs
 * Adds `PloomberManagedClient` so papermill can keep track of status and progress
