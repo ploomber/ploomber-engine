@@ -4,8 +4,13 @@ import pytest
 import papermill as pm
 
 
-def test_sample_notebook(tmp_assets):
-    pm.execute_notebook('sample.ipynb', 'out.ipynb', engine_name='debug')
+@pytest.mark.parametrize('engine', [
+    'debug',
+    'debuglater',
+    'profiling',
+])
+def test_sample_notebook(tmp_assets, engine):
+    pm.execute_notebook('sample.ipynb', 'out.ipynb', engine_name=engine)
 
 
 def test_crashing_notebook(tmp_assets, monkeypatch, capsys):
