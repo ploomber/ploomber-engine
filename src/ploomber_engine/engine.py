@@ -8,7 +8,7 @@ from papermill.log import logger
 from papermill.clientwrap import PapermillNotebookClient
 
 from ploomber_engine.client import PapermillPloomberNotebookClient
-from ploomber_engine.ipython import PloomberClient
+from ploomber_engine.ipython import PloomberManagedClient
 
 
 class DebugEngine(Engine):
@@ -128,4 +128,4 @@ class ProfilingEngine(Engine):
         **kwargs,
     ):
 
-        return PloomberClient(nb_man.nb).execute()
+        return PloomberManagedClient(nb_man).execute()

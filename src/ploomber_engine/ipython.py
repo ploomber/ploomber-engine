@@ -145,6 +145,39 @@ class PloomberClient():
         return self._nb
 
 
+class PloomberManagedClient(PloomberClient):
+
+    def __init__(self, nb_man):
+        super().__init__(nb_man.nb)
+        self._nb_man = nb_man
+
+    def execute(self):
+        execution_count = 1
+
+        # make sure that the current working directory is in the sys.path
+        # in case the user has local modules
+        with add_to_sys_path('.'):
+            for index, cell in enumerate(self._nb.cells):
+                if cell.cell_type == 'code':
+                    try:
+                        self._nb_man.cell_start(cell, index)
+                        self.execute_cell(cell,
+                                          cell_index=index,
+                                          execution_count=execution_count,
+                                          store_history=False)
+                    except Exception as ex:
+                        self._nb_man.cell_exception(self._nb.cells[index],
+                                                    cell_index=index,
+                                                    exception=ex)
+                        break
+                    finally:
+                        self._nb_man.cell_complete(self._nb.cells[index],
+                                                   cell_index=index)
+                        execution_count += 1
+
+        return self._nb
+
+
 @contextlib.contextmanager
 def patch_sys_std_out_err():
     """
