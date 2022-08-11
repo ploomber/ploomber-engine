@@ -100,13 +100,17 @@ class PloomberClient():
             stdout = stdout_stream.getvalue()
             stderr = stderr_stream.getvalue()
 
-        output = self._shell._get_output()
+        output = []
 
         if stdout:
             output.append(_make_stream_output(stdout, name='stdout'))
 
         if stderr:
             output.append(_make_stream_output(stderr, name='stderr'))
+
+        # order is important, this should be the last one to match
+        # what jupyter does
+        output = output + self._shell._get_output()
 
         # add outputs to the cell object
         cell.outputs = output

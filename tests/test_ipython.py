@@ -122,18 +122,21 @@ def test_client_execute(tmp_assets):
         },
     ]
 
-    assert nb_out.cells[2]['outputs'] == [{
-        'output_type': 'execute_result',
-        'metadata': {},
-        'data': {
-            'text/plain': '2'
+    assert nb_out.cells[2]['outputs'] == [
+        {
+            'output_type': 'stream',
+            'name': 'stdout',
+            'text': 'a\nb\n'
         },
-        'execution_count': None
-    }, {
-        'output_type': 'stream',
-        'name': 'stdout',
-        'text': 'a\nb\n'
-    }]
+        {
+            'output_type': 'execute_result',
+            'metadata': {},
+            'data': {
+                'text/plain': '2'
+            },
+            'execution_count': None
+        },
+    ]
 
     assert nb_out.cells[3]['outputs'] == [{
         'output_type': 'execute_result',
