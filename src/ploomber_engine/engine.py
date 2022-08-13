@@ -6,9 +6,17 @@ from papermill.engines import Engine
 from papermill.utils import merge_kwargs, remove_args
 from papermill.log import logger
 from papermill.clientwrap import PapermillNotebookClient
+from ploomber_core.telemetry.telemetry import Telemetry
 
 from ploomber_engine.client import PapermillPloomberNotebookClient
 from ploomber_engine.ipython import PloomberManagedClient
+from ploomber_engine import __version__
+
+telemetry = Telemetry(
+    api_key="phc_MpkoVFS3hjCel1ct9uO4VVg6iLi9TYP24T4xEFDx5Gt",
+    package_name="ploomber-engine",
+    version=__version__,
+)
 
 
 class DebugEngine(Engine):
@@ -16,6 +24,7 @@ class DebugEngine(Engine):
     """
 
     @classmethod
+    @telemetry.log_call('debug-execute-managed-nb')
     def execute_managed_notebook(
         cls,
         nb_man,
@@ -58,6 +67,7 @@ class DebugLaterEngine(Engine):
     """
 
     @classmethod
+    @telemetry.log_call('debuglater-execute-managed-nb')
     def execute_managed_notebook(
         cls,
         nb_man,
@@ -116,6 +126,7 @@ class ProfilingEngine(Engine):
     """
 
     @classmethod
+    @telemetry.log_call('embedded-execute-managed-nb')
     def execute_managed_notebook(
         cls,
         nb_man,

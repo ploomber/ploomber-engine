@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 0.0.6dev
+* Adds (optional) anonymous telemetry
 
 ## 0.0.5 (2022-08-11)
 * Renames `profiling` engine to `embedded` (keeping `profiling` as alias for backwards compatibility)
