@@ -540,3 +540,11 @@ def test_from_path(tmp_empty):
     ns = PloomberClient.from_path('nb.ipynb').get_namespace()
 
     assert ns == dict(x=1)
+
+
+def test_shell_clears_instance():
+    with PloomberShell() as shell:
+        shell.run_cell('1 + 1')
+
+    assert PloomberShell._instance is None
+    assert InteractiveShell._instance is None

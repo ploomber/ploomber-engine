@@ -76,6 +76,11 @@ class PloomberShell(InteractiveShell):
     """
     A subclass of IPython's InteractiveShell to gather all the output
     produced by a code cell
+
+    Notes
+    -----
+    This is intended to be used as a singleton, so either call
+    `.clear_instance()` when you're done or use it as a context manager
     """
 
     def __init__(self):
@@ -113,6 +118,12 @@ class PloomberShell(InteractiveShell):
         from matplotlib_inline.backend_inline import configure_inline_support
         configure_inline_support.current_backend = 'unset'
         return super().enable_matplotlib(gui)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.clear_instance()
 
 
 class PloomberClient:
