@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 0.0.7dev
+* Removes `nbclient>0.6.1` requirements (it's only applicable when using the `debug` engine)
 
 ## 0.0.6 (2022-08-13)
 * Adds (optional) anonymous telemetry
