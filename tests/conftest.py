@@ -63,3 +63,15 @@ def no_sys_modules_cache():
 
     for a_module in to_remove:
         del sys.modules[a_module]
+
+
+@pytest.fixture
+def tmp_empty(tmp_path):
+    """
+    Create temporary path using pytest native fixture,
+    them move it, yield, and restore the original path
+    """
+    old = os.getcwd()
+    os.chdir(str(tmp_path))
+    yield str(Path(tmp_path).resolve())
+    os.chdir(old)

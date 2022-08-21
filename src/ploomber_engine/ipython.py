@@ -79,7 +79,10 @@ class PloomberShell(InteractiveShell):
     def __init__(self):
         super().__init__(display_pub_class=CustomDisplayPublisher,
                          displayhook_class=CustomDisplayHook)
+        # no assigning this produces some weird behavior when calling
+        # .clear_instance()
         InteractiveShell._instance = self
+        PloomberShell._instance = self
 
         try:
             self.enable_matplotlib('inline')
@@ -110,7 +113,7 @@ class PloomberShell(InteractiveShell):
         return super().enable_matplotlib(gui)
 
 
-class PloomberClient():
+class PloomberClient:
     """
     Partially implements nbclient.client's interface and uses PloomberShell
     to execute cells.
@@ -118,9 +121,12 @@ class PloomberClient():
 
     def __init__(self, nb):
         self._nb = nb
-        self._shell = PloomberShell()
+        self._shell = None
 
     def execute_cell(self, cell, cell_index, execution_count, store_history):
+        if self._shell is None:
+            raise RuntimeError('A shell has not been initialized')
+
         # results are published in different places. Here we grab all of them
         # and return them
         with patch_sys_std_out_err() as (stdout_stream, stderr_stream):
@@ -157,10 +163,22 @@ class PloomberClient():
         return output
 
     def execute(self):
-        execution_count = 1
-
+        """Execute the notebook
+        """
         # make sure that the current working directory is in the sys.path
         # in case the user has local modules
+        with self:
+            self._execute()
+
+        return self._nb
+
+    def _execute(self):
+        """
+        Internal method to execute a notebook, assumes the shell has been
+        initialized
+        """
+        execution_count = 1
+
         with add_to_sys_path('.'):
             for index, cell in enumerate(self._nb.cells):
                 if cell.cell_type == 'code':
@@ -172,6 +190,21 @@ class PloomberClient():
 
         return self._nb
 
+    def __enter__(self):
+        """Initialize shell
+        """
+        if self._shell is None:
+            self._shell = PloomberShell()
+            return self
+        else:
+            raise RuntimeError("A shell is already active")
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        """Clear shell
+        """
+        self._shell.clear_instance()
+        self._shell = None
+
 
 class PloomberManagedClient(PloomberClient):
 
@@ -179,7 +212,7 @@ class PloomberManagedClient(PloomberClient):
         super().__init__(nb_man.nb)
         self._nb_man = nb_man
 
-    def execute(self):
+    def _execute(self):
         execution_count = 1
 
         # make sure that the current working directory is in the sys.path
@@ -220,7 +253,7 @@ class IO:
 
 @contextlib.contextmanager
 def patch_sys_std_out_err():
-    """
+    """Path sys.{stout, sterr} to capture output
     """
     # keep a reference to the system ones
     stdout, stderr = sys.stdout, sys.stderr

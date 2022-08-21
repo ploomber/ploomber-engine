@@ -4,6 +4,8 @@ from unittest.mock import ANY
 
 import pytest
 import nbformat
+from IPython.core.interactiveshell import InteractiveShell
+import papermill as pm
 
 from ploomber_engine.ipython import PloomberShell, PloomberClient
 from ploomber_engine import ipython
@@ -49,12 +51,11 @@ plt.plot([1, 2, 3])
 """)
     nb.cells.append(cell)
 
-    client = PloomberClient(nb)
-
-    result = client.execute_cell(cell,
-                                 cell_index=0,
-                                 execution_count=0,
-                                 store_history=False)
+    with PloomberClient(nb) as client:
+        result = client.execute_cell(cell,
+                                     cell_index=0,
+                                     execution_count=0,
+                                     store_history=False)
 
     assert len(result) == 2
 
@@ -69,12 +70,11 @@ plt.plot([1, 2, 3])
 """)
     nb.cells.append(cell)
 
-    client = PloomberClient(nb)
-
-    result = client.execute_cell(cell,
-                                 cell_index=0,
-                                 execution_count=0,
-                                 store_history=False)
+    with PloomberClient(nb) as client:
+        result = client.execute_cell(cell,
+                                     cell_index=0,
+                                     execution_count=0,
+                                     store_history=False)
 
     assert len(result) == 3
 
@@ -408,3 +408,61 @@ def x():
     nb.cells.append(nbformat.v4.new_code_cell(source='import some_new_module'))
 
     assert PloomberClient(nb).execute()
+
+
+def test_managed_client(tmp_empty):
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell(source='1 + 1'))
+    Path('nb.ipynb').write_text(nbformat.v4.writes(nb))
+
+    pm.execute_notebook(
+        'nb.ipynb',
+        'out.ipynb',
+        # the embedded engine uses the managed client
+        engine_name='embedded',
+        kernel_name='python3')
+
+    out = nbformat.v4.reads(Path('out.ipynb').read_text())
+
+    assert out.cells[0]['outputs'] == [{
+        'data': {
+            'text/plain': '2'
+        },
+        'execution_count': 1,
+        'metadata': {},
+        'output_type': 'execute_result'
+    }]
+
+
+def test_context_manager():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell(source='1 + 1'))
+
+    with PloomberClient(nb) as client:
+        client._shell.user_ns['a'] = 1
+        client._execute()
+
+
+def test_clears_instance_execute():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell(source='1 + 1'))
+
+    c = PloomberClient(nb)
+    c.execute()
+
+    assert PloomberShell._instance is None
+    assert InteractiveShell._instance is None
+
+
+def test_clears_instance_execute_cell():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(nbformat.v4.new_code_cell(source='1 + 1'))
+
+    with PloomberClient(nb) as client:
+        client.execute_cell(nb.cells[0],
+                            cell_index=0,
+                            execution_count=0,
+                            store_history=False)
+
+    assert PloomberShell._instance is None
+    assert InteractiveShell._instance is None
