@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## 0.0.8dev
+## 0.0.8 (2022-08-20)
+* Correctly clearing up `PloomberShell` to prevent interfering with IPython terminal singleton
 
 ## 0.0.7 (2022-08-20)
 * Removes `nbclient>0.6.1` requirements (it's only applicable when using the `debug` engine)
