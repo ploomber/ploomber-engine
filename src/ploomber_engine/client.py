@@ -7,7 +7,14 @@ from queue import Empty
 from nbclient.exceptions import CellExecutionError, CellTimeoutError
 from papermill.clientwrap import PapermillNotebookClient
 from nbclient import NotebookClient
-from nbclient.util import ensure_async, run_hook, run_sync
+from nbclient.util import ensure_async, run_sync
+
+try:
+    # this was added in nbclient 0.5.11
+    from nbclient.util import run_hook
+except ImportError:
+    run_hook = None
+
 from nbclient.exceptions import CellControlSignal, DeadKernelError
 from nbformat import NotebookNode
 from jupyter_client.client import KernelClient
@@ -17,6 +24,14 @@ class PloomberNotebookClient(NotebookClient):
     """
     A subclass of nbclient.NotebookClient with stdin support
     """
+
+    def __init__(self, *args, **kwargs):
+        if run_hook is None:
+            raise RuntimeError('you need nbclient>=0.6.1 to '
+                               'use PloomberNotebookClient:'
+                               ' pip install nbclient>=0.6.1')
+
+        super().__init__(*args, **kwargs)
 
     async def async_start_new_kernel_client(self) -> KernelClient:
         """Creates a new kernel client.

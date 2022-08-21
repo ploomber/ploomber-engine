@@ -18,8 +18,7 @@ REQUIRES = [
     'papermill',
     'ipykernel',
     'debuglater',
-    # we need this for the debugnow custom engine
-    'nbclient>=0.6.1',
+    'nbclient',
 ]
 
 DEV = [
