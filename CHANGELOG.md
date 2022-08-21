@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.7dev
+## 0.0.7 (2022-08-20)
 * Removes `nbclient>0.6.1` requirements (it's only applicable when using the `debug` engine)
 
 ## 0.0.6 (2022-08-13)
