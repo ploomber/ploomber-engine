@@ -2,8 +2,10 @@ import os
 import sys
 import contextlib
 from io import StringIO
-import nbformat
+import itertools
 
+import parso
+import nbformat
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.core.displaypub import DisplayPublisher
 from IPython.core.displayhook import DisplayHook
@@ -123,6 +125,11 @@ class PloomberClient:
         self._nb = nb
         self._shell = None
 
+    @classmethod
+    def from_path(cls, path):
+        nb = nbformat.read(path, as_version=nbformat.NO_CONVERT)
+        return cls(nb)
+
     def execute_cell(self, cell, cell_index, execution_count, store_history):
         if self._shell is None:
             raise RuntimeError('A shell has not been initialized')
@@ -165,12 +172,47 @@ class PloomberClient:
     def execute(self):
         """Execute the notebook
         """
-        # make sure that the current working directory is in the sys.path
-        # in case the user has local modules
         with self:
             self._execute()
 
         return self._nb
+
+    def get_namespace(self):
+        """Run the notebook and return all the variables
+        """
+        with self:
+            existing = set(self._shell.user_ns)
+            self._execute()
+            namespace = {
+                k: v
+                for k, v in self._shell.user_ns.items() if k not in existing
+            }
+
+        return namespace
+
+    def get_definitions(self):
+        """Returns class and function definitions without running the notebook
+        """
+        source = '\n'.join(
+            [c.source for c in self._nb.cells if c.cell_type == 'code'])
+        module = parso.parse(source)
+
+        defs = [
+            def_.get_code() for def_ in itertools.chain(
+                module.iter_classdefs(), module.iter_funcdefs())
+        ]
+
+        defs_source = '\n'.join(defs)
+
+        with self:
+            existing = set(self._shell.user_ns)
+            self._shell.run_cell(defs_source)
+            defs = {
+                k: v
+                for k, v in self._shell.user_ns.items() if k not in existing
+            }
+
+        return defs
 
     def _execute(self):
         """
@@ -179,6 +221,8 @@ class PloomberClient:
         """
         execution_count = 1
 
+        # make sure that the current working directory is in the sys.path
+        # in case the user has local modules
         with add_to_sys_path('.'):
             for index, cell in enumerate(self._nb.cells):
                 if cell.cell_type == 'code':

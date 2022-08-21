@@ -19,6 +19,9 @@ REQUIRES = [
     'ipykernel',
     'debuglater',
     'nbclient',
+    'ipython',
+    'parso',
+    'nbformat',
 ]
 
 DEV = [

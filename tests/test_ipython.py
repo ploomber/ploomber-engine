@@ -1,3 +1,5 @@
+import inspect
+
 from pathlib import Path
 from copy import copy
 from unittest.mock import ANY
@@ -466,3 +468,75 @@ def test_clears_instance_execute_cell():
 
     assert PloomberShell._instance is None
     assert InteractiveShell._instance is None
+
+
+# create code cell
+def cell(source):
+    return nbformat.v4.new_code_cell(source=source)
+
+
+def test_get_namespace():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(cell('x = 1'))
+    nb.cells.append(
+        cell("""
+class SomeClass:
+    pass
+
+some_object = SomeClass()
+"""))
+    nb.cells.append(
+        cell("""
+def add(x, y):
+    return x + y
+
+result = add(100, 200)
+"""))
+
+    ns = PloomberClient(nb).get_namespace()
+
+    assert set(ns) == {'SomeClass', 'add', 'result', 'some_object', 'x'}
+    assert inspect.isclass(ns['SomeClass'])
+    assert isinstance(ns['some_object'], ns['SomeClass'])
+    assert ns['x'] == 1
+    assert ns['add'](1, 2) == 3
+    assert ns['result'] == 300
+
+
+def test_get_definitions():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(cell('x = 1'))
+    nb.cells.append(
+        cell("""
+class SomeClass:
+    pass
+
+raise ValueError('some error happened')
+
+some_object = SomeClass()
+"""))
+    nb.cells.append(
+        cell("""
+def add(x, y):
+    return x + y
+
+
+raise ValueError('another error happened')
+
+result = add(100, 200)
+"""))
+    defs = PloomberClient(nb).get_definitions()
+
+    assert set(defs) == {'SomeClass', 'add'}
+    assert inspect.isclass(defs['SomeClass'])
+    assert defs['add'](1, 2) == 3
+
+
+def test_from_path(tmp_empty):
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(cell('x = 1'))
+    Path('nb.ipynb').write_text(nbformat.writes(nb), encoding='utf-8')
+
+    ns = PloomberClient.from_path('nb.ipynb').get_namespace()
+
+    assert ns == dict(x=1)
