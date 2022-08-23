@@ -149,7 +149,7 @@ class PloomberClient:
         # and return them
         with patch_sys_std_out_err() as (stdout_stream, stderr_stream):
             result = self._shell.run_cell(cell['source'])
-            stdout = stdout_stream.getvalue()
+            stdout = stdout_stream.get_separated_values()
             stderr = stderr_stream.getvalue()
 
         output = []
@@ -294,15 +294,17 @@ class PloomberManagedClient(PloomberClient):
         return self._nb
 
 
-class IO:
+class IO(StringIO):
 
-    def __init__(self):
+    def __init__(self, initial_value='', newline='\n'):
+        super().__init__(initial_value=initial_value, newline=newline)
         self._values = []
 
     def write(self, s):
         self._values.append(s)
+        super().write(s)
 
-    def getvalue(self):
+    def get_separated_values(self):
         return self._values[:]
 
 

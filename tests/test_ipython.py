@@ -548,3 +548,21 @@ def test_shell_clears_instance():
 
     assert PloomberShell._instance is None
     assert InteractiveShell._instance is None
+
+
+def test_flushing():
+    nb = nbformat.v4.new_notebook()
+    nb.cells.append(cell('import sys'))
+    nb.cells.append(cell('sys.stderr.flush()'))
+    nb.cells.append(cell('sys.stdout.flush()'))
+    PloomberClient(nb).execute()
+
+
+def test_io():
+    io = ipython.IO()
+
+    io.write('a')
+    io.writelines(['b', 'c'])
+
+    assert io.get_separated_values() == ['a', 'b', 'c']
+    assert io.getvalue() == 'abc'
