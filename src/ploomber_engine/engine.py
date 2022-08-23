@@ -13,7 +13,7 @@ from ploomber_engine.ipython import PloomberManagedClient
 from ploomber_engine import __version__
 
 telemetry = Telemetry(
-    api_key="phc_MpkoVFS3hjCel1ct9uO4VVg6iLi9TYP24T4xEFDx5Gt",
+    api_key="phc_P9SpSeypyPwxrMdFn2edOOEooQioF2axppyEeDwtMSP",
     package_name="ploomber-engine",
     version=__version__,
 )
