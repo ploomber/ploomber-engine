@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.9dev
+## 0.0.9 (2022-08-22)
 * Fixes error when notebook called methods in `sys.stdout`
 
 ## 0.0.8 (2022-08-20)
