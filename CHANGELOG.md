@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## 0.0.10dev
+## 0.0.10 (2022-08-23)
+* Changes telemetry key
 
 ## 0.0.9 (2022-08-22)
 * Fixes error when notebook called methods in `sys.stdout`
