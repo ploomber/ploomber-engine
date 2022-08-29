@@ -19,6 +19,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install .
+          # check package is importable
+          python -c "import ploomber_engine"
+          python -c "import ploomber_engine.client"
+          python -c "import ploomber_engine.ipython"
+          python -c "import ploomber_engine.engine"
           pip install ".[dev]"
       - name: Lint with flake8
         run: |
