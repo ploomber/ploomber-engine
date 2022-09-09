@@ -29,7 +29,7 @@ So, for example, if you're running notebooks in production or remote servers, yo
 pip install ploomber-engine
 
 # get sample notebook
-curl -O https://raw.githubusercontent.com/ploomber/ploomber-engine/ipython/tests/assets/debuglater.ipynb
+curl -O https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/debuglater.ipynb
 ```
 
 Run the notebook with `--engine debuglater`

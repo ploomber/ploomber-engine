@@ -3,6 +3,7 @@
 *.dat
 *.dump
 tmp*.ipynb
+doc/_build
 
 
 # Byte-compiled / optimized / DLL files
