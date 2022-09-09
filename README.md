@@ -9,6 +9,7 @@ Add debugging and profiling capabilities to [papermill](https://github.com/ntera
 - [debuglater](#debug-later)
 - [debug](#debug-now)
 - [profiling](#notebook-profiling-cpu-gpu-ram)
+
 ## Installation
 
 ```sh
@@ -51,6 +52,7 @@ dltr jupyter.dump
 This engine will automatically start a debugging session upon notebook crash.
 
 ![debug](https://ploomber.io/images/doc/ploomber-engine-demo/debug.gif)
+
 ### Debug now example
 
 ```sh
@@ -99,6 +101,7 @@ Papermill executes the notebook in an independent process. We built an engine th
 
 
 If you give it a try, please share your feedback: [join our community](https://ploomber.io/community) and send us a message.
+
 ## Support
 
 For support, feature requests, and product updates: [join our community](https://ploomber.io/community) or follow us on [Twitter](https://twitter.com/ploomber)/[LinkedIn](https://www.linkedin.com/company/ploomber/).
