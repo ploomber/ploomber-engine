@@ -1,0 +1,23 @@
+name: ploomber-engine-doc
+
+channels:
+  - conda-forge
+
+
+dependencies:
+  - python=3.10
+  - matplotlib
+  - pandas
+  - pip
+  - pip:
+    - jupyter-book
+    - papermill
+    - ploomber-engine
+    - ipykernel
+    - debuglater
+    - nbclient
+    - ipython
+    - parso
+    - nbformat
+    - pytest
+    - ..
