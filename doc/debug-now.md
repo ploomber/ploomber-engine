@@ -19,7 +19,7 @@ This engine will automatically start a debugging session upon notebook crash.
 
 ![debug](https://ploomber.io/images/doc/ploomber-engine-demo/debug.gif)
 
-### Debug now example
+## Debug now example
 
 The following section includes instruuctions to run an example.
 

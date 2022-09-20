@@ -24,7 +24,7 @@ latex:
 repository:
   url: https://github.com/ploomber/ploomber-engine  # Online location of your book
   path_to_book: doc  # Optional path to your book, relative to the repository root
-  branch: main  # Which branch of the repository should be used when creating links (optional)
+  branch: dev-rodo  # Which branch of the repository should be used when creating links (optional)
 
 # Add GitHub buttons to your book
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository

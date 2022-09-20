@@ -22,7 +22,7 @@ So, for example, if you're running notebooks in production or remote servers, yo
 ![debuglater gif](https://camo.githubusercontent.com/3463b13da6c719e35b986288c5bb7dcbc6fe26cc4172d66f7a2cc2d47970bc01/68747470733a2f2f706c6f6f6d6265722e696f2f696d616765732f646f632f706c6f6f6d6265722d656e67696e652d64656d6f2f64656275676c617465722e676966)
 
 
-### Debug later example
+## Debug later example
 
 The following section includes instruuctions to run an example.
 
