@@ -132,9 +132,10 @@ class PloomberClient:
     to execute cells.
     """
 
-    def __init__(self, nb):
+    def __init__(self, nb, display_stdout=False):
         self._nb = nb
         self._shell = None
+        self._display_stdout = display_stdout
 
     @classmethod
     def from_path(cls, path):
@@ -155,6 +156,10 @@ class PloomberClient:
         output = []
 
         if stdout:
+
+            if self._display_stdout:
+                print(''.join([line.strip() for line in stdout]))
+
             output.extend(_process_stdout(stdout, result=result))
 
         if stderr:

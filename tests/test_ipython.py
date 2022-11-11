@@ -566,3 +566,16 @@ def test_io():
 
     assert io.get_separated_values() == ['a', 'b', 'c']
     assert io.getvalue() == 'abc'
+
+
+def test_log_print_statements(capsys):
+    nb = nbformat.v4.new_notebook()
+    nb.cells = [
+        nbformat.v4.new_code_cell(source='print("a")'),
+        nbformat.v4.new_code_cell(source='print("b")')
+    ]
+
+    PloomberClient(nb, display_stdout=True).execute()
+
+    captured = capsys.readouterr()
+    assert captured.out == "a\nb\n"

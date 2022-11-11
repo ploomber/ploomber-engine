@@ -22,6 +22,7 @@ REQUIRES = [
     'ipython',
     'parso',
     'nbformat',
+    'click',
 ]
 
 DEV = [
@@ -32,6 +33,9 @@ DEV = [
     # for testing PloomberShell
     'matplotlib',
     'pandas',
+    # for testing the track module
+    'sklearn-evaluation',
+    'jupytext',
 ]
 
 setup(
