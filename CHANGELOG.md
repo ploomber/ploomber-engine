@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.11dev
+## 0.0.11 (2022-11-15)
 * Adds `ploomber_engine.tracking` module for experiment tracking
 
 ## 0.0.10 (2022-08-23)
