@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 0.0.11dev
+* Adds `ploomber_engine.tracking` module for experiment tracking
 
 ## 0.0.10 (2022-08-23)
 * Changes telemetry key
