@@ -6,6 +6,11 @@ from pathlib import Path
 import shutil
 
 import pytest
+from unittest.mock import Mock
+
+from ploomber_core.telemetry import telemetry
+
+MOCK_API_KEY = 'phc_P1dsjk20bijsabdaib2eu'
 
 
 def _path_to_tests():
@@ -75,3 +80,18 @@ def tmp_empty(tmp_path):
     os.chdir(str(tmp_path))
     yield str(Path(tmp_path).resolve())
     os.chdir(old)
+
+
+@pytest.fixture
+def mock_telemetry(monkeypatch):
+    telemetry.Telemetry('ploomber', '0.14.0', MOCK_API_KEY)
+
+    mock = Mock()
+    mock_dt = Mock()
+    mock_dt.now.side_effect = [1, 2]
+
+    monkeypatch.setattr(telemetry.Telemetry, 'log_api', mock)
+    monkeypatch.setattr(telemetry.datetime, 'datetime', mock_dt)
+    monkeypatch.setattr(telemetry.sys, 'argv', ['/path/to/bin', 'arg'])
+
+    yield mock

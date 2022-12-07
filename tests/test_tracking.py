@@ -1,5 +1,5 @@
 from pathlib import Path
-from unittest.mock import ANY
+from unittest.mock import ANY, Mock
 
 import pytest
 
@@ -7,7 +7,7 @@ from ploomber_engine.tracking.tracking import (_parse_cli_parameters,
                                                extract_name)
 from ploomber_engine.tracking import track_execution
 from sklearn_evaluation import SQLiteTracker
-
+import ploomber_core
 
 @pytest.mark.parametrize('params, expected', [
     ['a=1,b=2', dict(a=1, b=2)],
@@ -194,3 +194,25 @@ something.mapping['another']['x']
                          ])
 def test_extract_name(source, expected):
     assert extract_name(source) == expected
+
+
+def test_tracking_telemetry(mock_telemetry, tmp_empty, monkeypatch):
+    Path('functions.py').write_text("""
+x = 1
+x
+
+y = 2
+y
+
+sum_ = x + y + a + b
+sum_
+""")
+
+    # mock = Mock()
+    # monkeypatch.setattr(ploomber_core.telemetry.telemetry, "Telemetry", mock)
+    # mock.log_api = Mock()
+    track_execution(filename='functions.py',
+                    parameters=dict(a=1, b=2),
+                    database='exps.db',
+                    quiet=True)
+
