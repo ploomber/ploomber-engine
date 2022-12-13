@@ -6,11 +6,9 @@ from pathlib import Path
 import shutil
 
 import pytest
-from unittest.mock import Mock
-
-from ploomber_core.telemetry import telemetry
-
-MOCK_API_KEY = 'phc_P1dsjk20bijsabdaib2eu'
+# from unittest.mock import Mock
+# from ploomber_core.telemetry import telemetry
+# MOCK_API_KEY = 'phc_P1dsjk20bijsabdaib2eu'
 
 
 def _path_to_tests():
