@@ -9,6 +9,7 @@ from ploomber_engine.tracking import track_execution
 from sklearn_evaluation import SQLiteTracker
 import ploomber_core
 
+
 @pytest.mark.parametrize('params, expected', [
     ['a=1,b=2', dict(a=1, b=2)],
     ['  a=1,  b=2  ', dict(a=1, b=2)],
@@ -196,7 +197,7 @@ def test_extract_name(source, expected):
     assert extract_name(source) == expected
 
 
-def test_tracking_telemetry(mock_telemetry, tmp_empty, monkeypatch):
+def test_tracking_telemetry(tmp_empty, monkeypatch):
     Path('functions.py').write_text("""
 x = 1
 x
@@ -207,12 +208,34 @@ y
 sum_ = x + y + a + b
 sum_
 """)
-
-    # mock = Mock()
-    # monkeypatch.setattr(ploomber_core.telemetry.telemetry, "Telemetry", mock)
-    # mock.log_api = Mock()
+    # mock_telemetry input
+    mock = Mock()
+    monkeypatch.setattr(ploomber_core.telemetry.telemetry, "Telemetry", mock)
+    mock.log_api = Mock()
     track_execution(filename='functions.py',
                     parameters=dict(a=1, b=2),
                     database='exps.db',
                     quiet=True)
+    assert mock.log_api.assert_called_once()
 
+
+def test_tracking_import_telemetry(tmp_empty, monkeypatch):
+    Path('functions.py').write_text("""
+x = 1
+x
+
+y = 2
+y
+
+sum_ = x + y + a + b
+sum_
+""")
+    # mock_telemetry input
+    mock = Mock()
+    monkeypatch.setattr(ploomber_core.telemetry.telemetry, "Telemetry", mock)
+    mock.log_api = Mock()
+    track_execution(filename='functions.py',
+                    parameters=dict(a=1, b=2),
+                    database='exps.db',
+                    quiet=True)
+    assert mock.log_api.assert_called_once()

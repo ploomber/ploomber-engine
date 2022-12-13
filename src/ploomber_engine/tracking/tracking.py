@@ -16,14 +16,8 @@ from papermill.translators import translate_parameters
 from IPython.core.interactiveshell import InteractiveShell
 from ploomber_engine.ipython import PloomberClient, add_to_sys_path
 from ploomber_engine.tracking.io import _process_content_data
-from ploomber_core.telemetry.telemetry import Telemetry
-from ploomber_engine import __version__
+from .telemetry import telemetry
 
-telemetry = Telemetry(
-    api_key="phc_P9SpSeypyPwxrMdFn2edOOEooQioF2axppyEeDwtMSP",
-    package_name="ploomber-engine",
-    version=__version__,
-)
 
 try:
     import jupytext
