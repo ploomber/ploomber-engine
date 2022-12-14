@@ -16,6 +16,8 @@ from papermill.translators import translate_parameters
 from IPython.core.interactiveshell import InteractiveShell
 from ploomber_engine.ipython import PloomberClient, add_to_sys_path
 from ploomber_engine.tracking.io import _process_content_data
+from .telemetry import telemetry
+
 
 try:
     import jupytext
@@ -166,6 +168,7 @@ def _find_cell_with_comment(nb):
     return None, None
 
 
+@telemetry.log_call('track-execution')
 def track_execution(filename,
                     parameters,
                     database='experiments.db',
