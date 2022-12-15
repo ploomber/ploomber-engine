@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## 0.0.13dev
+## 0.0.13 (2022-12-15)
+* Clean release after CI broke
 
 ## 0.0.12 (2022-12-15)
 * Releasing telemetry on top of tracking and import of `ploomber_engine.tracking`
