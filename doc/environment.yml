@@ -12,6 +12,7 @@ dependencies:
   - pip
   - pip:
     - jupyter-book
+    - jupytext
     - sklearn-evaluation
     - memory-profiler
     - pytest
