@@ -37,11 +37,10 @@ pip install ploomber-engine sklearn-evaluation jupytext --upgrade
 
 Now, let's download the [sample script](https://github.com/ploomber/posts/blob/master/experiment-tracking/fit.py) we’ll use:
 
-```bash
+```{code-cell} ipython3
+%%sh
 curl -O https://raw.githubusercontent.com/ploomber/posts/master/experiment-tracking/fit.py
 ```
-
-+++
 
 **We are ready, so let's get started!**
 
