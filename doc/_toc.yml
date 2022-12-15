@@ -8,3 +8,4 @@ chapters:
 - file: debug-now
 - file: notebook-profiling
 - file: profiling
+- file: tracker
