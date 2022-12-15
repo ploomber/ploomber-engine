@@ -8,9 +8,11 @@ dependencies:
   - python=3.10
   - matplotlib
   - pandas
+  - scikit-learn
   - pip
   - pip:
     - jupyter-book
+    - sklearn-evaluation
     - memory-profiler
     - pytest
     - ..
