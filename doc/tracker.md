@@ -95,7 +95,7 @@ The tracker runs the code, and it logs everything that meets any of the followin
 
 +++
 
-#### 1. A line that contains a variable name by itself
+### 1. A line that contains a variable name by itself
 
 +++
 
@@ -106,7 +106,7 @@ accuracy
 
 +++
 
-#### 2. A line that calls a function with no variable assignment
+### 2. A line that calls a function with no variable assignment
 
 +++
 
