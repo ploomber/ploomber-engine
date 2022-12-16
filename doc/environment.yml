@@ -13,8 +13,8 @@ dependencies:
   - pip
   - pip:
     - jupyter-book
-    - jupytext
-    - sklearn-evaluation
+    - jupytext           # required for experiment tracker feature
+    - sklearn-evaluation # required for experiment tracker feature
     - memory-profiler
     - pytest
     - ..
