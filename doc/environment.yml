@@ -8,9 +8,13 @@ dependencies:
   - python=3.10
   - matplotlib
   - pandas
+  - ipython      # required for experiment tracker feature
+  - scikit-learn # required for experiment tracker feature
   - pip
   - pip:
     - jupyter-book
+    - jupytext           # required for experiment tracker feature
+    - sklearn-evaluation # required for experiment tracker feature
     - memory-profiler
     - pytest
     - ..
