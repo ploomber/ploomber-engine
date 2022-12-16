@@ -6,10 +6,10 @@ channels:
 
 dependencies:
   - python=3.10
-  - ipython
   - matplotlib
   - pandas
-  - scikit-learn
+  - ipython      # required for experiment tracker feature
+  - scikit-learn # required for experiment tracker feature
   - pip
   - pip:
     - jupyter-book
