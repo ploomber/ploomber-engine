@@ -29,9 +29,13 @@ jobs:
       - name: Lint with flake8
         run: |
           flake8
-      - name: Test with pytest
+      - name: Doc tests
+        run: |
+          pytest src/ --doctest-modules
+      - name: Unit tests
         run: |
           pytest
+
 
   readme-test:
 
