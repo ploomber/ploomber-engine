@@ -25,7 +25,7 @@ def setup(c, version=None, doc=False):
         c.run(
             'eval "$(conda shell.bash hook)" '
             f"&& conda activate {env_name} "
-            "&& pip install -r doc/requirements.txt"
+            f"&& conda env update --file doc/environment.yml --name {env_name}"
         )
 
     print(f"Done! Activate your environment with:\nconda activate {env_name}")

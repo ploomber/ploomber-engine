@@ -17,4 +17,5 @@ dependencies:
     - sklearn-evaluation # required for experiment tracker feature
     - memory-profiler
     - pytest
+    - memory-profiler # required for profiling demo
     - ..

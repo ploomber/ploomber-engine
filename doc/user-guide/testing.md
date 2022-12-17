@@ -47,10 +47,6 @@ assert namespace['a'] == 42
 assert namespace['b'] == 200
 ```
 
-```{code-cell} ipython3
-namespace['df']
-```
-
 ## Testing functions/classes
 
 ploomber-engine allows you to extract function or class definitions to write unit tests.
