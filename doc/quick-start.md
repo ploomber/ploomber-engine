@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -32,15 +32,39 @@ conda install ploomber-engine -c conda-forge
 ```
 ## Example
 
-Execute a crashing notebook and start a debugging session:
+Here's a quick example showing how to run a notebook.
 
-```bash
-# get sample notebook
-curl -O https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/debuglater.ipynb
+First, let's create notebook object (Note: you can also load them from .ipynb files):
 
-# run notebook
-papermill debuglater.ipynb tmp.ipynb --engine debuglater
+```{code-cell} python
+from ploomber_engine.ipython import PloomberClient
+import nbformat
 
-# start debugging session
-dltr jupyter.dump
+nb = nbformat.v4.new_notebook()
+cell = nbformat.v4.new_code_cell("1+1")
+nb.cells = [cell]
+nb
+```
+
+Start client and execute the notebook:
+
+```{code-cell} python
+client = PloomberClient(nb)
+out = client.execute()
+```
+
+```{code-cell} python
+out
+```
+
+Inspect outputs:
+
+```{code-cell} python
+out.cells[0]['outputs'][0]['data']
+```
+
+Store the notebook:
+
+```python
+nbformat.write(out, "output.ipynb")
 ```

@@ -51,7 +51,7 @@ assert namespace['b'] == 200
 namespace['df']
 ```
 
-## Testing output variables
+## Testing functions/classes
 
 ploomber-engine allows you to extract function or class definitions to write unit tests.
 
