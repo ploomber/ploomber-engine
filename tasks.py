@@ -2,12 +2,16 @@ from invoke import task
 
 
 @task(aliases=["s"])
-def setup(c, version=None):
+def setup(c, version=None, doc=False):
     """
     Setup dev environment, requires conda
     """
-    version = version or "3.9"
-    suffix = "" if version == "3.9" else version.replace(".", "")
+    version = version or "3.10"
+    suffix = "" if version == "3.10" else version.replace(".", "")
+
+    if doc:
+        suffix += "-doc"
+
     env_name = f"ploomber-engine{suffix}"
 
     c.run(f"conda create --name {env_name} python={version} --yes")
@@ -16,6 +20,13 @@ def setup(c, version=None):
         f"&& conda activate {env_name} "
         "&& pip install --editable .[dev]"
     )
+
+    if doc:
+        c.run(
+            'eval "$(conda shell.bash hook)" '
+            f"&& conda activate {env_name} "
+            "&& pip install -r doc/requirements.txt"
+        )
 
     print(f"Done! Activate your environment with:\nconda activate {env_name}")
 

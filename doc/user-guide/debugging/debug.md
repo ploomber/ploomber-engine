@@ -6,39 +6,41 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-# Debug now
+# Debug
 
-This engine will automatically start a debugging session upon notebook crash.
+ploomber-engine allows you to start a debugging session right after your notebook crashes.
 
 ![debug](https://ploomber.io/images/doc/ploomber-engine-demo/debug.gif)
 
-## Debug now example
+## Example
 
-The following section includes instruuctions to run an example.
+Install requirements:
 
-```sh
-# install package (this installs papermill as well)
-pip install ploomber-engine
-
-# get the example notebook
-curl -O https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/crash.ipynb
+```{code-cell} ipython3
+%pip install ploomber-engine --quiet
 ```
 
-Run the notebook with the custom engine:
+Download [sample notebook](https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/crash.ipynb):
 
-```sh tags=['raises-exception']
+```{code-cell} ipython3
+%%sh
+curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/crash.ipynb --output debug-demo.ipynb
+```
+
+Run the notebook with the `--engine debug` option to enable debugging. Upon crashing, a debugging session will start:
+
+```sh
 papermill crash.ipynb tmp.ipynb --engine debug
 ```
 
-
-Once the notebook crashes, it'll start the debugging session:
+Sample debugging session:
 
 ```
 Input Notebook:  crash.ipynb

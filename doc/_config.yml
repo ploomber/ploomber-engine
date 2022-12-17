@@ -5,11 +5,13 @@ title: ploomber-engine
 author: Ploomber
 # logo: logo.png
 
-# Force re-execution of notebooks on each build.
-# See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: force
+  # https://jupyterbook.org/content/execute.html
+  execute_notebooks: cache
   timeout: 180
+  # some notebooks download files, so we run them in a tmp
+  # directory to clean everything up
+  run_in_temp: true
 
 # Define the name of the latex output file for PDF builds
 latex:

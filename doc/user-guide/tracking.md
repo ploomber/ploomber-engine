@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-# Experiment Tracker demo
+# Experiment Tracking
 
 +++
 
@@ -52,10 +52,10 @@ from sklearn.model_selection import ParameterGrid
 
 grid = ParameterGrid(
     dict(
-        n_estimators=[5, 10, 15, 25, 50, 100],
+        n_estimators=[10, 15, 25, 50],
         model_type=["sklearn.ensemble.RandomForestClassifier"],
         max_depth=[5, 10, None],
-        criterion=["gini", "entropy", "log_loss"],
+        criterion=["gini", "entropy"],
     )
 )
 ```
