@@ -14,6 +14,9 @@ parts:
       - file: user-guide/debugging/debuglater
       - file: user-guide/debugging/debug
     - file: user-guide/profiling
+  - caption: API Reference
+    chapters:
+      - file: api/api
   - caption: Community
     chapters:
     - file: community/support
