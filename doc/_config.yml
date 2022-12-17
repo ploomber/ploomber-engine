@@ -39,6 +39,9 @@ sphinx:
   config:
     execution_show_tb: true
 
+  extra_extensions:
+  - 'sphinx.ext.autodoc'
+  - 'sphinx.ext.napoleon'
 
 launch_buttons:
   binderhub_url: "https://binder.ploomber.io"
