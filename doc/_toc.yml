@@ -20,4 +20,3 @@ parts:
   - caption: Community
     chapters:
     - file: community/support
-    - file: community/telemetry
