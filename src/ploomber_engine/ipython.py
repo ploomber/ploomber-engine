@@ -12,6 +12,9 @@ from IPython.core.displaypub import DisplayPublisher
 from IPython.core.displayhook import DisplayHook
 
 
+from ploomber_engine._util import recursive_update
+
+
 def _make_stream_output(out, name):
     return nbformat.v4.new_output(output_type="stream", text=str(out), name=name)
 
@@ -188,9 +191,9 @@ class PloomberClient:
         # results are published in different places. Here we grab all of them
         # and return them
         with patch_sys_std_out_err() as (stdout_stream, stderr_stream):
-            ts_begin = datetime.now().timestamp()
+            self.hook_cell_pre(cell)
             result = self._shell.run_cell(cell["source"])
-            ts_end = datetime.now().timestamp()
+            self.hook_cell_post(cell)
             stdout = stdout_stream.get_separated_values()
             stderr = stderr_stream.getvalue()
 
@@ -220,7 +223,6 @@ class PloomberClient:
         # add outputs to the cell object
         cell.outputs = output
         cell.execution_count = execution_count
-        cell.metadata = {"timestamp_begin": ts_begin, "timestamp_end": ts_end}
 
         if not result.success:
             result.raise_error()
@@ -342,6 +344,14 @@ class PloomberClient:
         """Clear shell"""
         self._shell.clear_instance()
         self._shell = None
+
+    def hook_cell_pre(self, cell):
+        metadata = {"ploomber": {"timestamp_begin": datetime.now().timestamp()}}
+        recursive_update(cell.metadata, metadata)
+
+    def hook_cell_post(self, cell):
+        metadata = {"ploomber": {"timestamp_end": datetime.now().timestamp()}}
+        recursive_update(cell.metadata, metadata)
 
 
 class PloomberManagedClient(PloomberClient):

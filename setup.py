@@ -33,6 +33,8 @@ DEV = [
     # for testing PloomberShell
     "matplotlib",
     "pandas",
+    # for testing the profiling engine
+    "numpy",
     # for testing the track module
     "sklearn-evaluation",
     "jupytext",
@@ -53,9 +55,7 @@ setup(
     classifiers=[],
     keywords=[],
     install_requires=REQUIRES,
-    extras_require={
-        "dev": DEV,
-    },
+    extras_require={"dev": DEV},
     entry_points={
         "papermill.engine": [
             "debug=ploomber_engine.engine:DebugEngine",

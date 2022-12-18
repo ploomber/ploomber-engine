@@ -13,10 +13,7 @@ kernelspec:
 
 # Profiling
 
-With ploomber-engine and [memory-profiler](https://github.com/pythonprofilers/memory_profiler) you can profile Jupyter notebook's memory usage. Unlike papermill, which isn't capable of doing it.
-
-![profiling](https://ploomber.io/images/doc/ploomber-engine-demo/profiling.gif)
-
+With ploomber-engine you can profile Jupyter notebook's memory usage. Unlike papermill, which isn't capable of doing it.
 
 ```{note}
 You can download this tutorial in Jupyter notebook format by clicking on the icon in the upper right corner.
@@ -26,33 +23,49 @@ You can download this tutorial in Jupyter notebook format by clicking on the ico
 
 ## Profiling memory usage
 
-+++
-
 Install requirements:
 
 ```{code-cell} ipython3
-%pip install ploomber-engine memory-profiler --quiet
+%pip install ploomber-engine psutil matplotlib --quiet
 ```
 
-Download sample notebook:
+Import the `memory_profile` function:
 
 ```{code-cell} ipython3
-%%sh
-curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/profiling.ipynb --output profiling-demo.ipynb
+from ploomber_engine.profiling import memory_profile
 ```
 
-Run the notebook with the `--engine profiling` argument and prepend the command with `mprof run` to monitor memory usage:
+We'll now programmatically create a sample notebook and stored it in `notebook.ipynb`. Note that it creates a 1MB numpy array on cell 3 and one 10MB numpy array on cell 5.
 
 ```{code-cell} ipython3
-%%sh
-mprof run papermill profiling-demo.ipynb tmp.ipynb --engine profiling
+import nbformat
+
+nb = nbformat.v4.new_notebook()
+sleep = "time.sleep(0.5)"
+cells = [
+    # cell 1
+    "import numpy as np; import time",
+    # cell 2
+    sleep,
+    # cell 3
+    "x = np.ones(131072, dtype='float64')",
+    # cell 4
+    sleep,
+    # cell 5
+    "y = np.ones(131072*10, dtype='float64')",
+    # cell 6
+    sleep,
+]
+
+nb.cells = [nbformat.v4.new_code_cell(cell) for cell in cells]
+
+nbformat.write(nb, "notebook.ipynb")
 ```
 
-Use the `mprof` command (part of the `memory-profiler` package) to generate a plot:
+Let's run the profiling function (which also runs the notebook):
 
 ```{code-cell} ipython3
-%%sh
-mprof plot --output profiling.png
+memory_profile("notebook.ipynb", "output.ipynb")
 ```
 
 Display the plot:
@@ -60,40 +73,9 @@ Display the plot:
 ```{code-cell} ipython3
 from IPython.display import Image
 
-Image('profiling.png')
+Image(filename="notebook-memory-usage.png")
 ```
 
-## Using papermill (profiling doesn't work)
+We can see that after running cells 1-2, there isn't any important increment in memory usage. However, when finishing execution of cell 3, we see a bump of 1MB, since we allocated the array there. Cell 4 doesn't increase memory usage, since it only contains a call to `time.sleep`, but cell 5 has a 10MB bump since we allocated the second (larger) array.
 
-As a counter-example, we'll run the same notebook using papermill and show that profiling doesn't work, since papermill spins up a second process to run the notebook.
-
-Download sample notebook:
-
-```{code-cell} ipython3
-%%sh
-curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/profiling.ipynb --output profiling-demo.ipynb
-```
-
-Run the notebook with papermill and prepend the command with `mprof run` to monitor memory usage:
-
-```{code-cell} ipython3
-%%sh
-mprof run papermill profiling-demo.ipynb tmp.ipynb
-```
-
-Use the `mprof` command (part of the `memory-profiler` package) to generate a plot:
-
-```{code-cell} ipython3
-%%sh
-mprof plot --output papermill.png
-```
-
-Display the plot:
-
-```{code-cell} ipython3
-from IPython.display import Image
-
-Image('papermill.png')
-```
-
-We can see that memory usage remains constant, we cannot profile memory with papermill.
+If you want to look at the executed notebook, it's available at `output.ipynb`.
