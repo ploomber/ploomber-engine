@@ -3,6 +3,7 @@ import sys
 import contextlib
 from io import StringIO
 import itertools
+from datetime import datetime
 
 import parso
 import nbformat
@@ -187,7 +188,9 @@ class PloomberClient:
         # results are published in different places. Here we grab all of them
         # and return them
         with patch_sys_std_out_err() as (stdout_stream, stderr_stream):
+            ts_begin = datetime.now().timestamp()
             result = self._shell.run_cell(cell["source"])
+            ts_end = datetime.now().timestamp()
             stdout = stdout_stream.get_separated_values()
             stderr = stderr_stream.getvalue()
 
@@ -217,6 +220,7 @@ class PloomberClient:
         # add outputs to the cell object
         cell.outputs = output
         cell.execution_count = execution_count
+        cell.metadata = {"timestamp_begin": ts_begin, "timestamp_end": ts_end}
 
         if not result.success:
             result.raise_error()
