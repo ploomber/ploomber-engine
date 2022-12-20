@@ -14,9 +14,10 @@ import parso
 import nbformat
 from papermill.translators import translate_parameters
 from IPython.core.interactiveshell import InteractiveShell
+
 from ploomber_engine.ipython import PloomberClient, add_to_sys_path
 from ploomber_engine.tracking.io import _process_content_data
-from .telemetry import telemetry
+from ploomber_engine._telemetry import telemetry
 
 
 try:
@@ -59,7 +60,7 @@ def _get_function_name(mod):
     left = call.children[0].value
     right = call.children[-1].value
 
-    if left == '(' and right == ')':
+    if left == "(" and right == ")":
         return leaf.value
 
 
@@ -71,31 +72,32 @@ def _safe_literal_eval(source):
 
 
 class PloomberLogger(PloomberClient):
-
     def _execute(self, tracker, uuid_, parameters):
         execution_count = 1
 
         # make sure that the current working directory is in the sys.path
         # in case the user has local modules
-        with add_to_sys_path('.'):
+        with add_to_sys_path("."):
             for index, cell in enumerate(self._nb.cells):
-                if cell.cell_type == 'code':
-                    self.execute_cell(cell,
-                                      cell_index=index,
-                                      execution_count=execution_count,
-                                      store_history=False)
+                if cell.cell_type == "code":
+                    self.execute_cell(
+                        cell,
+                        cell_index=index,
+                        execution_count=execution_count,
+                        store_history=False,
+                    )
                     execution_count += 1
 
-                    if cell['outputs']:
-                        out = _process_content_data(cell['outputs'][-1],
-                                                    counter=None,
-                                                    idx=None)
+                    if cell["outputs"]:
+                        out = _process_content_data(
+                            cell["outputs"][-1], counter=None, idx=None
+                        )
 
                         if out:
                             name = extract_name(cell.source)
 
                             if name:
-                                if out[0] == 'text/plain':
+                                if out[0] == "text/plain":
                                     val = _safe_literal_eval(out[1])
                                 else:
                                     val = out[1]
@@ -105,8 +107,7 @@ class PloomberLogger(PloomberClient):
         tracker.upsert(uuid_, parameters)
 
     def execute(self, tracker, uuid_, parameters):
-        """Execute the notebook
-        """
+        """Execute the notebook"""
         # TODO: we should move this logic to the ploomber client
         original = InteractiveShell._instance
 
@@ -119,33 +120,34 @@ class PloomberLogger(PloomberClient):
 
             # restore inline matplotlib
             try:
-                from matplotlib_inline.backend_inline import \
-                    configure_inline_support
+                from matplotlib_inline.backend_inline import configure_inline_support
             except ModuleNotFoundError:
                 pass
             else:
-                configure_inline_support(original, 'inline')
-                original.run_line_magic('matplotlib', 'inline')
+                configure_inline_support(original, "inline")
+                original.run_line_magic("matplotlib", "inline")
 
 
 @click.command()
-@click.argument('filename', type=click.Path(exists=True))
-@click.option('-d', '--database', default='experiments.db')
-@click.option('-p', '--parameters')
-@click.option('-q', '--quiet', is_flag=True)
+@click.argument("filename", type=click.Path(exists=True))
+@click.option("-d", "--database", default="experiments.db")
+@click.option("-p", "--parameters")
+@click.option("-q", "--quiet", is_flag=True)
 def _cli(filename, database, parameters, quiet):
-    return track_execution(filename,
-                           parameters=_parse_cli_parameters(parameters),
-                           database=database,
-                           quiet=quiet)
+    return track_execution(
+        filename,
+        parameters=_parse_cli_parameters(parameters),
+        database=database,
+        quiet=quiet,
+    )
 
 
 def _parse_param(value):
     exp = parso.parse(value).children[0]
 
-    if exp.type == 'name':
+    if exp.type == "name":
         return exp.value
-    elif hasattr(exp, 'value'):
+    elif hasattr(exp, "value"):
         return ast.literal_eval(exp.value)
     else:
         return exp.get_code()
@@ -155,24 +157,22 @@ def _parse_cli_parameters(parameters):
     if parameters is None:
         return {}
 
-    pairs = [pair.strip().split('=') for pair in parameters.split(',')]
+    pairs = [pair.strip().split("=") for pair in parameters.split(",")]
     return {k: _parse_param(v) for k, v in pairs}
 
 
 def _find_cell_with_comment(nb):
-    for idx, cell in enumerate(nb['cells']):
-        if (re.match(r'\s*#\s*PARAMETERS?\s*', cell['source'])
-                or re.match(r'\s*#\s*parameters?\s*', cell['source'])):
+    for idx, cell in enumerate(nb["cells"]):
+        if re.match(r"\s*#\s*PARAMETERS?\s*", cell["source"]) or re.match(
+            r"\s*#\s*parameters?\s*", cell["source"]
+        ):
             return idx, cell
 
     return None, None
 
 
-@telemetry.log_call('track-execution')
-def track_execution(filename,
-                    parameters,
-                    database='experiments.db',
-                    quiet=False):
+@telemetry.log_call("track-execution")
+def track_execution(filename, parameters, database="experiments.db", quiet=False):
     """
     Execute a script or notebook and write outputs to a SQLite database
     """
@@ -181,7 +181,8 @@ def track_execution(filename,
 
     if sklearn_evaluation is None:
         raise click.ClickException(
-            "Missing sklearn-evaluation: pip install sklearn-evaluation")
+            "Missing sklearn-evaluation: pip install sklearn-evaluation"
+        )
 
     nb = jupytext.read(filename)
     idx, _ = _find_cell_with_comment(nb)
@@ -193,12 +194,11 @@ def track_execution(filename,
         idx_injected_params = idx + 1
 
     if not quiet:
-        click.echo(f'Parameters: {parameters}')
+        click.echo(f"Parameters: {parameters}")
 
-    params = translate_parameters('python',
-                                  'python',
-                                  parameters,
-                                  comment='User parameters')
+    params = translate_parameters(
+        "python", "python", parameters, comment="User parameters"
+    )
 
     params_cell = nbformat.v4.new_code_cell(source=params)
     nb.cells.insert(idx_injected_params, params_cell)
@@ -206,7 +206,7 @@ def track_execution(filename,
     logger = PloomberLogger(nb, display_stdout=not quiet)
 
     if not quiet:
-        click.echo('Running...')
+        click.echo("Running...")
 
     tracker = sklearn_evaluation.SQLiteTracker(database)
     uuid_ = str(uuid.uuid4())[:8]

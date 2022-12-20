@@ -6,7 +6,7 @@ import click
 
 from ploomber_engine.ipython import PloomberClient
 from ploomber_engine._util import recursive_update
-
+from ploomber_engine._telemetry import telemetry
 
 try:
     import psutil
@@ -32,6 +32,7 @@ class PloomberProfilingClient(PloomberClient):
         recursive_update(cell.metadata, metadata)
 
 
+@telemetry.log_call("ploomber-engine-memory-profile")
 def memory_profile(path, output):
     import matplotlib.pyplot as plt
 

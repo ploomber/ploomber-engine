@@ -2,7 +2,6 @@ from unittest.mock import Mock
 from pathlib import Path
 
 import nbformat
-import numpy as np
 import pytest
 
 from ploomber_engine.profiling import PloomberProfilingClient, memory_profile
