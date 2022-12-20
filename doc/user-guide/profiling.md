@@ -23,6 +23,10 @@ You can download this tutorial in Jupyter notebook format by clicking on the ico
 
 ## Profiling memory usage
 
+```{important}
+Memory profiling requires ploomber-engine `0.0.14` or higher
+```
+
 Install requirements:
 
 ```{code-cell} ipython3
