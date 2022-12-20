@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 0.0.14dev
+* Adds `memory_profiler`
+* `PloomberClient` records cell timestamps
+* Docs refactoring
+* Adds notebook running and notebook testing sections to docs
 
 ## 0.0.13 (2022-12-15)
 * Clean release after CI broke
