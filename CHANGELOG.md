@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.14dev
+## 0.0.14 (2022-12-20)
 * Adds `memory_profiler`
 * `PloomberClient` records cell timestamps
 * Docs refactoring
