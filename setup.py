@@ -26,6 +26,7 @@ REQUIRES = [
 ]
 
 DEV = [
+    "pkgmt",
     "pytest",
     "flake8",
     "invoke",
