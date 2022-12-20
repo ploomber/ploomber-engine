@@ -16,7 +16,7 @@ except ModuleNotFoundError:
 
 class PloomberProfilingClient(PloomberClient):
     def hook_cell_pre(self, cell):
-        metadata = {"ploomber": {"timestamp_begin": datetime.now().timestamp()}}
+        metadata = {"ploomber": {"timestamp_start": datetime.now().timestamp()}}
         recursive_update(cell.metadata, metadata)
 
     def hook_cell_post(self, cell):

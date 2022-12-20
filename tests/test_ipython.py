@@ -292,7 +292,7 @@ def test_ignores_non_code_cells():
     assert out.cells[1] == {
         "id": ANY,
         "cell_type": "code",
-        "metadata": {"ploomber": {"timestamp_begin": ANY, "timestamp_end": ANY}},
+        "metadata": {"ploomber": {"timestamp_start": ANY, "timestamp_end": ANY}},
         "execution_count": 1,
         "source": "1 + 1",
         "outputs": [
