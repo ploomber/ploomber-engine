@@ -3,7 +3,7 @@
 
 title: ploomber-engine
 author: Ploomber
-# logo: logo.png
+logo: square-no-bg-small.png
 
 execute:
   # https://jupyterbook.org/content/execute.html
