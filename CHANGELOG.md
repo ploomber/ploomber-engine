@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## 0.0.17dev
+## 0.0.17 (2022-12-22)
+* Makes papermill an optional dependency
 
 ## 0.0.16 (2022-12-21)
 * Adds `ploomber_engine.testing.test_notebook` to test notebooks against existing outputs
