@@ -18,6 +18,7 @@ parts:
       - file: user-guide/profiling/memory
       - file: user-guide/profiling/runtime
       - file: user-guide/profiling/cpu
+    - file: user-guide/papermill
   - caption: API Reference
     chapters:
       - file: api/api
