@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 0.0.16dev
+* Adds `ploomber_engine.testing.test_notebook` to test notebooks against existing outputs
 
 ## 0.0.15 (2022-12-21)
 * Fixes inline matplotlib after using PloomberClient
