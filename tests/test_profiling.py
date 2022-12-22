@@ -4,7 +4,7 @@ from pathlib import Path
 import nbformat
 import pytest
 
-from ploomber_engine.profiling import PloomberProfilingClient, memory_profile
+from ploomber_engine.profiling import PloomberMemoryProfilerClient, memory_profile
 from ploomber_engine import profiling
 
 
@@ -42,7 +42,7 @@ def test_profiling(nb, monkeypatch):
 
     monkeypatch.setattr(profiling, "psutil", mock_psutil)
 
-    client = PloomberProfilingClient(nb)
+    client = PloomberMemoryProfilerClient(nb)
 
     nb = client.execute()
     mem = [cell.metadata["ploomber"]["memory_usage"] for cell in nb.cells]
