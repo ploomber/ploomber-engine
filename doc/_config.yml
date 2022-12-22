@@ -45,4 +45,5 @@ sphinx:
   - 'sphinx.ext.napoleon'
 
 launch_buttons:
+  notebook_interface: "jupyterlab"
   binderhub_url: "https://binder.ploomber.io"
