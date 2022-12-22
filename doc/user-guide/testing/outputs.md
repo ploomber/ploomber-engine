@@ -14,8 +14,9 @@ kernelspec:
 # Testing existing outputs
 
 ```{note}
-This is an experimental feature, please share your feedback on [Slack!](https://ploomber.io/community/)
+This is an experimental feature, please share your feedback on [Slack!](https://ploomber.io/community/). This feature requires ploomber-engine `0.0.16` or higher
 ```
+
 
 With `ploomber-engine` , you can re-run your notebooks and ensure that their outputs still match.
 
