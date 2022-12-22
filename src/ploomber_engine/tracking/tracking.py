@@ -108,7 +108,8 @@ class PloomberLogger(PloomberClient):
 
     def execute(self, tracker, uuid_, parameters):
         """Execute the notebook"""
-        # TODO: we should move this logic to the ploomber client
+        # FIXME: this logic is duplicated.
+        # it's also on PloomberClient.execute
         original = InteractiveShell._instance
 
         with self:

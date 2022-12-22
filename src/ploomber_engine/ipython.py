@@ -237,8 +237,23 @@ class PloomberClient:
         nb
             Notebook object
         """
+        original = InteractiveShell._instance
+
         with self:
             self._execute()
+
+        if original is not None:
+            # restore original instance
+            InteractiveShell._instance = original
+
+            # restore inline matplotlib
+            try:
+                from matplotlib_inline.backend_inline import configure_inline_support
+            except ModuleNotFoundError:
+                pass
+            else:
+                configure_inline_support(original, "inline")
+                original.run_line_magic("matplotlib", "inline")
 
         return self._nb
 

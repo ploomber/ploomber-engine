@@ -14,7 +14,7 @@ except ModuleNotFoundError:
     psutil = None
 
 
-class PloomberProfilingClient(PloomberClient):
+class PloomberMemoryProfilerClient(PloomberClient):
     def hook_cell_pre(self, cell):
         metadata = {"ploomber": {"timestamp_start": datetime.now().timestamp()}}
         recursive_update(cell.metadata, metadata)
@@ -39,7 +39,7 @@ def memory_profile(path, output):
     path = Path(path)
     target = path.with_name(path.stem + "-memory-usage.png")
 
-    client = PloomberProfilingClient.from_path(path)
+    client = PloomberMemoryProfilerClient.from_path(path)
 
     click.echo("Running notebook...")
     nb = client.execute()
