@@ -93,6 +93,10 @@ assert multiply(2, 21) == 42
 assert multiply(0, 10) == 0
 ```
 
+```{note}
+[testbook](https://github.com/nteract/testbook) is another library that helps writing unit tests for Jupyter notebooks. However, testbook has a big limitation since it needs to serialize objects defined in a notebook, which makes debugging tests a lot more difficult. With `ploomber-engine` this isn't the case.
+```
+
 ## `pytest` integration
 
 You can use ploomber-engine to test your notebooks with [pytest](https://docs.pytest.org/en/7.2.x/), here's a full example:
