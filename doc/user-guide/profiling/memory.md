@@ -11,17 +11,13 @@ kernelspec:
   name: python3
 ---
 
-# Profiling
+# Memory usage
 
 With ploomber-engine you can profile Jupyter notebook's memory usage. Unlike papermill, which isn't capable of doing it.
 
 ```{note}
 You can download this tutorial in Jupyter notebook format by clicking on the icon in the upper right corner.
 ```
-
-+++
-
-## Profiling memory usage
 
 ```{important}
 Memory profiling requires ploomber-engine `0.0.14` or higher
