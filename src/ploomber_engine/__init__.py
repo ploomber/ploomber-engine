@@ -1,7 +1,7 @@
 """
 This module contains our customizatiosn to nbclient and papermill.
 """
-__version__ = '0.0.16'
+__version__ = '0.0.17dev'
 
 import typing as t
 
