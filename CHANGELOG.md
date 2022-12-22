@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## 0.0.15dev
+## 0.0.15 (2022-12-21)
+* Fixes inline matplotlib after using PloomberClient
 
 ## 0.0.14 (2022-12-20)
 * Adds `memory_profiler`
