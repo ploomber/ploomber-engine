@@ -13,11 +13,11 @@ kernelspec:
 
 # Cell runtime
 
+Install requirements:
+
 ```{important}
 Cell runtime profiling requires ploomber-engine `0.0.14` or higher
 ```
-
-Install requirements:
 
 ```{code-cell} ipython3
 %pip install ploomber-engine matplotlib --quiet

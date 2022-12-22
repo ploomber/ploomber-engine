@@ -15,10 +15,8 @@ kernelspec:
 
 # Experiment Tracking
 
-+++
-
 ```{important}
-This tutorial requires ploomber-engine `0.0.11` or higher
+Cell runtime profiling requires ploomber-engine `0.0.14` or higher
 ```
 
 +++
@@ -32,6 +30,11 @@ Before we run this example, we'll need to install the required dependencies:
 ```bash
 pip install ploomber-engine sklearn-evaluation jupytext --upgrade
 ```
+
+```{important}
+This tutorial requires ploomber-engine `0.0.11` or higher
+```
+
 
 +++
 

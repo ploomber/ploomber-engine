@@ -34,6 +34,7 @@ html:
   use_issues_button: true
   use_repository_button: true
   extra_navbar: Join us on <a href="https://ploomber.io/community/">Slack!</a>
+  announcement: To launch any tutorial in JupyterLab, click on the 🚀 button below!
 
 sphinx:
   fail_on_warning: true
