@@ -29,4 +29,5 @@ parts:
       - file: api/api
   - caption: Community
     chapters:
+    - file: community/projects
     - file: community/support

@@ -16,14 +16,20 @@ kernelspec:
 # Experiment Tracking
 
 ```{important}
-Cell runtime profiling requires ploomber-engine `0.0.14` or higher
+Experiment tracking requires ploomber-engine `0.0.11` or higher
 ```
 
 +++
 
-For this example, we'll train several random forest models using scikit-learn and then use the [experiment tracker](https://sklearn-evaluation.readthedocs.io/en/latest/api/SQLiteTracker.html) to evaluate results. However, remember that the tool is generic enough to be used in other data domains like bioinformatics or analytics.
+`ploomber-engine` comes with a tracker that allows you to log variables, and plots without modifying your code. A common use case is for managing Machine Learning experiments. However, you can use it for any other computational experiments where you want to record input parameters, outputs, and analyze results.
+
+Under the hood, it uses the [`SQliteTracker`](https://sklearn-evaluation.readthedocs.io/en/latest/api/SQLiteTracker.html) from our [sklearn-evaluation](https://github.com/ploomber/sklearn-evaluation) package, this means that you will be able to query, and aggregate your experiments with SQL!
+
+For this example, we'll train several Machine Learning models and evaluate their performance.
 
 +++
+
+## Dependencies
 
 Before we run this example, we'll need to install the required dependencies:
 
@@ -31,23 +37,16 @@ Before we run this example, we'll need to install the required dependencies:
 pip install ploomber-engine sklearn-evaluation jupytext --upgrade
 ```
 
-```{important}
-This tutorial requires ploomber-engine `0.0.11` or higher
-```
-
-
 +++
 
-Now, let's download the [sample script](https://github.com/ploomber/posts/blob/master/experiment-tracking/fit.py) we’ll use:
+Now, let's download the [sample script](https://github.com/ploomber/posts/blob/master/experiment-tracking/fit.py) we’ll use, Jupyter notebooks (`.ipynb`) are also supported:
 
 ```{code-cell} ipython3
 %%sh
 curl -O https://raw.githubusercontent.com/ploomber/posts/master/experiment-tracking/fit.py
 ```
 
-**We are ready, so let's get started!**
-
-Let's create our grid of parameters:
+Let's create our grid of parameters, we'll execute one experiment for each combination:
 
 ```{code-cell} ipython3
 from ploomber_engine.tracking import track_execution
@@ -73,12 +72,6 @@ for idx, p in enumerate(grid):
     track_execution("fit.py", parameters=p, quiet=True, database="experiments.db")
 ```
 
-```{note}
-We're running a Python script, but Jupyter notebooks (`.ipynb`) are also supported.
-```
-
-+++
-
 If you prefer so, you can also execute scripts from the terminal:
 
 ```bash
@@ -88,7 +81,7 @@ python -m ploomber_engine.tracking fit.py \
 
 +++
 
-## Experiment tracking with no extra code
+## No extra code needed
 
 +++
 
@@ -98,30 +91,20 @@ The tracker runs the code, and it logs everything that meets any of the followin
 
 +++
 
-### 1. A line that contains a variable name by itself
-
-+++
+**1. A line that contains a variable name by itself**
 
 ```python
 accuracy = accuracy_score(y_test, y_pred)
 accuracy
 ```
 
-+++
-
-### 2. A line that calls a function with no variable assignment
-
-+++
+**2. A line that calls a function with no variable assignment**
 
 ```python
 plot.confusion_matrix(y_test, y_pred)
 ```
 
-+++
-
 Note that logs happen in groups (not line-by-line). A group is defined as a contiguous set of lines delimited with line breaks:
-
-+++
 
 ```python
 # first group
@@ -131,8 +114,6 @@ accuracy
 # second group
 plot.confusion_matrix(y_test, y_pred)
 ```
-
-+++
 
 Regular Python objects are supported (numbers, strings, lists, dictionaries), and any object with a rich representation will also work (e.g., matplotlib charts).
 
