@@ -12,7 +12,7 @@ import click
 import parso
 
 import nbformat
-from papermill.translators import translate_parameters
+from ploomber_engine.tracking.translator import translate_parameters
 from IPython.core.interactiveshell import InteractiveShell
 
 from ploomber_engine.ipython import PloomberClient, add_to_sys_path
@@ -197,9 +197,7 @@ def track_execution(filename, parameters, database="experiments.db", quiet=False
     if not quiet:
         click.echo(f"Parameters: {parameters}")
 
-    params = translate_parameters(
-        "python", "python", parameters, comment="User parameters"
-    )
+    params = translate_parameters(parameters, comment="User parameters")
 
     params_cell = nbformat.v4.new_code_cell(source=params)
     nb.cells.insert(idx_injected_params, params_cell)

@@ -14,14 +14,18 @@ with open("src/ploomber_engine/__init__.py", "rb") as f:
     )
 
 REQUIRES = [
-    "ploomber-core>=0.0.4",
-    "papermill",
-    "ipykernel",
+    # pinned because 0.0.11 introduced @requires
+    "ploomber-core>=0.0.11",
     "debuglater",
+    # used for our debug now feature (PloomberNotebookClient)
     "nbclient",
+    # used in PloomberClient
     "ipython",
+    # used in the experiment tracker
     "parso",
+    # used in several places for manipulating notebook objects
     "nbformat",
+    # for the CLI
     "click",
 ]
 
@@ -39,7 +43,10 @@ DEV = [
     # for testing the track module
     "sklearn-evaluation",
     "jupytext",
+    # optional dependency for memory profiling
+    "psutil",
 ]
+
 
 setup(
     name="ploomber-engine",
@@ -56,7 +63,9 @@ setup(
     classifiers=[],
     keywords=[],
     install_requires=REQUIRES,
-    extras_require={"dev": DEV},
+    extras_require={
+        "dev": DEV,
+    },
     entry_points={
         "papermill.engine": [
             "debug=ploomber_engine.engine:DebugEngine",

@@ -1,20 +1,23 @@
 """
 This module contains our customizatiosn to nbclient and papermill.
 """
-__version__ = '0.0.17dev'
+__version__ = "0.0.17dev"
 
 import typing as t
 
 # NOTE: fully initialize papermill here to prevent circular import
-import papermill  # noqa
+try:
+    import papermill  # noqa
+except ModuleNotFoundError:
+    # optional dependency, so do not throw an error if missing
+    pass
 
 from jupyter_client import KernelManager
 from nbformat import NotebookNode
 
-from ploomber_engine.client import PloomberNotebookClient
-
 
 # NOTE: adapted from nbclient.client
+# NOTE: do we need this? I don't think is documented, so we should remove it
 def execute(
     nb: NotebookNode,
     cwd: t.Optional[str] = None,
@@ -37,8 +40,9 @@ def execute(
     kwargs :
       Any other options for NotebookClient, e.g. timeout, kernel_name
     """
+    from ploomber_engine.client import PloomberNotebookClient
+
     resources = {}
     if cwd is not None:
-        resources['metadata'] = {'path': cwd}
-    return PloomberNotebookClient(nb=nb, resources=resources, km=km,
-                                  **kwargs).execute()
+        resources["metadata"] = {"path": cwd}
+    return PloomberNotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()

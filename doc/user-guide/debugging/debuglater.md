@@ -31,7 +31,7 @@ You can download this tutorial in Jupyter notebook format by clicking on the ico
 Install requirements:
 
 ```{code-cell} ipython3
-%pip install ploomber-engine --quiet
+%pip install ploomber-engine papermill ipykernel --quiet
 ```
 
 Download [sample notebook](https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/debuglater.ipynb):
@@ -48,6 +48,10 @@ Run the notebook with `--engine debuglater` option (note that this notebook cras
 
 %%sh
 papermill debuglater-demo.ipynb tmp.ipynb --engine debuglater
+```
+
+```{note}
+Currently, the `debuglater` engine is only available via `papermill`, in a future release, it'll be possible to use it without it.
 ```
 
 The above command generates a `jupyter.dump` file which is the serialized traceback:

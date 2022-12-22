@@ -7,7 +7,6 @@ from unittest.mock import ANY
 import pytest
 import nbformat
 from IPython.core.interactiveshell import InteractiveShell
-import papermill as pm
 
 from ploomber_engine.ipython import PloomberShell, PloomberClient
 from ploomber_engine import ipython
@@ -386,7 +385,7 @@ def test_display_formats(source, expected):
     assert out.cells[0]["outputs"][0] == expected
 
 
-def test_adds_current_directory_to_sys_path(no_sys_modules_cache):
+def test_adds_current_directory_to_sys_path(tmp_empty, no_sys_modules_cache):
     Path("some_new_module.py").write_text(
         """
 def x():
@@ -398,31 +397,6 @@ def x():
     nb.cells.append(nbformat.v4.new_code_cell(source="import some_new_module"))
 
     assert PloomberClient(nb).execute()
-
-
-def test_managed_client(tmp_empty):
-    nb = nbformat.v4.new_notebook()
-    nb.cells.append(nbformat.v4.new_code_cell(source="1 + 1"))
-    Path("nb.ipynb").write_text(nbformat.v4.writes(nb))
-
-    pm.execute_notebook(
-        "nb.ipynb",
-        "out.ipynb",
-        # the embedded engine uses the managed client
-        engine_name="embedded",
-        kernel_name="python3",
-    )
-
-    out = nbformat.v4.reads(Path("out.ipynb").read_text())
-
-    assert out.cells[0]["outputs"] == [
-        {
-            "data": {"text/plain": "2"},
-            "execution_count": 1,
-            "metadata": {},
-            "output_type": "execute_result",
-        }
-    ]
 
 
 def test_context_manager():

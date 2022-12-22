@@ -24,7 +24,7 @@ ploomber-engine allows you to start a debugging session right after your noteboo
 Install requirements:
 
 ```{code-cell} ipython3
-%pip install ploomber-engine --quiet
+%pip install ploomber-engine papermill ipykernel --quiet
 ```
 
 Download [sample notebook](https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/crash.ipynb):
@@ -38,6 +38,10 @@ Run the notebook with the `--engine debug` option to enable debugging. Upon cras
 
 ```sh
 papermill crash.ipynb tmp.ipynb --engine debug
+```
+
+```{note}
+Currently, the `debug` engine is only available via `papermill`, in a future release, it'll be possible to use it without it.
 ```
 
 Sample debugging session:

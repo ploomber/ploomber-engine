@@ -3,6 +3,7 @@ from datetime import datetime
 
 import nbformat
 import click
+from ploomber_core.dependencies import requires
 
 from ploomber_engine.ipython import PloomberClient
 from ploomber_engine._util import recursive_update
@@ -15,6 +16,11 @@ except ModuleNotFoundError:
 
 
 class PloomberMemoryProfilerClient(PloomberClient):
+
+    @requires(['psutil'], name='PloomberMemoryProfilerClient')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def hook_cell_pre(self, cell):
         metadata = {"ploomber": {"timestamp_start": datetime.now().timestamp()}}
         recursive_update(cell.metadata, metadata)

@@ -4,8 +4,7 @@ import asyncio
 import typing as t
 from queue import Empty
 
-from nbclient.exceptions import CellExecutionError, CellTimeoutError
-from papermill.clientwrap import PapermillNotebookClient
+
 from nbclient import NotebookClient
 from nbclient.util import ensure_async, run_sync
 
@@ -27,9 +26,11 @@ class PloomberNotebookClient(NotebookClient):
 
     def __init__(self, *args, **kwargs):
         if run_hook is None:
-            raise RuntimeError('you need nbclient>=0.6.1 to '
-                               'use PloomberNotebookClient:'
-                               ' pip install nbclient>=0.6.1')
+            raise RuntimeError(
+                "you need nbclient>=0.6.1 to "
+                "use PloomberNotebookClient:"
+                " pip install nbclient>=0.6.1"
+            )
 
         super().__init__(*args, **kwargs)
 
@@ -44,15 +45,17 @@ class PloomberNotebookClient(NotebookClient):
         assert self.km is not None
         try:
             self.kc = self.km.client()
-            await ensure_async(self.kc.start_channels()
-                               )  # type:ignore[func-returns-value]
+            await ensure_async(
+                self.kc.start_channels()
+            )  # type:ignore[func-returns-value]
             await ensure_async(
                 self.kc.wait_for_ready(timeout=self.startup_timeout)
             )  # type:ignore
         except Exception as e:
-            self.log.error("Error occurred while starting new kernel client "
-                           "for kernel {}: {}".format(self.km.kernel_id,
-                                                      str(e)))
+            self.log.error(
+                "Error occurred while starting new kernel client "
+                "for kernel {}: {}".format(self.km.kernel_id, str(e))
+            )
             await self._async_cleanup_kernel()
             raise
 
@@ -64,9 +67,9 @@ class PloomberNotebookClient(NotebookClient):
 
     start_new_kernel_client = run_sync(async_start_new_kernel_client)
 
-    async def _async_poll_stdin_msg(self, parent_msg_id: str,
-                                    cell: NotebookNode,
-                                    cell_index: int) -> None:
+    async def _async_poll_stdin_msg(
+        self, parent_msg_id: str, cell: NotebookNode, cell_index: int
+    ) -> None:
         assert self.kc is not None
 
         # FIXME: quick hack
@@ -78,23 +81,22 @@ class PloomberNotebookClient(NotebookClient):
         if msg_received:
             while True:
                 try:
-                    msg = await ensure_async(
-                        self.kc.stdin_channel.get_msg(timeout=0.1))
+                    msg = await ensure_async(self.kc.stdin_channel.get_msg(timeout=0.1))
                 except Empty:
                     break
                 else:
                     # display all pending messages (e.g. traceback)
                     flush_io(self.kc)
 
-                    self.kc.input(input(msg['content']['prompt']))
+                    self.kc.input(input(msg["content"]["prompt"]))
 
                     try:
                         msg = await self.kc.get_iopub_msg(timeout=1)
                     except Empty:
                         pass
                     else:
-                        if msg.get('content', {}).get('text'):
-                            print(msg['content']['text'])
+                        if msg.get("content", {}).get("text"):
+                            print(msg["content"]["text"])
 
     async def async_execute_cell(
         self,
@@ -142,7 +144,7 @@ class PloomberNotebookClient(NotebookClient):
 
         await run_hook(self.on_cell_start, cell=cell, cell_index=cell_index)
 
-        if cell.cell_type != 'code' or not cell.source.strip():
+        if cell.cell_type != "code" or not cell.source.strip():
             self.log.debug("Skipping non-executing cell %s", cell_index)
             return cell
 
@@ -151,21 +153,24 @@ class PloomberNotebookClient(NotebookClient):
             return cell
 
         if self.record_timing:  # clear execution metadata prior to execution
-            cell['metadata']['execution'] = {}
+            cell["metadata"]["execution"] = {}
 
         self.log.debug("Executing cell:\n%s", cell.source)
 
         cell_allows_errors = (not self.force_raise_errors) and (
-            self.allow_errors
-            or "raises-exception" in cell.metadata.get("tags", []))
+            self.allow_errors or "raises-exception" in cell.metadata.get("tags", [])
+        )
 
         await run_hook(self.on_cell_execute, cell=cell, cell_index=cell_index)
 
         # execute cell
         parent_msg_id = await ensure_async(
-            self.kc.execute(cell.source,
-                            store_history=store_history,
-                            stop_on_error=not cell_allows_errors))
+            self.kc.execute(
+                cell.source,
+                store_history=store_history,
+                stop_on_error=not cell_allows_errors,
+            )
+        )
 
         await run_hook(self.on_cell_complete, cell=cell, cell_index=cell_index)
 
@@ -179,15 +184,20 @@ class PloomberNotebookClient(NotebookClient):
         cell.outputs = []
         self.clear_before_next_output = False
 
-        task_poll_kernel_alive = asyncio.ensure_future(
-            self._async_poll_kernel_alive())
+        task_poll_kernel_alive = asyncio.ensure_future(self._async_poll_kernel_alive())
 
         task_poll_output_msg = asyncio.ensure_future(
-            self._async_poll_output_msg(parent_msg_id, cell, cell_index))
+            self._async_poll_output_msg(parent_msg_id, cell, cell_index)
+        )
         self.task_poll_for_reply = asyncio.ensure_future(
-            self._async_poll_for_reply(parent_msg_id, cell, exec_timeout,
-                                       task_poll_output_msg,
-                                       task_poll_kernel_alive))
+            self._async_poll_for_reply(
+                parent_msg_id,
+                cell,
+                exec_timeout,
+                task_poll_output_msg,
+                task_poll_kernel_alive,
+            )
+        )
 
         try:
             exec_reply = await self.task_poll_for_reply
@@ -206,15 +216,17 @@ class PloomberNotebookClient(NotebookClient):
                 raise
 
         if execution_count:
-            cell['execution_count'] = execution_count
-        await run_hook(self.on_cell_executed,
-                       cell=cell,
-                       cell_index=cell_index,
-                       execute_reply=exec_reply)
+            cell["execution_count"] = execution_count
+        await run_hook(
+            self.on_cell_executed,
+            cell=cell,
+            cell_index=cell_index,
+            execute_reply=exec_reply,
+        )
 
         await self._check_raise_for_error(cell, cell_index, exec_reply)
 
-        self.nb['cells'][cell_index] = cell
+        self.nb["cells"][cell_index] = cell
 
         return cell
 
@@ -234,14 +246,14 @@ def flush_io(client):
     """
     while run_sync(client.iopub_channel.msg_ready)():
         sub_msg = run_sync(client.iopub_channel.get_msg)()
-        msg_type = sub_msg['header']['msg_type']
+        msg_type = sub_msg["header"]["msg_type"]
 
         _pending_clearoutput = True
 
         # do we need to handle this?
-        if msg_type == 'status':
+        if msg_type == "status":
             pass
-        elif msg_type == 'stream':
+        elif msg_type == "stream":
             if sub_msg["content"]["name"] == "stdout":
                 if _pending_clearoutput:
                     print("\r", end="")
@@ -255,14 +267,14 @@ def flush_io(client):
                 print(sub_msg["content"]["text"], file=sys.stderr, end="")
                 sys.stderr.flush()
 
-        elif msg_type == 'execute_result':
+        elif msg_type == "execute_result":
             if _pending_clearoutput:
                 print("\r", end="")
                 _pending_clearoutput = False
 
             format_dict = sub_msg["content"]["data"]
 
-            if 'text/plain' not in format_dict:
+            if "text/plain" not in format_dict:
                 continue
 
             # prompt_toolkit writes the prompt at a slightly lower level,
@@ -270,74 +282,35 @@ def flush_io(client):
             sys.stdout.flush()
             sys.stderr.flush()
 
-            text_repr = format_dict['text/plain']
-            if '\n' in text_repr:
+            text_repr = format_dict["text/plain"]
+            if "\n" in text_repr:
                 # For multi-line results, start a new line after prompt
                 print()
             print(text_repr)
 
-        elif msg_type == 'display_data':
+        elif msg_type == "display_data":
             pass
 
         # If execute input: print it
-        elif msg_type == 'execute_input':
-            content = sub_msg['content']
+        elif msg_type == "execute_input":
+            content = sub_msg["content"]
 
             # New line
-            sys.stdout.write('\n')
+            sys.stdout.write("\n")
             sys.stdout.flush()
 
             # With `Remote In [3]: `
             # self.print_remote_prompt(ec=ec)
 
             # And the code
-            sys.stdout.write(content['code'] + '\n')
+            sys.stdout.write(content["code"] + "\n")
 
-        elif msg_type == 'clear_output':
+        elif msg_type == "clear_output":
             if sub_msg["content"]["wait"]:
                 _pending_clearoutput = True
             else:
                 print("\r", end="")
 
-        elif msg_type == 'error':
+        elif msg_type == "error":
             for frame in sub_msg["content"]["traceback"]:
                 print(frame, file=sys.stderr)
-
-
-class PapermillPloomberNotebookClient(PapermillNotebookClient,
-                                      PloomberNotebookClient):
-    """A papermill client that uses our custom notebook client
-    """
-
-    # NOTE: adapted from papermill's source code
-    def papermill_execute_cells(self):
-        """
-        This function replaces cell execution with it's own wrapper.
-        We are doing this for the following reasons:
-        1. Notebooks will stop executing when they encounter a failure but not
-           raise a `CellException`. This allows us to save the notebook with
-           the traceback even though a `CellExecutionError` was encountered.
-        2. We want to write the notebook as cells are executed. We inject our
-           logic for that here.
-        3. We want to include timing and execution status information with the
-           metadata of each cell.
-        """
-        # Execute each cell and update the output in real time.
-        for index, cell in enumerate(self.nb.cells):
-            try:
-                self.nb_man.cell_start(cell, index)
-                self.execute_cell(cell, index)
-            except CellExecutionError as ex:
-                self.nb_man.cell_exception(self.nb.cells[index],
-                                           cell_index=index,
-                                           exception=ex)
-                break
-            except CellTimeoutError as e:
-                # this will exit execution gracefully upon debugging, but
-                # it will also cause the notebook to abort execution after
-                # an "input" cell
-                print(e)
-                sys.exit(1)
-            finally:
-                self.nb_man.cell_complete(self.nb.cells[index],
-                                          cell_index=index)

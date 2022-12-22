@@ -7,7 +7,7 @@ from papermill.utils import merge_kwargs, remove_args
 from papermill.log import logger
 from papermill.clientwrap import PapermillNotebookClient
 
-from ploomber_engine.client import PapermillPloomberNotebookClient
+from ploomber_engine.papermill import PapermillPloomberNotebookClient
 from ploomber_engine.ipython import PloomberManagedClient
 from ploomber_engine._telemetry import telemetry
 
