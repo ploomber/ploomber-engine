@@ -1,0 +1,3 @@
+# requirements for binder
+jupytext
+ploomber-engine
