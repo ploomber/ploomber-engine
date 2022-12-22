@@ -63,7 +63,8 @@ def test_notebook(path_to_nb):
 
         if len_expected != len_actual:
             raise NotebookTestException(
-                f"Error in cell {idx}: Expected number of cell outputs ({len_expected}), actual ({len_actual})"
+                f"Error in cell {idx}: Expected number of "
+                f"cell outputs ({len_expected}), actual ({len_actual})"
             )
 
         _compare_outputs(idx, expected, actual)

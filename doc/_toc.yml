@@ -7,7 +7,12 @@ parts:
   - caption: User Guide
     chapters:
     - file: user-guide/running
-    - file: user-guide/testing
+    - file: user-guide/testing/index
+      sections:
+      - file: user-guide/testing/unit
+      - file: user-guide/testing/integration
+      - file: user-guide/testing/outputs
+      - file: user-guide/testing/pytest
     - file: user-guide/tracking
     - file: user-guide/debugging/index
       sections:
