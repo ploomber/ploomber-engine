@@ -16,8 +16,7 @@ except ModuleNotFoundError:
 
 
 class PloomberMemoryProfilerClient(PloomberClient):
-
-    @requires(['psutil'], name='PloomberMemoryProfilerClient')
+    @requires(["psutil"], name="PloomberMemoryProfilerClient")
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -38,7 +37,7 @@ class PloomberMemoryProfilerClient(PloomberClient):
         recursive_update(cell.metadata, metadata)
 
 
-@telemetry.log_call("ploomber-engine-memory-profile")
+@telemetry.log_call("memory-profile")
 def memory_profile(path, output):
     import matplotlib.pyplot as plt
 
