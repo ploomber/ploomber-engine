@@ -6,18 +6,15 @@ from pathlib import Path
 import base64
 import re
 
-PLAIN = 'text/plain'
-HTML = 'text/html'
-PNG = 'image/png'
-ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+PLAIN = "text/plain"
+HTML = "text/html"
+PNG = "image/png"
+ANSI_ESCAPE = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 
-def _process_content_data(content,
-                          counter,
-                          idx,
-                          serialize_images=False,
-                          img_dir=None,
-                          canonical_name=None):
+def _process_content_data(
+    content, counter, idx, serialize_images=False, img_dir=None, canonical_name=None
+):
     """
     Parameters
     ----------
@@ -39,44 +36,44 @@ def _process_content_data(content,
         serialize_images=True
     """
 
-    if 'data' in content:
-        data = content['data']
+    if "data" in content:
+        data = content["data"]
 
-        if data.get('image/png'):
-            image_base64 = data.get('image/png')
+        if data.get("image/png"):
+            image_base64 = data.get("image/png")
 
             if serialize_images:
-                serialized = Path(img_dir, canonical_name, 'serialized')
+                serialized = Path(img_dir, canonical_name, "serialized")
                 serialized.mkdir(exist_ok=True, parents=True)
 
-                id_ = f'{counter}-{idx}'
-                filename = f'{id_}.png'
+                id_ = f"{counter}-{idx}"
+                filename = f"{id_}.png"
                 path_to_image = serialized / filename
                 base64_2_image(image_base64, path_to_image)
 
-                return (HTML, f'![{id_}](serialized/{filename})')
+                return (HTML, f"![{id_}](serialized/{filename})")
             else:
                 return PNG, base64_html_tag(image_base64)
-        if data.get('text/html'):
-            return HTML, data.get('text/html')
+        if data.get("text/html"):
+            return HTML, data.get("text/html")
         else:
-            return PLAIN, data['text/plain']
-    elif 'text' in content:
-        out = content['text'].rstrip()
+            return PLAIN, data["text/plain"]
+    elif "text" in content:
+        out = content["text"].rstrip()
 
-        if out[-1] != '\n':
-            out = out + '\n'
+        if out[-1] != "\n":
+            out = out + "\n"
 
         return PLAIN, out
-    elif 'traceback' in content:
-        return PLAIN, remove_ansi_escape('\n'.join(content['traceback']))
+    elif "traceback" in content:
+        return PLAIN, remove_ansi_escape("\n".join(content["traceback"]))
 
 
 def remove_ansi_escape(s):
     """
     https://stackoverflow.com/a/14693789/709975
     """
-    return ANSI_ESCAPE.sub('', s)
+    return ANSI_ESCAPE.sub("", s)
 
 
 def base64_2_image(message, path_to_image):

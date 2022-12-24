@@ -9,7 +9,7 @@ import pytest
 
 
 def _path_to_tests():
-    return Path(__file__).resolve().parent.parent / 'tests'
+    return Path(__file__).resolve().parent.parent / "tests"
 
 
 def fixture_tmp_dir(source, **kwargs):
@@ -23,12 +23,11 @@ def fixture_tmp_dir(source, **kwargs):
     # some_fixture = factory('some/path')
     # but didn't work
     def decorator(function):
-
         @wraps(function)
         def wrapper():
             old = os.getcwd()
             tmp_dir = tempfile.mkdtemp()
-            tmp = Path(tmp_dir, 'content')
+            tmp = Path(tmp_dir, "content")
             # we have to add extra folder content/, otherwise copytree
             # complains
             shutil.copytree(str(source), str(tmp))
@@ -43,7 +42,7 @@ def fixture_tmp_dir(source, **kwargs):
     return decorator
 
 
-@fixture_tmp_dir(_path_to_tests() / 'assets')
+@fixture_tmp_dir(_path_to_tests() / "assets")
 def tmp_assets():
     pass
 
