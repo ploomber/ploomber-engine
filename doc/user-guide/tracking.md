@@ -23,7 +23,7 @@ Experiment tracking requires ploomber-engine `0.0.11` or higher
 
 `ploomber-engine` comes with a tracker that allows you to log variables, and plots without modifying your code. A common use case is for managing Machine Learning experiments. However, you can use it for any other computational experiments where you want to record input parameters, outputs, and analyze results.
 
-Under the hood, it uses the [`SQliteTracker`](https://sklearn-evaluation.readthedocs.io/en/latest/api/SQLiteTracker.html) from our [sklearn-evaluation](https://github.com/ploomber/sklearn-evaluation) package, this means that you will be able to query, and aggregate your experiments with SQL!
+Under the hood, it uses the [`SQliteTracker`](https://sklearn-evaluation.ploomber.io/en/latest/comparison/SQLiteTracker.html) from our [sklearn-evaluation](https://github.com/ploomber/sklearn-evaluation) package, this means that you will be able to query, and aggregate your experiments with SQL!
 
 For this example, we'll train several Machine Learning models and evaluate their performance.
 
@@ -280,4 +280,4 @@ We can see that increasing `n_estimators` drives our metrics up; however, after 
 
 +++
 
-If you need more details on how to work with the `SQLiteTracker`, you cna jump directly to the [full example in the documentation](https://sklearn-evaluation.readthedocs.io/en/latest/user_guide/SQLiteTracker.html).
+If you need more details on how to work with the `SQLiteTracker`, you cna jump directly to the [full example in the documentation](https://sklearn-evaluation.ploomber.io/en/latest/comparison/SQLiteTracker.html).
