@@ -1,3 +1,5 @@
+name: check-for-broken-links
+
 on:
   schedule:
     - cron: '0 0 * * *'
