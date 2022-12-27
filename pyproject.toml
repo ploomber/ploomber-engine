@@ -5,4 +5,4 @@ addopts = "--pdbcls=IPython.terminal.debugger:Pdb"
 github = "ploomber/ploomber-engine"
 
 [tool.pkgmt.check_links]
-extensions = ["md", "rst", "py"]
+extensions = ["md", "rst", "py", "ipynb"]
