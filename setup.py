@@ -14,8 +14,7 @@ with open("src/ploomber_engine/__init__.py", "rb") as f:
     )
 
 REQUIRES = [
-    # pinned because 0.0.11 introduced @requires
-    "ploomber-core>=0.0.11",
+    "ploomber-core>=0.1.*",
     "debuglater",
     # used for our debug now feature (PloomberNotebookClient)
     "nbclient",
