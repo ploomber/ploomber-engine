@@ -553,3 +553,18 @@ def test_log_print_statements(capsys):
 
     captured = capsys.readouterr()
     assert captured.out == "a\nb\n"
+
+
+def test_log_print_statements_init_from_path(tmp_empty, capsys):
+    nb = nbformat.v4.new_notebook()
+    nb.cells = [
+        nbformat.v4.new_code_cell(source='print("a")'),
+        nbformat.v4.new_code_cell(source='print("b")'),
+    ]
+
+    nbformat.write(nb, "notebook.ipynb")
+
+    PloomberClient.from_path("notebook.ipynb", display_stdout=True).execute()
+
+    captured = capsys.readouterr()
+    assert captured.out == "a\nb\n"

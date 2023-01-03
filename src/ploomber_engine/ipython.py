@@ -165,24 +165,31 @@ class PloomberClient:
         self._display_stdout = display_stdout
 
     @classmethod
-    def from_path(cls, path):
+    def from_path(cls, path, display_stdout=False):
         """Initialize client from a path to a notebook
-
 
         Parameters
         ----------
         path : str
             Path to the ``.ipynb`` file
 
+        display_output : bool, default=False
+            If True, it prints whatever output the notebook prints.
+
+        Notes
+        -----
+        .. versionchanged:: 0.0.18
+            Added ``display_stdout`` argument.
 
         Examples
         --------
         >>> from ploomber_engine.ipython import PloomberClient
         >>> client = PloomberClient.from_path("examples/nb.ipynb")
         >>> out = client.execute()
+
         """
         nb = nbformat.read(path, as_version=nbformat.NO_CONVERT)
-        return cls(nb)
+        return cls(nb, display_stdout=display_stdout)
 
     def execute_cell(self, cell, cell_index, execution_count, store_history):
         if self._shell is None:
