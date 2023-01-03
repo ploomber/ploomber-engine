@@ -75,5 +75,6 @@ setup(
             # we keep this here for backwards compatibility
             "profiling=ploomber_engine.engine:ProfilingEngine",
         ],
+        "console_scripts": ["ploomber-engine=ploomber_engine.cli:cli"],
     },
 )
