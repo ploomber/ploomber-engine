@@ -73,6 +73,16 @@ def execute_notebook(
 
     >>> from ploomber_engine import execute_notebook
     >>> out = execute_notebook("nb.ipynb", "out.ipynb", profile_memory=True)
+
+    Command-line examples:
+
+    $ ploomber-engine nb.ipynb out.ipynb
+
+    $ ploomber-engine nb.ipynb out.ipynb --log-output
+
+    $ ploomber-engine nb.ipynb out.ipynb --profile-memory
+
+    $ ploomber-engine nb.ipynb out.ipynb --profile-runtime
     """
     path_like_input = isinstance(input_path, (str, Path))
 
