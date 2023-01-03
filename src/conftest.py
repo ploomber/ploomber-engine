@@ -4,6 +4,7 @@ from pathlib import Path
 import nbformat
 import pytest
 
+
 @pytest.fixture
 def tmp_empty(tmp_path):
     """
