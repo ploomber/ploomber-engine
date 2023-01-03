@@ -67,7 +67,7 @@ def _plot_memory_usage(nb):
     Plot cell memory usage. Notebook must contain "memory_usage" under the
     "ploomber" key in the metadata
     """
-    code_cells = [cell for cell in nb.cells if cell.cell_type == 'code']
+    code_cells = [cell for cell in nb.cells if cell.cell_type == "code"]
     mem = [cell.metadata["ploomber"]["memory_usage"] for cell in code_cells]
     _, ax = plt.subplots()
 
@@ -93,7 +93,7 @@ def _plot_cell_runtime(nb):
     """
     Plot cell runtime
     """
-    code_cells = [cell for cell in nb.cells if cell.cell_type == 'code']
+    code_cells = [cell for cell in nb.cells if cell.cell_type == "code"]
     cell_runtime = [_compute_runtime(c) for c in code_cells]
     cell_indexes = list(range(1, len(cell_runtime) + 1))
 
