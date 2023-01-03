@@ -184,7 +184,7 @@ class PloomberClient:
         Examples
         --------
         >>> from ploomber_engine.ipython import PloomberClient
-        >>> client = PloomberClient.from_path("examples/nb.ipynb")
+        >>> client = PloomberClient.from_path("nb.ipynb")
         >>> out = client.execute()
 
         """
