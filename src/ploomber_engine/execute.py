@@ -76,13 +76,15 @@ def execute_notebook(
 
     Command-line examples:
 
-    $ ploomber-engine nb.ipynb out.ipynb
+    .. code-block:: bash
 
-    $ ploomber-engine nb.ipynb out.ipynb --log-output
+        $ ploomber-engine nb.ipynb out.ipynb
 
-    $ ploomber-engine nb.ipynb out.ipynb --profile-memory
+        $ ploomber-engine nb.ipynb out.ipynb --log-output
 
-    $ ploomber-engine nb.ipynb out.ipynb --profile-runtime
+        $ ploomber-engine nb.ipynb out.ipynb --profile-memory
+
+        $ ploomber-engine nb.ipynb out.ipynb --profile-runtime
     """
     path_like_input = isinstance(input_path, (str, Path))
 
