@@ -1,38 +1,11 @@
 from pathlib import Path
 
-import nbformat
 import pytest
 from IPython.display import Image
 
+
 from ploomber_engine import execute_notebook
-
-
-@pytest.fixture
-def nb():
-    pass
-
-
-def _make_cell(cell):
-    if isinstance(cell, str):
-        return nbformat.v4.new_code_cell(cell)
-    elif cell[0] == "markdown":
-        return nbformat.v4.new_markdown_cell(cell[1])
-    else:
-        raise ValueError(f"Unexpected value: {cell}")
-
-
-def _make_nb(cells, path="nb.ipynb"):
-    nb = nbformat.v4.new_notebook()
-    nb.cells = [_make_cell(cell) for cell in cells]
-
-    if path:
-        nbformat.write(nb, path)
-
-    return nb
-
-
-def _read_nb(path):
-    return nbformat.read(path, as_version=nbformat.NO_CONVERT)
+from conftest import _make_nb, _read_nb
 
 
 @pytest.mark.parametrize("input_", ["nb.ipynb", Path("nb.ipynb")])
@@ -141,10 +114,7 @@ def test_execute_notebook_log_stderr(tmp_empty, capsys):
 # check sklearn-evaluation plot tests for examples
 @pytest.mark.parametrize(
     "cells",
-    [
-        ["1+1"],
-        ["1+1", ("markdown", "# hello")]
-    ],
+    [["1+1"], ["1+1", ("markdown", "# hello")]],
 )
 def test_execute_notebook_profile_runtime(cells, tmp_empty):
     nb_in = _make_nb(cells)
@@ -159,10 +129,7 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
 # check sklearn-evaluation plot tests for examples
 @pytest.mark.parametrize(
     "cells",
-    [
-        ["1+1"],
-        ["1+1", ("markdown", "# hello")]
-    ],
+    [["1+1"], ["1+1", ("markdown", "# hello")]],
 )
 def test_execute_notebook_profile_memory(cells, tmp_empty):
     nb_in = _make_nb(cells)
