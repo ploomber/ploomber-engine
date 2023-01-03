@@ -1,6 +1,5 @@
 __version__ = "0.0.18dev"
 
-import typing as t
 
 # NOTE: fully initialize papermill here to prevent circular import
 try:
