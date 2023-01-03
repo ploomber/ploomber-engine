@@ -15,6 +15,12 @@ except ModuleNotFoundError:
     psutil = None
 
 
+try:
+    import matplotlib.pyplot as plt
+except ModuleNotFoundError:
+    plt = None
+
+
 class PloomberMemoryProfilerClient(PloomberClient):
     @requires(["psutil"], name="PloomberMemoryProfilerClient")
     def __init__(self, *args, **kwargs):
@@ -39,8 +45,6 @@ class PloomberMemoryProfilerClient(PloomberClient):
 
 @telemetry.log_call("memory-profile")
 def memory_profile(path, output):
-    import matplotlib.pyplot as plt
-
     path = Path(path)
     target = path.with_name(path.stem + "-memory-usage.png")
 
@@ -51,14 +55,53 @@ def memory_profile(path, output):
     nbformat.write(nb, output)
     click.echo(f"Finished execution. Stored executed notebook at {output!s}")
 
+    ax = _plot_memory_usage(nb)
+    ax.figure.savefig(target)
+
+    click.echo(f"Plot stored at {target!s}")
+
+
+@requires(["matplotlib"])
+def _plot_memory_usage(nb):
+    """
+    Plot cell memory usage. Notebook must contain "memory_usage" under the
+    "ploomber" key in the metadata
+    """
     mem = [cell.metadata["ploomber"]["memory_usage"] for cell in nb.cells]
-    fig, ax = plt.subplots()
+    _, ax = plt.subplots()
 
     ax.plot(range(1, len(mem) + 1), mem, marker="o")
     ax.grid()
     ax.set_title("Memory usage")
     ax.set_xlabel("Cell index")
     ax.set_ylabel("Memory used (MB) upon finishing cell")
-    fig.savefig(target)
+    return ax
 
-    click.echo(f"Plot stored at {target!s}")
+
+# runtime profiling
+
+
+def _compute_runtime(cell):
+    start = cell.metadata.ploomber.timestamp_start
+    end = cell.metadata.ploomber.timestamp_end
+    return end - start
+
+
+@requires(["matplotlib"])
+def _plot_cell_runtime(nb):
+    """
+    Plot cell runtime
+    """
+    cell_runtime = [_compute_runtime(c) for c in nb.cells]
+    cell_indexes = list(range(1, len(cell_runtime) + 1))
+
+    ax = plt.gca()
+    ax.plot(cell_indexes, cell_runtime, marker="o")
+    ax.set_xticks(cell_indexes)
+    ax.set_title("Cell runtime")
+    ax.set_xlabel("Cell index")
+    ax.set_ylabel("Runtime (seconds)")
+    ax.grid()
+    ax.figure.tight_layout()
+
+    return ax
