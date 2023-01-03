@@ -12,9 +12,18 @@ def nb():
     pass
 
 
+def _make_cell(cell):
+    if isinstance(cell, str):
+        return nbformat.v4.new_code_cell(cell)
+    elif cell[0] == "markdown":
+        return nbformat.v4.new_markdown_cell(cell[1])
+    else:
+        raise ValueError(f"Unexpected value: {cell}")
+
+
 def _make_nb(cells, path="nb.ipynb"):
     nb = nbformat.v4.new_notebook()
-    nb.cells = [nbformat.v4.new_code_cell(cell) for cell in cells]
+    nb.cells = [_make_cell(cell) for cell in cells]
 
     if path:
         nbformat.write(nb, path)
@@ -130,8 +139,15 @@ def test_execute_notebook_log_stderr(tmp_empty, capsys):
 
 # TODO: we should check the contents of the plot
 # check sklearn-evaluation plot tests for examples
-def test_execute_notebook_profile_runtime(tmp_empty):
-    nb_in = _make_nb(["1+1"])
+@pytest.mark.parametrize(
+    "cells",
+    [
+        ["1+1"],
+        ["1+1", ("markdown", "# hello")]
+    ],
+)
+def test_execute_notebook_profile_runtime(cells, tmp_empty):
+    nb_in = _make_nb(cells)
 
     execute_notebook(nb_in, "out.ipynb", profile_runtime=True)
 
@@ -141,8 +157,15 @@ def test_execute_notebook_profile_runtime(tmp_empty):
 
 # TODO: we should check the contents of the plot
 # check sklearn-evaluation plot tests for examples
-def test_execute_notebook_profile_memory(tmp_empty):
-    nb_in = _make_nb(["1+1"])
+@pytest.mark.parametrize(
+    "cells",
+    [
+        ["1+1"],
+        ["1+1", ("markdown", "# hello")]
+    ],
+)
+def test_execute_notebook_profile_memory(cells, tmp_empty):
+    nb_in = _make_nb(cells)
 
     execute_notebook(nb_in, "out.ipynb", profile_memory=True)
 
