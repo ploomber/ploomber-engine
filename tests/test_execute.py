@@ -114,7 +114,10 @@ def test_execute_notebook_log_stderr(tmp_empty, capsys):
 # check sklearn-evaluation plot tests for examples
 @pytest.mark.parametrize(
     "cells",
-    [["1+1"], ["1+1", ("markdown", "# hello")]],
+    [
+        ["1+1"],
+        ["1+1", ("markdown", "# hello")],
+    ],
 )
 def test_execute_notebook_profile_runtime(cells, tmp_empty):
     nb_in = _make_nb(cells)
