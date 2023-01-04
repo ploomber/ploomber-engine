@@ -1,6 +1,12 @@
 # CHANGELOG
 
 ## 0.0.18dev
+* Adds `ploomber-engine` CLI with a papermill-like API
+* Adds `ploomber_engine.execute_notebook` function with a papermill-like API
+* Adds `display_stdout` to `PloomberClient.from_path`
+* Updates docs to use `ploomber_engine.execute_notebook`
+* Fixes error in profiling functions that broke execution of notebooks with Markdown cells
+* Makes plotting functions part of the public API
 
 ## 0.0.17 (2022-12-22)
 * Makes papermill an optional dependency
