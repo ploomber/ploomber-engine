@@ -55,17 +55,21 @@ def memory_profile(path, output):
     nbformat.write(nb, output)
     click.echo(f"Finished execution. Stored executed notebook at {output!s}")
 
-    ax = _plot_memory_usage(nb)
+    ax = plot_memory_usage(nb)
     ax.figure.savefig(target)
 
     click.echo(f"Plot stored at {target!s}")
 
 
 @requires(["matplotlib"])
-def _plot_memory_usage(nb):
+def plot_memory_usage(nb):
     """
     Plot cell memory usage. Notebook must contain "memory_usage" under the
     "ploomber" key in the metadata
+
+    Notes
+    -----
+    .. versionadded:: 0.0.18
     """
     code_cells = [cell for cell in nb.cells if cell.cell_type == "code"]
     mem = [cell.metadata["ploomber"]["memory_usage"] for cell in code_cells]
@@ -89,9 +93,13 @@ def _compute_runtime(cell):
 
 
 @requires(["matplotlib"])
-def _plot_cell_runtime(nb):
+def plot_cell_runtime(nb):
     """
     Plot cell runtime
+
+    Notes
+    -----
+    .. versionadded:: 0.0.18
     """
     code_cells = [cell for cell in nb.cells if cell.cell_type == "code"]
     cell_runtime = [_compute_runtime(c) for c in code_cells]
