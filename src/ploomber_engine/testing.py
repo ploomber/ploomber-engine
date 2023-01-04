@@ -50,6 +50,12 @@ def _compare_outputs(idx, out_ref, out_actual):
 
 
 def test_notebook(path_to_nb):
+    """Test a notebook by running it and comparing produced with existing outputs
+
+    Notes
+    -----
+    .. versionadded:: 0.0.16
+    """
     ref = nbformat.read(path_to_nb, as_version=nbformat.NO_CONVERT)
     ref_ = _process_notebook(ref)
 
