@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -13,7 +13,13 @@ kernelspec:
 
 # Running notebooks
 
-ploomber-engine allows you to run Jupyter notebooks programmatically.
+```{versionadded} 0.0.18
+`execute_notebook` was introduced in `0.0.18`. If using an older version, check out [`PloomberClient` docs](../api/api.html#ploomberclient)
+```
+
+`ploomber-engine` allows you to run Jupyter notebooks programmatically. It is a drop-in replacement for `papermill.execute_notebook` with enhanced support for debugging, profiling, experiment tracking and more!
+
+## Example
 
 Install dependencies:
 
@@ -28,24 +34,46 @@ Download sample notebook:
 curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/display.ipynb --output running-demo.ipynb
 ```
 
-Import and initialize the notebook client:
+Run the notebook and store the executed version:
 
-```{code-cell} ipython3
-from ploomber_engine.ipython import PloomberClient
+```{admonition} Command-line equivalent
+:class: dropdown
 
-client = PloomberClient.from_path("running-demo.ipynb")
+`ploomber-engine nb.ipynb output.ipynb`
 ```
 
-Execute the notebook:
-
 ```{code-cell} ipython3
-out = client.execute()
+from ploomber_engine import execute_notebook
+
+nb = execute_notebook("running-demo.ipynb",
+                      output_path="output.ipynb")
 ```
 
-Store the notebook:
+The function returns a notebook object (same contents as the stored in `output_path`):
 
 ```{code-cell} ipython3
-import nbformat
+type(nb)
+```
 
-nbformat.write(out, "output-demo.ipynb")
+Skip storing the output notebook:
+
+```{code-cell} ipython3
+_ = execute_notebook("running-demo.ipynb",
+                     output_path=None)
+```
+
+## Logging `print` statements
+
+If your notebook contains `print` statements and want to see them in the current session:
+
+```{admonition} Command-line equivalent
+:class: dropdown
+
+`ploomber-engine nb.ipynb output.ipynb --log-output`
+```
+
+```{code-cell} ipython3
+_ = execute_notebook("running-demo.ipynb",
+                     output_path="output.ipynb",
+                     log_output=True)
 ```
