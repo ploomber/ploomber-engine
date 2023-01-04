@@ -9,9 +9,7 @@ from ploomber_engine.ipython import PloomberClient
 from ploomber_engine import profiling
 
 
-# TODO: implement progress_bar (this must be implemented in PloomberClient)
-# and parameters (also implemented in PloomberClient)
-# TODO: add debuglater argument
+
 def execute_notebook(
     input_path,
     output_path,
@@ -74,17 +72,6 @@ def execute_notebook(
     >>> from ploomber_engine import execute_notebook
     >>> out = execute_notebook("nb.ipynb", "out.ipynb", profile_memory=True)
 
-    Command-line examples:
-
-    .. code-block:: bash
-
-        $ ploomber-engine nb.ipynb out.ipynb
-
-        $ ploomber-engine nb.ipynb out.ipynb --log-output
-
-        $ ploomber-engine nb.ipynb out.ipynb --profile-memory
-
-        $ ploomber-engine nb.ipynb out.ipynb --profile-runtime
     """
     path_like_input = isinstance(input_path, (str, Path))
 
