@@ -9,7 +9,6 @@ from ploomber_engine.ipython import PloomberClient
 from ploomber_engine import profiling
 
 
-
 def execute_notebook(
     input_path,
     output_path,
