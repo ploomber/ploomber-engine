@@ -110,8 +110,6 @@ def test_execute_notebook_log_stderr(tmp_empty, capsys):
     assert captured.err == "hello\n"
 
 
-# TODO: we should check the contents of the plot
-# check sklearn-evaluation plot tests for examples
 @pytest.mark.parametrize(
     "cells",
     [
@@ -128,8 +126,6 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
     assert Image(filename="out-runtime.png")
 
 
-# TODO: we should check the contents of the plot
-# check sklearn-evaluation plot tests for examples
 @pytest.mark.parametrize(
     "cells",
     [["1+1"], ["1+1", ("markdown", "# hello")]],

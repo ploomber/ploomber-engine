@@ -144,7 +144,7 @@ class PloomberClient:
         Notebook object
 
     display_output : bool, default=False
-        If True, it prints whatever output the notebook prints.
+        If True, it prints the same output the notebook prints.
 
     Examples
     --------
@@ -174,7 +174,7 @@ class PloomberClient:
             Path to the ``.ipynb`` file
 
         display_output : bool, default=False
-            If True, it prints whatever output the notebook prints.
+            If True, it prints the same output the notebook prints.
 
         Notes
         -----
