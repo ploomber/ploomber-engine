@@ -49,7 +49,7 @@ nb = execute_notebook("running-demo.ipynb",
                       output_path="output.ipynb")
 ```
 
-The function returns a notebook object (same contents as the stored in `output_path`):
+The function returns a notebook object (same contents as stored in `output_path`):
 
 ```{code-cell} ipython3
 type(nb)
