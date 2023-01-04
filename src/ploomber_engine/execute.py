@@ -102,13 +102,13 @@ def execute_notebook(
     out = client.execute()
 
     if profile_runtime:
-        ax = profiling._plot_cell_runtime(out)
+        ax = profiling.plot_cell_runtime(out)
         output_path = Path(output_path)
         output_path_runtime = output_path.with_name(output_path.stem + "-runtime.png")
         ax.figure.savefig(output_path_runtime)
 
     if profile_memory:
-        ax = profiling._plot_memory_usage(out)
+        ax = profiling.plot_memory_usage(out)
         output_path = Path(output_path)
         output_path_memory = output_path.with_name(
             output_path.stem + "-memory-usage.png"
