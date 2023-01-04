@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 0.0.19dev
+
 ## 0.0.18 (2023-01-04)
 * Adds `ploomber-engine` CLI with a papermill-like API
 * Adds `ploomber_engine.execute_notebook` function with a papermill-like API
