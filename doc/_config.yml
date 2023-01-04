@@ -4,6 +4,7 @@
 title: ploomber-engine
 author: Ploomber
 logo: square-no-bg-small.png
+copyright: "2023"
 
 execute:
   # https://jupyterbook.org/content/execute.html
