@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -13,17 +13,19 @@ kernelspec:
 
 # Cell runtime
 
-Install requirements:
-
-```{important}
-Cell runtime profiling requires ploomber-engine `0.0.14` or higher
+```{versionadded} 0.0.18
+[`execute_notebook`](../../api/api.html#execute-notebook)
 ```
+
+Install requirements:
 
 ```{code-cell} ipython3
 %pip install ploomber-engine matplotlib --quiet
 ```
 
-Let's create a simple notebook that calls `time.sleep`:
+## Example
+
+Let's create a sample notebook with a few calls to `time.sleep`:
 
 ```{code-cell} ipython3
 import nbformat
@@ -40,45 +42,33 @@ nb.cells = [nbformat.v4.new_code_cell(cell) for cell in cells]
 nbformat.write(nb, "notebook.ipynb")
 ```
 
-Run the notebook with `PloomberClient`:
+Let's execute the notebook with `profile_runtime=True`
 
-```{code-cell} ipython3
-from ploomber_engine.ipython import PloomberClient
+```{admonition} Command-line equivalent
+:class: dropdown
+
+`ploomber-engine notebook.ipynb output.ipynb --profile-runtime`
 ```
 
 ```{code-cell} ipython3
-client = PloomberClient.from_path("notebook.ipynb")
-out = client.execute()
+from ploomber_engine import execute_notebook
+
+_ = execute_notebook("notebook.ipynb",
+                     "output",
+                     profile_runtime=True)
 ```
 
-Utility function to compute the runtime from each cell:
+## Customize plot
+
+You might customize the plot by calling the `plot_cell_runtime` function and passing the output notebook, the returned object is a `matplotlib.Axes`.
 
 ```{code-cell} ipython3
-def compute_runtime(cell):
-    start = cell.metadata.ploomber.timestamp_start
-    end = cell.metadata.ploomber.timestamp_end
-    return end - start
-```
+from ploomber_engine.profiling import plot_cell_runtime
 
-Compute runtime for each cell:
-
-```{code-cell} ipython3
-cell_runtime = [compute_runtime(c) for c in out.cells]
-cell_indexes = list(range(1, len(cell_runtime) + 1))
-```
-
-Plot the results:
-
-```{code-cell} ipython3
-import matplotlib.pyplot as plt
+nb = execute_notebook("notebook.ipynb", "output.ipynb")
 ```
 
 ```{code-cell} ipython3
-ax = plt.gca()
-ax.plot(cell_indexes, cell_runtime, marker="o")
-ax.set_xticks(cell_indexes)
-ax.set_title("Cell runtime")
-ax.set_xlabel("Cell index")
-ax.set_ylabel("Runtime (seconds)")
-ax.grid()
+ax = plot_cell_runtime(nb)
+_ = ax.set_title("My custom title")
 ```

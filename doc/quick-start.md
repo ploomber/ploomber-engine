@@ -1,12 +1,11 @@
 ---
 jupytext:
-  cell_metadata_filter: -all
   formats: md:myst
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -30,41 +29,56 @@ or
 ```bash
 conda install ploomber-engine -c conda-forge
 ```
-## Example
 
-Here's a quick example showing how to run a notebook.
+## Run notebook
 
-First, let's create notebook object (Note: you can also load them from .ipynb files):
-
-```{code-cell} python
-from ploomber_engine.ipython import PloomberClient
-import nbformat
-
-nb = nbformat.v4.new_notebook()
-cell = nbformat.v4.new_code_cell("1+1")
-nb.cells = [cell]
-nb
+```{tip}
+There is a command-line interface available. Run: `ploomber-engine --help` to learn more.
 ```
 
-Start client and execute the notebook:
+Let's download a [sample notebook.](https://github.com/ploomber/ploomber-engine/blob/main/examples/display.ipynb)
 
-```{code-cell} python
-client = PloomberClient(nb)
-out = client.execute()
+```{code-cell} ipython3
+%%bash
+curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/display.ipynb --output nb.ipynb
 ```
 
-```{code-cell} python
-out
+```{code-cell} ipython3
+from ploomber_engine import execute_notebook
+
+_ = execute_notebook("nb.ipynb", "output.ipynb")
 ```
 
-Inspect outputs:
+## Log print statements
 
-```{code-cell} python
-out.cells[0]['outputs'][0]['data']
+```{code-cell} ipython3
+_ = execute_notebook("nb.ipynb", "output.ipynb", log_output=True)
 ```
 
-Store the notebook:
+## Plot cell's runtime
 
-```python
-nbformat.write(out, "output.ipynb")
+```{note}
+Runtime profiling requires extra dependencies: `pip install matplotlib`
+```
+
+```{code-cell} ipython3
+_ = execute_notebook("nb.ipynb", "output.ipynb", profile_runtime=True)
+```
+
+```{code-cell} ipython3
+ls output-*
+```
+
+## Plot cell's memory usage
+
+```{note}
+Memory profiling requires extra dependencies: `pip install matplotlib psutil`
+```
+
+```{code-cell} ipython3
+_ = execute_notebook("nb.ipynb", "output.ipynb", profile_memory=True)
+```
+
+```{code-cell} ipython3
+ls output-*
 ```

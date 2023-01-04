@@ -26,6 +26,8 @@ REQUIRES = [
     "nbformat",
     # for the CLI
     "click",
+    # for loading package version without importing the root __init__.py
+    'importlib-metadata;python_version<"3.8"',
 ]
 
 DEV = [
@@ -73,5 +75,6 @@ setup(
             # we keep this here for backwards compatibility
             "profiling=ploomber_engine.engine:ProfilingEngine",
         ],
+        "console_scripts": ["ploomber-engine=ploomber_engine.cli:cli"],
     },
 )

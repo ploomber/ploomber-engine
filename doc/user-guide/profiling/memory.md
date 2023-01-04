@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -13,15 +13,12 @@ kernelspec:
 
 # Memory usage
 
+
+```{versionadded} 0.0.18
+[`execute_notebook`](../../api/api.html#execute-notebook)
+```
+
 With ploomber-engine you can profile Jupyter notebook's memory usage. Unlike papermill, which isn't capable of doing it.
-
-```{note}
-You can download this tutorial in Jupyter notebook format by clicking on the icon in the upper right corner.
-```
-
-```{important}
-Memory profiling requires ploomber-engine `0.0.14` or higher
-```
 
 Install requirements:
 
@@ -29,10 +26,12 @@ Install requirements:
 %pip install ploomber-engine psutil matplotlib --quiet
 ```
 
-Import the `memory_profile` function:
+## Example
+
+Import the `execute_notebook` function:
 
 ```{code-cell} ipython3
-from ploomber_engine.profiling import memory_profile
+from ploomber_engine import execute_notebook
 ```
 
 We'll now programmatically create a sample notebook and stored it in `notebook.ipynb`. Note that it creates a 1MB numpy array on cell 3 and one 10MB numpy array on cell 5.
@@ -62,20 +61,37 @@ nb.cells = [nbformat.v4.new_code_cell(cell) for cell in cells]
 nbformat.write(nb, "notebook.ipynb")
 ```
 
-Let's run the profiling function (which also runs the notebook):
+Let's execute the notebook with `profile_memory=True`
 
-```{code-cell} ipython3
-memory_profile("notebook.ipynb", "output.ipynb")
+```{admonition} Command-line equivalent
+:class: dropdown
+
+`ploomber-engine notebook.ipynb output.ipynb --profile-memory`
 ```
 
-Display the plot:
-
 ```{code-cell} ipython3
-from IPython.display import Image
-
-Image(filename="notebook-memory-usage.png")
+_ = execute_notebook("notebook.ipynb", "output.ipynb", profile_memory=True)
 ```
 
 We can see that after running cells 1-2, there isn't any important increment in memory usage. However, when finishing execution of cell 3, we see a bump of 1MB, since we allocated the array there. Cell 4 doesn't increase memory usage, since it only contains a call to `time.sleep`, but cell 5 has a 10MB bump since we allocated the second (larger) array.
 
 If you want to look at the executed notebook, it's available at `output.ipynb`.
+
++++
+
+## Customizing the plot
+
+You might customize the plot by calling the `plot_memory_usage` function and passing the output notebook, the returned object is a `matplotlib.Axes`.
+
+```{code-cell} ipython3
+%%capture
+
+from ploomber_engine.profiling import plot_memory_usage
+
+nb = execute_notebook("notebook.ipynb", "output.ipynb", profile_memory=True)
+```
+
+```{code-cell} ipython3
+ax = plot_memory_usage(nb)
+_ = ax.set_title("My custom title")
+```
