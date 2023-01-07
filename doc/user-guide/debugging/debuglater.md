@@ -67,3 +67,8 @@ We can use the `dltr` command (from our [debuglater](https://github.com/ploomber
 ```sh
 dltr output.dump
 ```
+
+
+```{tip}
+By default, only built-in data structures are serialized, for other types, only their string representation is stored. If you want to serialize every data type: `pip install 'debuglater[all]'`
+```
