@@ -24,6 +24,7 @@ from conftest import _make_nb
                 profile_runtime=False,
                 progress_bar=False,
                 parameters=None,
+                debug_later=False,
             ),
         ],
         [
@@ -36,6 +37,7 @@ from conftest import _make_nb
                 profile_runtime=False,
                 progress_bar=False,
                 parameters=None,
+                debug_later=False,
             ),
         ],
         [
@@ -48,6 +50,7 @@ from conftest import _make_nb
                 profile_runtime=False,
                 progress_bar=False,
                 parameters=None,
+                debug_later=False,
             ),
         ],
         [
@@ -60,6 +63,7 @@ from conftest import _make_nb
                 profile_runtime=True,
                 progress_bar=False,
                 parameters=None,
+                debug_later=False,
             ),
         ],
         [
@@ -72,6 +76,7 @@ from conftest import _make_nb
                 profile_runtime=False,
                 progress_bar=False,
                 parameters=dict(key="value"),
+                debug_later=False,
             ),
         ],
         [
@@ -84,6 +89,7 @@ from conftest import _make_nb
                 profile_runtime=False,
                 progress_bar=False,
                 parameters=dict(key=1),
+                debug_later=False,
             ),
         ],
         [
@@ -96,6 +102,7 @@ from conftest import _make_nb
                 profile_runtime=False,
                 progress_bar=False,
                 parameters=dict(key=1.0),
+                debug_later=False,
             ),
         ],
         [
@@ -108,6 +115,20 @@ from conftest import _make_nb
                 profile_runtime=False,
                 progress_bar=False,
                 parameters=dict(key=dict(a=1)),
+                debug_later=False,
+            ),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--no-progress-bar", "--debug-later"],
+            call(
+                "nb.ipynb",
+                "out.ipynb",
+                log_output=False,
+                profile_memory=False,
+                profile_runtime=False,
+                progress_bar=False,
+                parameters=None,
+                debug_later=True,
             ),
         ],
     ],

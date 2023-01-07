@@ -102,7 +102,7 @@ def parametrize_notebook(nb, parameters):
 
 def add_debuglater_cells(nb, path_to_dump=None):
     """Injects a cell at the top with to enable debuglater"""
-    # TODO: if the cell is already there, replace it
+    _, idx = find_cell_with_tag(nb, "injected-debuglater")
 
     if path_to_dump is None:
         warnings.warn(
@@ -124,4 +124,8 @@ patch_ipython({path_to_dump!r})
     cell_debuglater = nbformat_.new_code_cell(
         source=source, metadata=dict(tags=["injected-debuglater"])
     )
-    nb.cells.insert(0, cell_debuglater)
+
+    if idx is not None:
+        nb.cells[idx] = cell_debuglater
+    else:
+        nb.cells.insert(0, cell_debuglater)
