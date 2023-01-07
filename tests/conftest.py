@@ -103,5 +103,9 @@ def _make_nb(cells, path="nb.ipynb"):
     return nb
 
 
+def _make_nb_obj(cells):
+    return _make_nb(cells, path=None)
+
+
 def _read_nb(path):
     return nbformat.read(path, as_version=nbformat.NO_CONVERT)
