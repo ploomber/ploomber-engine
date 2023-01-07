@@ -7,6 +7,7 @@ import nbformat
 
 from ploomber_engine.ipython import PloomberClient
 from ploomber_engine import profiling
+from ploomber_engine import _util
 
 
 def execute_notebook(
@@ -49,7 +50,8 @@ def execute_notebook(
         Display a progress bar.
 
     debug_later : bool, default=False
-        Serialize Python traceback for later debugging.
+        Serialize Python traceback for later debugging. The ``.dump`` file is stored
+        next to the output notebook.
 
     Returns
     -------
@@ -97,11 +99,16 @@ def execute_notebook(
     else:
         INIT_FUNCTION = PloomberClient.from_path if path_like_input else PloomberClient
 
+    if debug_later:
+        debug_later_ = _util.sibling_with_suffix(output_path, ".dump")
+    else:
+        debug_later_ = debug_later
+
     client = INIT_FUNCTION(
         input_path,
         display_stdout=log_output,
         progress_bar=progress_bar,
-        debug_later=debug_later,
+        debug_later=debug_later_,
     )
 
     try:
@@ -113,16 +120,12 @@ def execute_notebook(
 
     if profile_runtime:
         ax = profiling.plot_cell_runtime(out)
-        output_path = Path(output_path)
-        output_path_runtime = output_path.with_name(output_path.stem + "-runtime.png")
+        output_path_runtime = _util.sibling_with_suffix(output_path, "-runtime.png")
         ax.figure.savefig(output_path_runtime)
 
     if profile_memory:
         ax = profiling.plot_memory_usage(out)
-        output_path = Path(output_path)
-        output_path_memory = output_path.with_name(
-            output_path.stem + "-memory-usage.png"
-        )
+        output_path_memory = _util.sibling_with_suffix(output_path, "-memory-usage.png")
         ax.figure.savefig(output_path_memory)
 
     if output_path:

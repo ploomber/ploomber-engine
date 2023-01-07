@@ -600,11 +600,19 @@ def test_progress_bar(tmp_empty, capsys):
     assert captured.err == ""
 
 
-def test_execute_notebook_debug_later(tmp_empty):
+@pytest.mark.parametrize(
+    "debug_later, path",
+    [
+        [True, "jupyter.dump"],
+        ["custom.dump", "custom.dump"],
+        ["path/to/file.dump", "path/to/file.dump"],
+    ],
+)
+def test_execute_notebook_debug_later(tmp_empty, debug_later, path):
     nb = _make_nb(["x = 1", "y = 0", "x / y"])
-    client = PloomberClient(nb, debug_later=True)
+    client = PloomberClient(nb, debug_later=debug_later)
 
     with pytest.raises(ZeroDivisionError):
         client.execute()
 
-    assert Path("jupyter.dump").is_file()
+    assert Path(path).is_file()

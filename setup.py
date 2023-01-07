@@ -17,7 +17,7 @@ with open("src/ploomber_engine/__init__.py", "rb") as f:
 
 REQUIRES = [
     "ploomber-core>=0.1.*",
-    "debuglater",
+    "debuglater>=1.4.4",
     # used for our debug now feature (PloomberNotebookClient)
     "nbclient",
     # used in PloomberClient
