@@ -12,7 +12,7 @@ from IPython.core.displaypub import DisplayPublisher
 from IPython.core.displayhook import DisplayHook
 
 
-from ploomber_engine._util import recursive_update
+from ploomber_engine._util import recursive_update, parametrize_notebook
 
 
 def _make_stream_output(out, name):
@@ -236,15 +236,23 @@ class PloomberClient:
 
         return output
 
-    def execute(self):
+    def execute(self, parameters=None):
         """Execute the notebook
 
         Returns
         -------
         nb
             Notebook object
+
+        Notes
+        -----
+        .. versionchanged:: 0.0.19
+            Added ``parameters`` argument
         """
         original = InteractiveShell._instance
+
+        if parameters is not None:
+            parametrize_notebook(self._nb, parameters=parameters)
 
         with self:
             self._execute()
