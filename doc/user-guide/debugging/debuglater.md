@@ -14,15 +14,12 @@ kernelspec:
 
 # Debug later
 
+```{versionadded} 0.0.19
+```
+
 ploomber-engine uses our [debuglater](https://github.com/ploomber/debuglater) package to serialize the error traceback so you can start a debugging session after your notebook crashes.
 
 So, for example, if you're running notebooks in production or remote servers, you can debug after they crash. Likewise, you can use the generated file to debug on a different machine (assuming the environment is the same) without having access to the source code.
-
-![debuglater gif](https://camo.githubusercontent.com/3463b13da6c719e35b986288c5bb7dcbc6fe26cc4172d66f7a2cc2d47970bc01/68747470733a2f2f706c6f6f6d6265722e696f2f696d616765732f646f632f706c6f6f6d6265722d656e67696e652d64656d6f2f64656275676c617465722e676966)
-
-```{note}
-You can download this tutorial in Jupyter notebook format by clicking on the icon in the upper right corner.
-```
 
 +++
 
@@ -31,7 +28,7 @@ You can download this tutorial in Jupyter notebook format by clicking on the ico
 Install requirements:
 
 ```{code-cell} ipython3
-%pip install ploomber-engine papermill ipykernel --quiet
+%pip install ploomber-engine --quiet
 ```
 
 Download [sample notebook](https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/debuglater.ipynb):
@@ -41,20 +38,24 @@ Download [sample notebook](https://raw.githubusercontent.com/ploomber/ploomber-e
 curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/tests/assets/debuglater.ipynb --output debuglater-demo.ipynb
 ```
 
-Run the notebook with `--engine debuglater` option (note that this notebook crashes on purpose):
+Run the notebook with `debug_later=True` option (note that this notebook crashes on purpose):
 
 ```{code-cell} ipython3
 :tags: [raises-exception, hide-output]
 
-%%sh
-papermill debuglater-demo.ipynb tmp.ipynb --engine debuglater
+from ploomber_engine import execute_notebook
+
+execute_notebook("debuglater-demo.ipynb", "output.ipynb",
+                 debug_later=True)
 ```
 
-```{note}
-Currently, the `debuglater` engine is only available via `papermill`, in a future release, it'll be possible to use it without it.
+```{admonition} Command-line equivalent
+:class: dropdown
+
+`ploomber-engine nb.ipynb output.ipynb --debug-later`
 ```
 
-The above command generates a `jupyter.dump` file which is the serialized traceback:
+The above command generated an `output.dump` file which is the serialized traceback:
 
 ```{code-cell} ipython3
 %%sh
@@ -64,5 +65,5 @@ ls *.dump
 We can use the `dltr` command (from our [debuglater](https://github.com/ploomber/debuglater) package) to start a debugging session:
 
 ```sh
-dltr jupyter.dump
+dltr output.dump
 ```
