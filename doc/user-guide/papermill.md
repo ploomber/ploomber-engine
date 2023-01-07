@@ -12,7 +12,10 @@ pip install ploomber-engine papermill ipykernel
 
 ## Debugging
 
-If your notebook crashes mid-execution, papermill will provide you with the crashed `.ipynb` file. However, in many cases this isn't enough and you might want to use a debugger like [`pdb`](https://docs.python.org/3/library/pdb.html) for interactive debugging, you can use the `debuglater` engine to do so:
+If your notebook crashes mid-execution, papermill will provide you with the crashed `.ipynb` file. However, in many cases this isn't enough and you might want to use a debugger like [`pdb`](https://docs.python.org/3/library/pdb.html) for interactive debugging, you can use the `debuglater` engine to do so.
+
+![debuglater gif](https://camo.githubusercontent.com/3463b13da6c719e35b986288c5bb7dcbc6fe26cc4172d66f7a2cc2d47970bc01/68747470733a2f2f706c6f6f6d6265722e696f2f696d616765732f646f632f706c6f6f6d6265722d656e67696e652d64656d6f2f64656275676c617465722e676966)
+
 
 ```sh
 papermill input.ipynb output.ipynb --engine debuglater
