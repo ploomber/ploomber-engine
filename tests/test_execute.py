@@ -33,6 +33,18 @@ def test_execute_notebook_from_object(tmp_empty):
     assert nb_from_file.cells[0]["outputs"][0]["data"] == {"text/plain": "2"}
 
 
+def test_execute_notebook_with_parameters(tmp_empty):
+    nb_in = _make_nb(["x + y"])
+
+    nb = execute_notebook(nb_in, "out.ipynb", parameters=dict(x=21, y=21))
+    nb_source = _read_nb("nb.ipynb")
+    nb_from_file = _read_nb("out.ipynb")
+
+    assert nb.cells[1]["outputs"][0]["data"] == {"text/plain": "42"}
+    assert not nb_source.cells[0]["outputs"]
+    assert nb_from_file.cells[1]["outputs"][0]["data"] == {"text/plain": "42"}
+
+
 def test_execute_notebook_no_output_path(tmp_empty):
     _make_nb(["1+1"])
 

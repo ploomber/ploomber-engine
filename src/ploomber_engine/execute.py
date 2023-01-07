@@ -13,6 +13,7 @@ def execute_notebook(
     input_path,
     output_path,
     *,
+    parameters=None,
     log_output=False,
     profile_runtime=False,
     profile_memory=False
@@ -27,6 +28,9 @@ def execute_notebook(
 
     output_path : str or Path or None
         Path to save executed notebook. If None, no file will be saved
+
+    parameters : dict, optional, default=None
+        Arbitrary keyword arguments to pass to the notebook parameters
 
     log_output : bool, optional, default=False
         Flag for whether or not to write notebook output to stdout
@@ -47,6 +51,9 @@ def execute_notebook(
 
     Notes
     -----
+    .. versionchanged:: 0.0.19
+        Added ``parameters`` argument
+
     .. versionadded:: 0.0.18
 
     Examples
@@ -85,7 +92,7 @@ def execute_notebook(
 
     client = INIT_FUNCTION(input_path, display_stdout=log_output)
 
-    out = client.execute()
+    out = client.execute(parameters=parameters)
 
     if profile_runtime:
         ax = profiling.plot_cell_runtime(out)

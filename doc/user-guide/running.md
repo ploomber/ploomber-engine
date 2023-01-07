@@ -31,7 +31,8 @@ Download sample notebook:
 
 ```{code-cell} ipython3
 %%sh
-curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/display.ipynb --output running-demo.ipynb
+curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/display.ipynb \
+    --output running-demo.ipynb
 ```
 
 Run the notebook and store the executed version:
@@ -76,4 +77,46 @@ If your notebook contains `print` statements and want to see them in the current
 _ = execute_notebook("running-demo.ipynb",
                      output_path="output.ipynb",
                      log_output=True)
+```
+
+## Parametrizing notebooks
+
+```{versionadded} 0.0.19
+```
+
+You can parametrize notebooks and switch their values at runtime. By default values, are injected in the first cell. However, if you want to provide default values, you may add a cell like this:
+
+```python
+# parameters
+x = 1
+y = 2
+```
+
+If you do so, the passed parameters will be injected in a cell below to replace the default values. If you prefer, you can tag the cell with default values as `"parameters"` (*à la* papermill) instead of adding the `# parameters` comment.
+
+Let's download a sample notebook that prints `x + y`:
+
+```{code-cell} ipython3
+%%sh
+curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/sum.ipynb \
+    --output sum-demo.ipynb
+```
+
+If we don't pass parameters, it uses the default values:
+
+```{code-cell} ipython3
+_ = execute_notebook("sum-demo.ipynb", output_path=None, log_output=True)
+```
+
+Passing `parameters` overrides the defaults:
+
+```{code-cell} ipython3
+_ = execute_notebook("sum-demo.ipynb",
+                     output_path=None,
+                     log_output=True,
+                     parameters=dict(x=21, y=21))
+```
+
+```{code-cell} ipython3
+
 ```
