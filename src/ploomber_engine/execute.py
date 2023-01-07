@@ -97,7 +97,12 @@ def execute_notebook(
         input_path, display_stdout=log_output, progress_bar=progress_bar
     )
 
-    out = client.execute(parameters=parameters)
+    try:
+        out = client.execute(parameters=parameters)
+    except Exception:
+        if output_path:
+            nbformat.write(client._nb, output_path)
+        raise
 
     if profile_runtime:
         ax = profiling.plot_cell_runtime(out)

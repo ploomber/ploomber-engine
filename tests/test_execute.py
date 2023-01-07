@@ -1,3 +1,4 @@
+from unittest.mock import ANY
 from pathlib import Path
 
 import pytest
@@ -159,3 +160,20 @@ def test_progress_bar(tmp_empty, capsys):
     captured = capsys.readouterr()
     assert "Executing cell: 1" in captured.out
     assert captured.err == ""
+
+
+def test_stores_partially_executed_notebook(tmp_empty):
+    nb = _make_nb(["1 + 1", "1 / 0"], path=None)
+
+    with pytest.raises(ZeroDivisionError):
+        execute_notebook(nb, output_path="output.ipynb")
+
+    out = _read_nb("output.ipynb")
+
+    assert out.cells[0]["outputs"][0]["data"] == {"text/plain": "2"}
+    assert out.cells[1]["outputs"][0] == {
+        "ename": "ZeroDivisionError",
+        "evalue": "division by zero",
+        "output_type": "error",
+        "traceback": ANY,
+    }
