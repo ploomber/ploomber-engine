@@ -25,6 +25,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=None,
                 debug_later=False,
+                verbose=True,
             ),
         ],
         [
@@ -38,6 +39,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=None,
                 debug_later=False,
+                verbose=True,
             ),
         ],
         [
@@ -51,6 +53,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=None,
                 debug_later=False,
+                verbose=True,
             ),
         ],
         [
@@ -64,6 +67,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=None,
                 debug_later=False,
+                verbose=True,
             ),
         ],
         [
@@ -77,6 +81,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=dict(key="value"),
                 debug_later=False,
+                verbose=True,
             ),
         ],
         [
@@ -90,6 +95,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=dict(key=1),
                 debug_later=False,
+                verbose=True,
             ),
         ],
         [
@@ -103,6 +109,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=dict(key=1.0),
                 debug_later=False,
+                verbose=True,
             ),
         ],
         [
@@ -116,6 +123,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=dict(key=dict(a=1)),
                 debug_later=False,
+                verbose=True,
             ),
         ],
         [
@@ -129,6 +137,7 @@ from conftest import _make_nb
                 progress_bar=False,
                 parameters=None,
                 debug_later=True,
+                verbose=True,
             ),
         ],
     ],
@@ -143,7 +152,6 @@ def test_cli(tmp_empty, monkeypatch, cli_args, call_expected):
     result = runner.invoke(cli.cli, cli_args)
 
     assert result.exit_code == 0
-    assert result.output == ""
     assert mock.call_args_list == [call_expected]
 
 
