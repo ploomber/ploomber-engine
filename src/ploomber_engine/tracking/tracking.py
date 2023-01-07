@@ -12,7 +12,7 @@ import click
 import parso
 
 import nbformat
-from ploomber_engine.tracking.translator import translate_parameters
+from ploomber_engine._translator import translate_parameters
 from IPython.core.interactiveshell import InteractiveShell
 
 from ploomber_engine.ipython import PloomberClient, add_to_sys_path
