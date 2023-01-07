@@ -78,15 +78,22 @@ def tmp_empty(tmp_path):
 
 
 def _make_cell(cell):
+    metadata = {} if len(cell) <= 2 else cell[2]
+
     if isinstance(cell, str):
         return nbformat.v4.new_code_cell(cell)
     elif cell[0] == "markdown":
-        return nbformat.v4.new_markdown_cell(cell[1])
+        return nbformat.v4.new_markdown_cell(cell[1], metadata=metadata)
+    elif cell[0] == "code":
+        return nbformat.v4.new_code_cell(cell[1], metadata=metadata)
     else:
         raise ValueError(f"Unexpected value: {cell}")
 
 
 def _make_nb(cells, path="nb.ipynb"):
+    if not isinstance(cells, (list, tuple)):
+        raise ValueError("Expected list or tuple")
+
     nb = nbformat.v4.new_notebook()
     nb.cells = [_make_cell(cell) for cell in cells]
 
