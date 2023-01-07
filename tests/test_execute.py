@@ -104,7 +104,7 @@ def test_execute_notebook_log_stdout(tmp_empty, capsys):
         ["import sys", "print('hello')", "print('world', file=sys.stderr)"]
     )
 
-    execute_notebook(nb_in, "out.ipynb", log_output=True)
+    execute_notebook(nb_in, "out.ipynb", log_output=True, progress_bar=False)
 
     captured = capsys.readouterr()
     assert captured.out == "hello\n"
@@ -149,3 +149,13 @@ def test_execute_notebook_profile_memory(cells, tmp_empty):
 
     assert Path("out-memory-usage.png")
     assert Image(filename="out-memory-usage.png")
+
+
+def test_progress_bar(tmp_empty, capsys):
+    nb = _make_nb(["1 + 1"], path=None)
+
+    execute_notebook(nb, output_path=None)
+
+    captured = capsys.readouterr()
+    assert "Executing cell: 1" in captured.out
+    assert captured.err == ""

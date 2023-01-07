@@ -387,7 +387,7 @@ class PloomberClient:
                             execution_count=execution_count,
                             store_history=False,
                         )
-                    execution_count += 1
+                        execution_count += 1
 
                     progress.update(task, advance=1, refresh=True)
 

@@ -16,7 +16,8 @@ def execute_notebook(
     parameters=None,
     log_output=False,
     profile_runtime=False,
-    profile_memory=False
+    profile_memory=False,
+    progress_bar=True,
 ):
     """Executes a notebook. Drop-in replacement for
     ``papermill.execute_notebook`` with enhanced capabilities.
@@ -43,6 +44,8 @@ def execute_notebook(
         If True, profile cell's memory usage (stores plot in a ``.png``
         file in the same folder as ``output_path``)
 
+    progress_bar : bool, default=True
+        Display a progress bar.
 
     Returns
     -------
@@ -52,7 +55,7 @@ def execute_notebook(
     Notes
     -----
     .. versionchanged:: 0.0.19
-        Added ``parameters`` argument
+        Added ``parameters`` and ``progress_bar`` argument
 
     .. versionadded:: 0.0.18
 
@@ -90,7 +93,9 @@ def execute_notebook(
     else:
         INIT_FUNCTION = PloomberClient.from_path if path_like_input else PloomberClient
 
-    client = INIT_FUNCTION(input_path, display_stdout=log_output)
+    client = INIT_FUNCTION(
+        input_path, display_stdout=log_output, progress_bar=progress_bar
+    )
 
     out = client.execute(parameters=parameters)
 
