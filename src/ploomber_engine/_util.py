@@ -1,3 +1,4 @@
+import warnings
 import re
 
 import nbformat
@@ -97,3 +98,30 @@ def parametrize_notebook(nb, parameters):
         nb.cells[idx_to_inject] = params_cell
 
     return nb
+
+
+def add_debuglater_cells(nb, path_to_dump=None):
+    """Injects a cell at the top with to enable debuglater"""
+    # TODO: if the cell is already there, replace it
+
+    if path_to_dump is None:
+        warnings.warn(
+            "Did not pass path_to_dump to "
+            "DebugLaterEngine.execute_managed_notebook, "
+            "the default value will be used"
+        )
+        source = """
+from debuglater import patch_ipython
+patch_ipython()
+"""
+    else:
+        source = f"""
+from debuglater import patch_ipython
+patch_ipython({path_to_dump!r})
+"""
+    nbformat_ = nbformat.versions[nb["nbformat"]]
+
+    cell_debuglater = nbformat_.new_code_cell(
+        source=source, metadata=dict(tags=["injected-debuglater"])
+    )
+    nb.cells.insert(0, cell_debuglater)

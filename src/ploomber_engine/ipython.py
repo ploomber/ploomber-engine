@@ -13,7 +13,11 @@ from IPython.core.displaypub import DisplayPublisher
 from IPython.core.displayhook import DisplayHook
 from rich.progress import Progress
 
-from ploomber_engine._util import recursive_update, parametrize_notebook
+from ploomber_engine._util import (
+    recursive_update,
+    parametrize_notebook,
+    add_debuglater_cells,
+)
 
 
 def _make_stream_output(out, name):
@@ -150,10 +154,13 @@ class PloomberClient:
     progress_bar : bool, default=True
         Display a progress bar.
 
+    debug_later : bool, default=False
+        Serialize Python traceback for later debugging.
+
     Notes
     -----
     .. versionchanged:: 0.0.19
-        Added ``progress_bar`` argument.
+        Added ``progress_bar`` and ``debug_later`` arguments.
 
     Examples
     --------
@@ -168,10 +175,11 @@ class PloomberClient:
     {'text/plain': '2'}
     """
 
-    def __init__(self, nb, display_stdout=False, progress_bar=True):
+    def __init__(self, nb, display_stdout=False, progress_bar=True, debug_later=False):
         self._nb = nb
         self._shell = None
         self._display_stdout = display_stdout
+        self._debug_later = debug_later
 
         # NOTE: this env var is only used internally so the doctests don't show
         # the progress bar
@@ -183,7 +191,9 @@ class PloomberClient:
             self._progress_bar = progress_bar
 
     @classmethod
-    def from_path(cls, path, display_stdout=False, progress_bar=True):
+    def from_path(
+        cls, path, display_stdout=False, progress_bar=True, debug_later=False
+    ):
         """Initialize client from a path to a notebook
 
         Parameters
@@ -197,10 +207,13 @@ class PloomberClient:
         progress_bar : bool, default=True
             Display a progress bar.
 
+        debug_later : bool, default=False
+            Serialize Python traceback for later debugging.
+
         Notes
         -----
         .. versionchanged:: 0.0.19
-            Added ``progress_bar`` argument.
+            Added ``progress_bar`` and ``debug_later`` arguments.
 
         .. versionchanged:: 0.0.18
             Added ``display_stdout`` argument.
@@ -213,7 +226,12 @@ class PloomberClient:
 
         """
         nb = nbformat.read(path, as_version=nbformat.NO_CONVERT)
-        return cls(nb, display_stdout=display_stdout, progress_bar=progress_bar)
+        return cls(
+            nb,
+            display_stdout=display_stdout,
+            progress_bar=progress_bar,
+            debug_later=debug_later,
+        )
 
     def execute_cell(self, cell, cell_index, execution_count, store_history):
         if self._shell is None:
@@ -277,6 +295,9 @@ class PloomberClient:
 
         if parameters is not None:
             parametrize_notebook(self._nb, parameters=parameters)
+
+        if self._debug_later:
+            add_debuglater_cells(self._nb)
 
         with self:
             self._execute()

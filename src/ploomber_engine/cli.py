@@ -32,6 +32,12 @@ from ploomber_engine import execute_notebook
     "--progress-bar/--no-progress-bar", default=True, help="Display a progress bar"
 )
 @click.option("--parameters", "-p", nargs=2, multiple=True)
+@click.option(
+    "--debug-later",
+    is_flag=True,
+    default=False,
+    help="Serialize traceback for later debugging",
+)
 def cli(
     input_path,
     output_path,
@@ -40,6 +46,7 @@ def cli(
     profile_memory,
     progress_bar,
     parameters,
+    debug_later,
 ):
     """
     Execute my-notebook.ipynb, store results in output.ipynb:
@@ -70,6 +77,7 @@ def cli(
         profile_runtime=profile_runtime,
         progress_bar=progress_bar,
         parameters=_parse_cli_notebook_parameters(parameters),
+        debug_later=debug_later,
     )
 
 
