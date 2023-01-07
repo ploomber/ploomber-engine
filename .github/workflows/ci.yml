@@ -36,9 +36,7 @@ jobs:
 
       - name: Unit tests
         run: |
-          # NOTE: we need to pass tests/ otherwise pytest will load
-          # the conftest in src/
-          pytest tests/ --ignore=tests/test_engine.py
+          pytest --ignore=tests/test_engine.py
 
       - name: Unit tests (papermill)
         run: |
