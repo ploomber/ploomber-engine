@@ -8,6 +8,7 @@ import pytest
 import nbformat
 from IPython.core.interactiveshell import InteractiveShell
 
+from conftest import _make_nb
 from ploomber_engine.ipython import PloomberShell, PloomberClient
 from ploomber_engine import ipython
 
@@ -568,3 +569,19 @@ def test_log_print_statements_init_from_path(tmp_empty, capsys):
 
     captured = capsys.readouterr()
     assert captured.out == "a\nb\n"
+
+
+@pytest.mark.parametrize(
+    "nb, idx_injected, idx_out",
+    [
+        [_make_nb(["print(x + y)"]), 0, 1],
+        [_make_nb(["1 + 1", "print(x + y)"]), 0, 2],
+        [_make_nb(["#PARAMETERS\n1 + 2", "print(x + y)"]), 1, 2],
+    ],
+)
+def test_parametrize(tmp_empty, nb, idx_injected, idx_out):
+    client = PloomberClient(nb)
+    out = client.execute(parameters=dict(x=21, y=21))
+
+    assert out.cells[idx_out]["outputs"][0]["text"] == "42\n"
+    assert out.cells[idx_injected].source == "# Injected parameters\nx = 21\ny = 21\n"

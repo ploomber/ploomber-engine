@@ -63,20 +63,37 @@ def find_cell_with_comment(nb):
     return None, None
 
 
-def parametrize_notebook(nb, params):
+def parametrize_notebook(nb, parameters):
     """Add parameters to a notebook object"""
+    _, idx_injected = find_cell_with_tag(nb, "injected-parameters")
     _, idx_params = find_cell_with_tag(nb, "parameters")
+    _, idx_comment = find_cell_with_comment(nb)
 
-    if idx_params is None:
-        _, idx_params = find_cell_with_comment(nb)
+    insert = True
 
-    idx_insert = 0 if idx_params is None else (idx_params + 1)
+    if idx_injected is not None:
+        insert = False
+        idx_to_inject = idx_injected
+    elif idx_params is not None and idx_comment is None:
+        idx_to_inject = idx_params + 1
+    elif idx_params is None and idx_comment is not None:
+        idx_to_inject = idx_comment + 1
+    elif idx_params is not None and idx_comment is not None:
+        idx_to_inject = max(idx_params, idx_comment) + 1
+    else:
+        idx_to_inject = 0
 
     params_translated = translate_parameters(
-        parameters=params, comment="Injected parameters"
+        parameters=parameters, comment="Injected parameters"
     )
     nbformat_ = nbformat.versions[nb.nbformat]
-    params_cell = nbformat_.new_code_cell(params_translated)
-    nb.cells.insert(idx_insert, params_cell)
+    params_cell = nbformat_.new_code_cell(
+        params_translated, metadata=dict(tags=["injected-parameters"])
+    )
+
+    if insert:
+        nb.cells.insert(idx_to_inject, params_cell)
+    else:
+        nb.cells[idx_to_inject] = params_cell
 
     return nb
