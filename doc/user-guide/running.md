@@ -46,8 +46,7 @@ Run the notebook and store the executed version:
 ```{code-cell} ipython3
 from ploomber_engine import execute_notebook
 
-nb = execute_notebook("running-demo.ipynb",
-                      output_path="output.ipynb")
+nb = execute_notebook("running-demo.ipynb", output_path="output.ipynb")
 ```
 
 The function returns a notebook object (same contents as stored in `output_path`):
@@ -59,8 +58,7 @@ type(nb)
 Skip storing the output notebook:
 
 ```{code-cell} ipython3
-_ = execute_notebook("running-demo.ipynb",
-                     output_path=None)
+_ = execute_notebook("running-demo.ipynb", output_path=None)
 ```
 
 ## Logging `print` statements
@@ -74,9 +72,7 @@ If your notebook contains `print` statements and want to see them in the current
 ```
 
 ```{code-cell} ipython3
-_ = execute_notebook("running-demo.ipynb",
-                     output_path="output.ipynb",
-                     log_output=True)
+_ = execute_notebook("running-demo.ipynb", output_path="output.ipynb", log_output=True)
 ```
 
 ## Parametrizing notebooks
@@ -110,13 +106,15 @@ _ = execute_notebook("sum-demo.ipynb", output_path=None, log_output=True)
 
 Passing `parameters` overrides the defaults:
 
-```{code-cell} ipython3
-_ = execute_notebook("sum-demo.ipynb",
-                     output_path=None,
-                     log_output=True,
-                     parameters=dict(x=21, y=21))
+
+```{admonition} Command-line equivalent
+:class: dropdown
+
+`ploomber-engine nb.ipynb output.ipynb -p x 21 -p y 21`
 ```
 
 ```{code-cell} ipython3
-
+_ = execute_notebook(
+    "sum-demo.ipynb", output_path=None, log_output=True, parameters=dict(x=21, y=21)
+)
 ```
