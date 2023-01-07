@@ -550,7 +550,7 @@ def test_log_print_statements(capsys):
         nbformat.v4.new_code_cell(source='print("b")'),
     ]
 
-    PloomberClient(nb, display_stdout=True).execute()
+    PloomberClient(nb, display_stdout=True, progress_bar=False).execute()
 
     captured = capsys.readouterr()
     assert captured.out == "a\nb\n"
@@ -565,7 +565,9 @@ def test_log_print_statements_init_from_path(tmp_empty, capsys):
 
     nbformat.write(nb, "notebook.ipynb")
 
-    PloomberClient.from_path("notebook.ipynb", display_stdout=True).execute()
+    PloomberClient.from_path(
+        "notebook.ipynb", display_stdout=True, progress_bar=False
+    ).execute()
 
     captured = capsys.readouterr()
     assert captured.out == "a\nb\n"
@@ -585,3 +587,14 @@ def test_parametrize(tmp_empty, nb, idx_injected, idx_out):
 
     assert out.cells[idx_out]["outputs"][0]["text"] == "42\n"
     assert out.cells[idx_injected].source == "# Injected parameters\nx = 21\ny = 21\n"
+
+
+def test_progress_bar(tmp_empty, capsys):
+    nb = _make_nb(["1 + 1"], path=None)
+
+    client = PloomberClient(nb)
+    client.execute()
+
+    captured = capsys.readouterr()
+    assert "Executing cell: 1" in captured.out
+    assert captured.err == ""

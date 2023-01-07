@@ -28,7 +28,12 @@ from ploomber_engine import execute_notebook
     default=False,
     help="Profile cell's memory usage",
 )
-def cli(input_path, output_path, log_output, profile_runtime, profile_memory):
+@click.option(
+    "--progress-bar/--no-progress-bar", default=True, help="Display a progress bar"
+)
+def cli(
+    input_path, output_path, log_output, profile_runtime, profile_memory, progress_bar
+):
     """
     Execute my-notebook.ipynb, store results in output.ipynb:
 
@@ -52,4 +57,5 @@ def cli(input_path, output_path, log_output, profile_runtime, profile_memory):
         log_output=log_output,
         profile_memory=profile_memory,
         profile_runtime=profile_runtime,
+        progress_bar=progress_bar,
     )

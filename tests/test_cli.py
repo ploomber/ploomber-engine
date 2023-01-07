@@ -15,43 +15,47 @@ from conftest import _make_nb
     "cli_args, call_expected",
     [
         [
-            ["nb.ipynb", "out.ipynb"],
+            ["nb.ipynb", "out.ipynb", "--no-progress-bar"],
             call(
                 "nb.ipynb",
                 "out.ipynb",
                 log_output=False,
                 profile_memory=False,
                 profile_runtime=False,
+                progress_bar=False,
             ),
         ],
         [
-            ["nb.ipynb", "out.ipynb", "--log-output"],
+            ["nb.ipynb", "out.ipynb", "--log-output", "--no-progress-bar"],
             call(
                 "nb.ipynb",
                 "out.ipynb",
                 log_output=True,
                 profile_memory=False,
                 profile_runtime=False,
+                progress_bar=False,
             ),
         ],
         [
-            ["nb.ipynb", "out.ipynb", "--profile-memory"],
+            ["nb.ipynb", "out.ipynb", "--profile-memory", "--no-progress-bar"],
             call(
                 "nb.ipynb",
                 "out.ipynb",
                 log_output=False,
                 profile_memory=True,
                 profile_runtime=False,
+                progress_bar=False,
             ),
         ],
         [
-            ["nb.ipynb", "out.ipynb", "--profile-runtime"],
+            ["nb.ipynb", "out.ipynb", "--profile-runtime", "--no-progress-bar"],
             call(
                 "nb.ipynb",
                 "out.ipynb",
                 log_output=False,
                 profile_memory=False,
                 profile_runtime=True,
+                progress_bar=False,
             ),
         ],
     ],
@@ -88,3 +92,13 @@ def test_cli_missing_output_arg(tmp_empty):
 
     assert result.exit_code == 2
     assert "Error: Missing argument 'OUTPUT_PATH'.\n" in result.output
+
+
+def test_cli_progress_bar(tmp_empty):
+    _make_nb(["1 + 1"])
+
+    runner = CliRunner()
+    result = runner.invoke(cli.cli, ["nb.ipynb", "output.ipynb"])
+
+    assert result.exit_code == 0
+    assert "Executing cell: 1" in result.output
