@@ -2,9 +2,11 @@ import re
 import ast
 from glob import glob
 from os.path import basename, splitext
+import fnmatch
 
 from setuptools import find_packages
 from setuptools import setup
+from setuptools.command.build_py import build_py as build_py_orig
 
 _version_re = re.compile(r"__version__\s+=\s+(.*)")
 
@@ -49,6 +51,27 @@ DEV = [
 ]
 
 
+exclude = ["*.conftest"]
+
+
+# this is the only way I found for excluding single  .py files in wheels
+# (https://stackoverflow.com/a/50592100/709975). MANIFEST.in only applies to source
+# distributions. Some more info:
+# https://github.com/pypa/packaging.python.org/issues/306
+# https://github.com/pypa/setuptools/issues/511
+class build_py(build_py_orig):
+    def find_package_modules(self, package, package_dir):
+        modules = super().find_package_modules(package, package_dir)
+
+        return [
+            (pkg, mod, file)
+            for (pkg, mod, file) in modules
+            if not any(
+                fnmatch.fnmatchcase(pkg + "." + mod, pat=pattern) for pattern in exclude
+            )
+        ]
+
+
 setup(
     name="ploomber-engine",
     version=VERSION,
@@ -58,6 +81,7 @@ setup(
     author_email=None,
     url=None,
     packages=find_packages("src"),
+    cmdclass={"build_py": build_py},
     package_dir={"": "src"},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
