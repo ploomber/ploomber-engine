@@ -10,7 +10,7 @@ import nbformat
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.core.displaypub import DisplayPublisher
 from IPython.core.displayhook import DisplayHook
-
+from rich.progress import Progress
 
 from ploomber_engine._util import recursive_update, parametrize_notebook
 
@@ -350,15 +350,28 @@ class PloomberClient:
         # make sure that the current working directory is in the sys.path
         # in case the user has local modules
         with add_to_sys_path("."):
-            for index, cell in enumerate(self._nb.cells):
-                if cell.cell_type == "code":
-                    self.execute_cell(
-                        cell,
-                        cell_index=index,
-                        execution_count=execution_count,
-                        store_history=False,
+            with Progress(auto_refresh=False) as progress:
+                task = progress.add_task(
+                    f"Executing cell: {execution_count}", total=len(self._nb.cells)
+                )
+
+                for index, cell in enumerate(self._nb.cells):
+                    progress.update(
+                        task,
+                        description=f"Executing cell: {execution_count}",
+                        refresh=True,
                     )
+
+                    if cell.cell_type == "code":
+                        self.execute_cell(
+                            cell,
+                            cell_index=index,
+                            execution_count=execution_count,
+                            store_history=False,
+                        )
                     execution_count += 1
+
+                    progress.update(task, advance=1, refresh=True)
 
         return self._nb
 

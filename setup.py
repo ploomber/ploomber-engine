@@ -30,6 +30,8 @@ REQUIRES = [
     "click",
     # for loading package version without importing the root __init__.py
     'importlib-metadata;python_version<"3.8"',
+    # for progress bar
+    "rich",
 ]
 
 DEV = [
