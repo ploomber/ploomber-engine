@@ -46,7 +46,7 @@ curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/di
 ```{code-cell} ipython3
 from ploomber_engine import execute_notebook
 
-_ = execute_notebook("nb.ipynb", "output.ipynb")
+_ = execute_notebook("nb.ipynb", "output.ipynb", parameters=dict(x=1, y=2))
 ```
 
 ## Log print statements
