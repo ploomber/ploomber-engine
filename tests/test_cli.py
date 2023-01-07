@@ -23,6 +23,7 @@ from conftest import _make_nb
                 profile_memory=False,
                 profile_runtime=False,
                 progress_bar=False,
+                parameters=None,
             ),
         ],
         [
@@ -34,6 +35,7 @@ from conftest import _make_nb
                 profile_memory=False,
                 profile_runtime=False,
                 progress_bar=False,
+                parameters=None,
             ),
         ],
         [
@@ -45,6 +47,7 @@ from conftest import _make_nb
                 profile_memory=True,
                 profile_runtime=False,
                 progress_bar=False,
+                parameters=None,
             ),
         ],
         [
@@ -56,6 +59,55 @@ from conftest import _make_nb
                 profile_memory=False,
                 profile_runtime=True,
                 progress_bar=False,
+                parameters=None,
+            ),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "value"],
+            call(
+                "nb.ipynb",
+                "out.ipynb",
+                log_output=False,
+                profile_memory=False,
+                profile_runtime=False,
+                progress_bar=False,
+                parameters=dict(key="value"),
+            ),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "1"],
+            call(
+                "nb.ipynb",
+                "out.ipynb",
+                log_output=False,
+                profile_memory=False,
+                profile_runtime=False,
+                progress_bar=False,
+                parameters=dict(key=1),
+            ),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "1.0"],
+            call(
+                "nb.ipynb",
+                "out.ipynb",
+                log_output=False,
+                profile_memory=False,
+                profile_runtime=False,
+                progress_bar=False,
+                parameters=dict(key=1.0),
+            ),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "{'a': 1}"],
+            call(
+                "nb.ipynb",
+                "out.ipynb",
+                log_output=False,
+                profile_memory=False,
+                profile_runtime=False,
+                progress_bar=False,
+                parameters=dict(key=dict(a=1)),
             ),
         ],
     ],
@@ -102,3 +154,23 @@ def test_cli_progress_bar(tmp_empty):
 
     assert result.exit_code == 0
     assert "Executing cell: 1" in result.output
+
+
+@pytest.mark.parametrize(
+    "params, expected",
+    [
+        [tuple(), None],
+        [(("key", "value"),), {"key": "value"}],
+        [(("key", "value"), ("key", "value")), {"key": "value"}],
+        [
+            (("key", "value"), ("key_another", "value_another")),
+            {"key": "value", "key_another": "value_another"},
+        ],
+        [(("key", "1"),), {"key": 1}],
+        [(("key", "1.1"),), {"key": 1.1}],
+        [(("key", "[1, 2, 3]"),), {"key": [1, 2, 3]}],
+        [(("key", "{'a': 1}"),), {"key": {"a": 1}}],
+    ],
+)
+def test_parse_cli_notebook_parameters(params, expected):
+    assert cli._parse_cli_notebook_parameters(params) == expected

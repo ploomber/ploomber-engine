@@ -1,7 +1,7 @@
 """
 Command-line interface
 """
-
+import ast
 import click
 
 from ploomber_engine import execute_notebook
@@ -31,13 +31,24 @@ from ploomber_engine import execute_notebook
 @click.option(
     "--progress-bar/--no-progress-bar", default=True, help="Display a progress bar"
 )
+@click.option("--parameters", "-p", nargs=2, multiple=True)
 def cli(
-    input_path, output_path, log_output, profile_runtime, profile_memory, progress_bar
+    input_path,
+    output_path,
+    log_output,
+    profile_runtime,
+    profile_memory,
+    progress_bar,
+    parameters,
 ):
     """
     Execute my-notebook.ipynb, store results in output.ipynb:
 
     $ ploomber-engine my-notebook.ipynb output.ipynb
+
+    Pass parameters:
+
+    $ ploomber-engine my-notebook.ipynb output.ipynb -p key value -p x 42
 
     Display print statements:
 
@@ -58,4 +69,19 @@ def cli(
         profile_memory=profile_memory,
         profile_runtime=profile_runtime,
         progress_bar=progress_bar,
+        parameters=_parse_cli_notebook_parameters(parameters),
     )
+
+
+def _safe_literal_eval(val):
+    try:
+        return ast.literal_eval(val)
+    except Exception:
+        return val
+
+
+def _parse_cli_notebook_parameters(parameters):
+    if not parameters:
+        return None
+
+    return {k: _safe_literal_eval(v) for k, v in parameters}
