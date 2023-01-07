@@ -3,6 +3,7 @@ Abstractions for running notebooks with papermill-like interface
 """
 from pathlib import Path
 
+import click
 import nbformat
 
 from ploomber_engine.ipython import PloomberClient
@@ -20,6 +21,7 @@ def execute_notebook(
     profile_memory=False,
     progress_bar=True,
     debug_later=False,
+    verbose=False,
 ):
     """Executes a notebook. Drop-in replacement for
     ``papermill.execute_notebook`` with enhanced capabilities.
@@ -53,6 +55,9 @@ def execute_notebook(
         Serialize Python traceback for later debugging. The ``.dump`` file is stored
         next to the output notebook.
 
+    verbose : bool, default=False
+        If True, prints information messages
+
     Returns
     -------
     nb : NotebookNode
@@ -61,7 +66,8 @@ def execute_notebook(
     Notes
     -----
     .. versionchanged:: 0.0.19
-        Added ``parameters``, ``progress_bar``, and ``debug_later`` arguments.
+        Added ``parameters``, ``progress_bar``, ``debug_later``, and ``verbose``
+        arguments.
 
     .. versionadded:: 0.0.18
 
@@ -116,6 +122,21 @@ def execute_notebook(
     except Exception:
         if output_path:
             nbformat.write(client._nb, output_path)
+
+        if verbose and output_path:
+            click.secho(
+                "An error happened while executing the notebook. "
+                f"Partially executed notebook stored at {output_path}",
+                fg="red",
+            )
+
+        if debug_later and verbose:
+            click.secho(
+                f"Storing serialized traceback at: {debug_later_}. "
+                f"To start debugging, run: dltr {debug_later_}",
+                fg="yellow",
+            )
+
         raise
 
     if profile_runtime:
@@ -123,10 +144,20 @@ def execute_notebook(
         output_path_runtime = _util.sibling_with_suffix(output_path, "-runtime.png")
         ax.figure.savefig(output_path_runtime)
 
+        if verbose:
+            click.secho(
+                f"Cell runtime plot stored at: {output_path_runtime}", fg="green"
+            )
+
     if profile_memory:
         ax = profiling.plot_memory_usage(out)
         output_path_memory = _util.sibling_with_suffix(output_path, "-memory-usage.png")
         ax.figure.savefig(output_path_memory)
+
+        if verbose:
+            click.secho(
+                f"Cell memory profile plot stored at: {output_path_memory}", fg="green"
+            )
 
     if output_path:
         nbformat.write(out, output_path)

@@ -78,6 +78,7 @@ def cli(
         progress_bar=progress_bar,
         parameters=_parse_cli_notebook_parameters(parameters),
         debug_later=debug_later,
+        verbose=True,
     )
 
 
