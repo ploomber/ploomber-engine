@@ -1,4 +1,4 @@
-import warnings
+from pathlib import Path
 import re
 
 import nbformat
@@ -105,11 +105,6 @@ def add_debuglater_cells(nb, path_to_dump=None):
     _, idx = find_cell_with_tag(nb, "injected-debuglater")
 
     if path_to_dump is None:
-        warnings.warn(
-            "Did not pass path_to_dump to "
-            "DebugLaterEngine.execute_managed_notebook, "
-            "the default value will be used"
-        )
         source = """
 from debuglater import patch_ipython
 patch_ipython()
@@ -117,7 +112,7 @@ patch_ipython()
     else:
         source = f"""
 from debuglater import patch_ipython
-patch_ipython({path_to_dump!r})
+patch_ipython({str(path_to_dump)!r})
 """
     nbformat_ = nbformat.versions[nb["nbformat"]]
 
@@ -129,3 +124,12 @@ patch_ipython({path_to_dump!r})
         nb.cells[idx] = cell_debuglater
     else:
         nb.cells.insert(0, cell_debuglater)
+
+
+def sibling_with_suffix(path, suffix):
+    """
+    Returns a path to a file in the same directory with the same
+    filename (but no extension) and with the added suffix
+    """
+    path = Path(path)
+    return path.with_name(path.stem + suffix)

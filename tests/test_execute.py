@@ -153,10 +153,17 @@ def test_stores_partially_executed_notebook(tmp_empty):
     }
 
 
-def test_execute_notebook_debug_later(tmp_empty):
+@pytest.mark.parametrize(
+    "out, dump",
+    [
+        ["out.ipynb", "out.dump"],
+        ["path/to/out.ipynb", "path/to/out.dump"],
+    ],
+)
+def test_execute_notebook_debug_later(tmp_empty, out, dump):
     nb_in = _make_nb(["x = 1", "y = 0", "x / y"])
 
     with pytest.raises(ZeroDivisionError):
-        execute_notebook(nb_in, "out.ipynb", debug_later=True)
+        execute_notebook(nb_in, out, debug_later=True)
 
-    assert Path("jupyter.dump").is_file()
+    assert Path(dump).is_file()

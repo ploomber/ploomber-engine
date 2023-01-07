@@ -5,6 +5,7 @@ from io import StringIO
 import itertools
 from datetime import datetime
 from unittest.mock import MagicMock
+from pathlib import Path
 
 import parso
 import nbformat
@@ -154,8 +155,10 @@ class PloomberClient:
     progress_bar : bool, default=True
         Display a progress bar.
 
-    debug_later : bool, default=False
-        Serialize Python traceback for later debugging.
+    debug_later : bool or str, default=False
+        Serialize Python traceback for later debugging. If True, it stores
+        the traceback at ``jupyter.dump``, if a string, it stores the traceback
+        there.
 
     Notes
     -----
@@ -207,8 +210,10 @@ class PloomberClient:
         progress_bar : bool, default=True
             Display a progress bar.
 
-        debug_later : bool, default=False
-            Serialize Python traceback for later debugging.
+        debug_later : bool or str, default=False
+            Serialize Python traceback for later debugging. If True, it stores
+            the traceback at ``jupyter.dump``, if a string, it stores the traceback
+            there.
 
         Notes
         -----
@@ -297,7 +302,12 @@ class PloomberClient:
             parametrize_notebook(self._nb, parameters=parameters)
 
         if self._debug_later:
-            add_debuglater_cells(self._nb)
+            add_debuglater_cells(
+                self._nb,
+                path_to_dump=self._debug_later
+                if isinstance(self._debug_later, (str, Path))
+                else None,
+            )
 
         with self:
             self._execute()
