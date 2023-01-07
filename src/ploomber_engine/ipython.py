@@ -4,6 +4,7 @@ import contextlib
 from io import StringIO
 import itertools
 from datetime import datetime
+from unittest.mock import MagicMock
 
 import parso
 import nbformat
@@ -146,6 +147,14 @@ class PloomberClient:
     display_output : bool, default=False
         If True, it prints the same output the notebook prints.
 
+    progress_bar : bool, default=True
+        Display a progress bar.
+
+    Notes
+    -----
+    .. versionchanged:: 0.0.19
+        Added ``progress_bar`` argument.
+
     Examples
     --------
     >>> from ploomber_engine.ipython import PloomberClient
@@ -159,13 +168,14 @@ class PloomberClient:
     {'text/plain': '2'}
     """
 
-    def __init__(self, nb, display_stdout=False):
+    def __init__(self, nb, display_stdout=False, progress_bar=True):
         self._nb = nb
         self._shell = None
         self._display_stdout = display_stdout
+        self._progress_bar = progress_bar
 
     @classmethod
-    def from_path(cls, path, display_stdout=False):
+    def from_path(cls, path, display_stdout=False, progress_bar=True):
         """Initialize client from a path to a notebook
 
         Parameters
@@ -176,8 +186,14 @@ class PloomberClient:
         display_output : bool, default=False
             If True, it prints the same output the notebook prints.
 
+        progress_bar : bool, default=True
+            Display a progress bar.
+
         Notes
         -----
+        .. versionchanged:: 0.0.19
+            Added ``progress_bar`` argument.
+
         .. versionchanged:: 0.0.18
             Added ``display_stdout`` argument.
 
@@ -189,7 +205,7 @@ class PloomberClient:
 
         """
         nb = nbformat.read(path, as_version=nbformat.NO_CONVERT)
-        return cls(nb, display_stdout=display_stdout)
+        return cls(nb, display_stdout=display_stdout, progress_bar=progress_bar)
 
     def execute_cell(self, cell, cell_index, execution_count, store_history):
         if self._shell is None:
@@ -347,10 +363,12 @@ class PloomberClient:
         """
         execution_count = 1
 
+        _Progress = Progress if self._progress_bar else MagicMock
+
         # make sure that the current working directory is in the sys.path
         # in case the user has local modules
         with add_to_sys_path("."):
-            with Progress(auto_refresh=False) as progress:
+            with _Progress(auto_refresh=False) as progress:
                 task = progress.add_task(
                     f"Executing cell: {execution_count}", total=len(self._nb.cells)
                 )
