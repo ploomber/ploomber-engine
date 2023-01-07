@@ -64,32 +64,6 @@ def test_execute_notebook_with_errors(tmp_empty):
         execute_notebook(nb_in, "out.ipynb")
 
 
-@pytest.mark.xfail(reason="not implemented")
-def test_execute_notebook_with_errors_saves_partiall_executed_notebook(tmp_empty):
-    nb_in = _make_nb(["1+1", "1/0"])
-
-    with pytest.raises(ZeroDivisionError):
-        execute_notebook(nb_in, "out.ipynb")
-
-    nb_from_file = _read_nb("out.ipynb")
-    assert nb_from_file.cells[0]["outputs"][0]["data"] == {"text/plain": "2"}
-    # TODO: check that papermill-like cells are added at the top and above the failing
-    # cell
-
-
-@pytest.mark.xfail(reason="not implemented")
-def test_execute_notebook_with_params(tmp_empty):
-    nb_in = _make_nb(["x+y"])
-
-    nb = execute_notebook(nb_in, "out.ipynb", parameters=dict(x=21, y=21))
-    nb_source = _read_nb("nb.ipynb")
-    nb_from_file = _read_nb("out.ipynb")
-
-    assert nb.cells[0]["outputs"][0]["data"] == {"text/plain": "42"}
-    assert not nb_source.cells[0]["outputs"]
-    assert nb_from_file.cells[0]["outputs"][0]["data"] == {"text/plain": "42"}
-
-
 def test_execute_notebook_inline(tmp_empty):
     _make_nb(["1+1"])
 
