@@ -18,6 +18,7 @@ def execute_notebook(
     profile_runtime=False,
     profile_memory=False,
     progress_bar=True,
+    debug_later=False,
 ):
     """Executes a notebook. Drop-in replacement for
     ``papermill.execute_notebook`` with enhanced capabilities.
@@ -47,6 +48,9 @@ def execute_notebook(
     progress_bar : bool, default=True
         Display a progress bar.
 
+    debug_later : bool, default=False
+        Serialize Python traceback for later debugging.
+
     Returns
     -------
     nb : NotebookNode
@@ -55,7 +59,7 @@ def execute_notebook(
     Notes
     -----
     .. versionchanged:: 0.0.19
-        Added ``parameters`` and ``progress_bar`` argument
+        Added ``parameters``, ``progress_bar``, and ``debug_later`` arguments.
 
     .. versionadded:: 0.0.18
 
@@ -94,7 +98,10 @@ def execute_notebook(
         INIT_FUNCTION = PloomberClient.from_path if path_like_input else PloomberClient
 
     client = INIT_FUNCTION(
-        input_path, display_stdout=log_output, progress_bar=progress_bar
+        input_path,
+        display_stdout=log_output,
+        progress_bar=progress_bar,
+        debug_later=debug_later,
     )
 
     try:
