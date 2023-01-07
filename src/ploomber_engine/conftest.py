@@ -18,11 +18,13 @@ def tmp_empty(tmp_path):
 
 
 @pytest.fixture(autouse=True)
-def doctests_fixture(tmp_empty):
+def doctests_fixture(tmp_empty, monkeypatch):
     """
     Create temporary path using pytest native fixture,
     them move it, yield, and restore the original path
     """
+    monkeypatch.setenv("_PLOOMBER_ENGINE_PROGRESS_BAR", "false")
+
     nb = nbformat.v4.new_notebook()
     cell = nbformat.v4.new_code_cell("1+1")
     nb.cells = [cell]
