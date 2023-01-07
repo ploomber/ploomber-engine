@@ -172,7 +172,15 @@ class PloomberClient:
         self._nb = nb
         self._shell = None
         self._display_stdout = display_stdout
-        self._progress_bar = progress_bar
+
+        # NOTE: this env var is only used internally so the doctests don't show
+        # the progress bar
+        var = os.environ.get("_PLOOMBER_ENGINE_PROGRESS_BAR")
+
+        if var is not None:
+            self._progress_bar = var == "true"
+        else:
+            self._progress_bar = progress_bar
 
     @classmethod
     def from_path(cls, path, display_stdout=False, progress_bar=True):
