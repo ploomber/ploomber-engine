@@ -151,3 +151,12 @@ def test_stores_partially_executed_notebook(tmp_empty):
         "output_type": "error",
         "traceback": ANY,
     }
+
+
+def test_execute_notebook_debug_later(tmp_empty):
+    nb_in = _make_nb(["x = 1", "y = 0", "x / y"])
+
+    with pytest.raises(ZeroDivisionError):
+        execute_notebook(nb_in, "out.ipynb", debug_later=True)
+
+    assert Path("jupyter.dump").is_file()

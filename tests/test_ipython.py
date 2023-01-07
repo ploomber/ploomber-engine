@@ -598,3 +598,13 @@ def test_progress_bar(tmp_empty, capsys):
     captured = capsys.readouterr()
     assert "Executing cell: 1" in captured.out
     assert captured.err == ""
+
+
+def test_execute_notebook_debug_later(tmp_empty):
+    nb = _make_nb(["x = 1", "y = 0", "x / y"])
+    client = PloomberClient(nb, debug_later=True)
+
+    with pytest.raises(ZeroDivisionError):
+        client.execute()
+
+    assert Path("jupyter.dump").is_file()
