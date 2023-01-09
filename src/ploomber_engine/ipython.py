@@ -4,7 +4,6 @@ import contextlib
 from io import StringIO
 import itertools
 from datetime import datetime
-from unittest.mock import MagicMock
 from pathlib import Path
 
 import parso
@@ -12,13 +11,26 @@ import nbformat
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.core.displaypub import DisplayPublisher
 from IPython.core.displayhook import DisplayHook
-from rich.progress import Progress
+from IPython import get_ipython
+
+# NOTE: we're not using tqdm.auto (which renders better-looking bars in Jupyter)
+# because it is incompatible with PloomberShell due to the CustomDisplayHook and
+# CustomDisplayPublisher. That's also the reason why we are not using the "rich"
+# package, since it doesn't have a way to turn off Jupyter integration
+from tqdm import tqdm
 
 from ploomber_engine._util import (
     recursive_update,
     parametrize_notebook,
     add_debuglater_cells,
 )
+
+
+def is_notebook():
+    return type(get_ipython()).__name__ == "ZMQInteractiveShell"
+
+
+_IS_NOTEBOOK = is_notebook()
 
 
 def _make_stream_output(out, name):
@@ -402,33 +414,28 @@ class PloomberClient:
         """
         execution_count = 1
 
-        _Progress = Progress if self._progress_bar else MagicMock
+        # the progress bar will not resize if running on a notebook, so we fix its size
+        kwargs = dict(ncols=80) if _IS_NOTEBOOK else dict()
+        iterator = (
+            self._nb.cells if not self._progress_bar else tqdm(self._nb.cells, **kwargs)
+        )
 
         # make sure that the current working directory is in the sys.path
         # in case the user has local modules
         with add_to_sys_path("."):
-            with _Progress(auto_refresh=False) as progress:
-                task = progress.add_task(
-                    f"Executing cell: {execution_count}", total=len(self._nb.cells)
-                )
+            for index, cell in enumerate(iterator):
+                if cell.cell_type == "code":
 
-                for index, cell in enumerate(self._nb.cells):
-                    progress.update(
-                        task,
-                        description=f"Executing cell: {execution_count}",
-                        refresh=True,
+                    if self._progress_bar:
+                        iterator.set_description(f"Executing cell: {execution_count}")
+
+                    self.execute_cell(
+                        cell,
+                        cell_index=index,
+                        execution_count=execution_count,
+                        store_history=False,
                     )
-
-                    if cell.cell_type == "code":
-                        self.execute_cell(
-                            cell,
-                            cell_index=index,
-                            execution_count=execution_count,
-                            store_history=False,
-                        )
-                        execution_count += 1
-
-                    progress.update(task, advance=1, refresh=True)
+                    execution_count += 1
 
         return self._nb
 

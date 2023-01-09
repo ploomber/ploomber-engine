@@ -596,8 +596,7 @@ def test_progress_bar(tmp_empty, capsys):
     client.execute()
 
     captured = capsys.readouterr()
-    assert "Executing cell: 1" in captured.out
-    assert captured.err == ""
+    assert "Executing cell: 1" in captured.err
 
 
 @pytest.mark.parametrize(

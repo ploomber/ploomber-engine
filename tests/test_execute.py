@@ -132,8 +132,7 @@ def test_progress_bar(tmp_empty, capsys):
     execute_notebook(nb, output_path=None)
 
     captured = capsys.readouterr()
-    assert "Executing cell: 1" in captured.out
-    assert captured.err == ""
+    assert "Executing cell: 1" in captured.err
 
 
 def test_stores_partially_executed_notebook(tmp_empty):
