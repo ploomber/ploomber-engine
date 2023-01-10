@@ -54,7 +54,12 @@ def find_cell_with_tag(nb, tag):
         return None, None
 
 
-def find_cell_with_comment(nb):
+def find_cell_with_parameters_comment(nb):
+    """
+    Find cell with a "# parameters" comment (case independent). If it finds a cell
+    matchinf the criteria, it returns a (cell, index) tuple, otherwise, it returns
+    (None, None)
+    """
     for idx, cell in enumerate(nb["cells"]):
         if re.match(r"\s*#\s*PARAMETERS?\s*", cell["source"]) or re.match(
             r"\s*#\s*parameters?\s*", cell["source"]
@@ -68,7 +73,7 @@ def parametrize_notebook(nb, parameters):
     """Add parameters to a notebook object"""
     _, idx_injected = find_cell_with_tag(nb, "injected-parameters")
     _, idx_params = find_cell_with_tag(nb, "parameters")
-    _, idx_comment = find_cell_with_comment(nb)
+    _, idx_comment = find_cell_with_parameters_comment(nb)
 
     insert = True
 

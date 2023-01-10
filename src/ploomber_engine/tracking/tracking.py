@@ -17,7 +17,7 @@ from IPython.core.interactiveshell import InteractiveShell
 from ploomber_engine.ipython import PloomberClient, add_to_sys_path
 from ploomber_engine.tracking.io import _process_content_data
 from ploomber_engine._telemetry import telemetry
-from ploomber_engine._util import find_cell_with_comment
+from ploomber_engine._util import find_cell_with_parameters_comment
 
 try:
     import jupytext
@@ -175,7 +175,7 @@ def track_execution(filename, parameters, database="experiments.db", quiet=False
         )
 
     nb = jupytext.read(filename)
-    _, idx = find_cell_with_comment(nb)
+    _, idx = find_cell_with_parameters_comment(nb)
 
     if idx is None:
         click.echo("Could not find block with the # parameters comment")
