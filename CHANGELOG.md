@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.19dev
+## 0.0.19 (2023-01-11)
 * Adds notebook parametrization to the CLI (`-p/--parameters`) and Python API (`parameters`)
 * Integrates debug later to the CLI `--debug-later` and Python API (`debug_later`)
 * Adds progress bar when executing notebooks
