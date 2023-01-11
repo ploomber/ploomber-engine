@@ -11,6 +11,7 @@ dependencies:
   - ipython      # required for experiment tracker feature
   - scikit-learn # required for experiment tracker feature
   - pip
+  - jsonschema
   - pip:
     - jupyter-book
     - jupytext           # required for experiment tracker feature
