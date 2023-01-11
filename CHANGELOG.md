@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## 0.0.19dev
+* Adds notebook parametrization to the CLI (`-p/--parameters`) and Python API (`parameters`)
+* Integrates debug later to the CLI `--debug-later` and Python API (`debug_later`)
+* Adds progress bar when executing notebooks
+* Partially execute notebook stored (`.ipynb` file) even when notebook execution fails
 
 ## 0.0.18 (2023-01-04)
 * Adds `ploomber-engine` CLI with a papermill-like API
