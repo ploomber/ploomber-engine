@@ -11,7 +11,6 @@ dependencies:
   - ipython      # required for experiment tracker feature
   - scikit-learn # required for experiment tracker feature
   - pip
-  - jsonschema
   - pip:
     - jupyter-book
     - jupytext           # required for experiment tracker feature
@@ -20,3 +19,5 @@ dependencies:
     - pytest
     - memory-profiler # required for profiling demo
     - -e ..
+    # there is an incompatibility when upgrading
+    - jupyter-events==0.4
