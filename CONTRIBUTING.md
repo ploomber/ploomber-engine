@@ -1,3 +1,4 @@
 # Contributing to ploomber-engine
 
-For general guidelines, see [Ploombers' documentation framework.](https://github.com/ploomber/contributing/blob/main/documentation/README.md)
+For general information, see [Ploombers' contributing guidelines.](https://github.com/ploomber/contributing/blob/main/CONTRIBUTING.md)
+
