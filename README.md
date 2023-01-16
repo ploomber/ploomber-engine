@@ -36,3 +36,5 @@ or
 ```
 conda install ploomber-engine -c conda-forge
 ```
+
+> **_NOTE:_**  ploomber-engine currently supports Python >= 3.8.

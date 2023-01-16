@@ -105,7 +105,7 @@ def plot_cell_runtime(nb):
     cell_runtime = [_compute_runtime(c) for c in code_cells]
     cell_indexes = list(range(1, len(cell_runtime) + 1))
 
-    ax = plt.gca()
+    _, ax = plt.subplots()
     ax.plot(cell_indexes, cell_runtime, marker="o")
     ax.set_xticks(cell_indexes)
     ax.set_title("Cell runtime")
