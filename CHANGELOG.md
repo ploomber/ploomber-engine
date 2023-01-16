@@ -2,6 +2,8 @@
 
 ## 0.0.21dev
 
+* [Fix] Support for Python 3.7 deprecated.
+
 ## 0.0.20 (2023-01-29)
 
 * [Fix] `setup.py` fix due to change in setuptools 67.0.0
