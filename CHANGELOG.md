@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 0.0.20dev
+* [Fix] `setup.py` fix due to change in setuptools 67.0.0
 
 ## 0.0.19 (2023-01-11)
 * Adds notebook parametrization to the CLI (`-p/--parameters`) and Python API (`parameters`)
