@@ -11,7 +11,7 @@
   |
   <a href="mailto:contact@ploomber.io">Contact us</a>
   |
-  <a href="https://ploomber-engine.readthedocs.io/en/latest/">Docs</a>
+  <a href=" https://ploomber-engine.ploomber.io/en/latest/">Docs</a>
   |
   <a href="https://ploomber.io/">Blog</a>
   |  
@@ -24,7 +24,7 @@
 A toolbox for Jupyter notebooks: testing, experiment tracking, debugging, profiling, and more!
 ## Documentation
 
-[Click here.](https://ploomber-engine.readthedocs.io/en/latest/)
+[Click here.](https://ploomber-engine.ploomber.io/en/latest/)
 ## Installation
 
 ```sh
