@@ -36,13 +36,13 @@ jobs:
 
       - name: Unit tests
         run: |
-          pytest --ignore=tests/test_engine.py
+          pytest --ignore=tests/test_engine.py --durations-min=5
 
       - name: Unit tests (papermill)
         run: |
           pip install papermill ipykernel 'jupyter_client<8'
           python -c "import ploomber_engine.engine"
-          pytest tests/test_engine.py
+          pytest tests/test_engine.py --durations-min=5
 
       - name: Doc tests
         run: |
