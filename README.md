@@ -11,7 +11,7 @@
   |
   <a href="mailto:contact@ploomber.io">Contact us</a>
   |
-  <a href=" https://engine.ploomber.io/en/latest/">Docs</a>
+  <a href="https://engine.ploomber.io/en/latest/">Docs</a>
   |
   <a href="https://ploomber.io/">Blog</a>
   |  
