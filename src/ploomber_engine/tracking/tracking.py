@@ -155,14 +155,14 @@ def _parse_param(value):
 
 def _parse_cli_parameters(parameters):
     if parameters is None:
-        return {}
+        return dict()
 
     pairs = [pair.strip().split("=") for pair in parameters.split(",")]
     return {k: _parse_param(v) for k, v in pairs}
 
 
-@telemetry.log_call("track-execution")
-def track_execution(filename, parameters, database="experiments.db", quiet=False):
+# @telemetry.log_call("track-execution")
+def track_execution(filename, parameters = dict(), database="experiments.db", quiet=False):
     """
     Execute a script or notebook and write outputs to a SQLite database
     """
