@@ -30,6 +30,17 @@ def test_parse_cli_parameters(params, expected):
     assert _parse_cli_parameters(params) == expected
 
 
+variables_wo_extra_parameters = """
+x = 1
+x
+
+y = 2
+y
+
+sum_ = x + y
+sum_
+"""
+
 variables = """
 x = 1
 x
@@ -39,6 +50,23 @@ y
 
 sum_ = x + y + a + b
 sum_
+"""
+
+calls_wo_extra_parameters = """
+def x():
+    return 1
+
+def y():
+    return 2
+
+def sum_(args):
+    return sum(args)
+
+x()
+
+y()
+
+sum_(args=[x(), y()])
 """
 
 calls = """
@@ -56,6 +84,16 @@ x()
 y()
 
 sum_(args=[x(), y(), a, b])
+"""
+
+imports_wo_extra_parameters = """
+import functions
+
+functions.x()
+
+functions.y()
+
+functions.sum_(args=[functions.x(), functions.y()])
 """
 
 imports = """
@@ -119,6 +157,54 @@ SELECT
     )
 
     assert result.rows == [(ANY, 1, 2, 6, 1, 2)]
+
+
+@pytest.mark.parametrize(
+    "script",
+    [
+        variables_wo_extra_parameters,
+        calls_wo_extra_parameters,
+        imports_wo_extra_parameters,
+    ],
+    ids=[
+        "variables",
+        "calls",
+        "imports",
+    ],
+)
+def test_track_wo_parameter(tmp_empty, script):
+    Path("functions.py").write_text(
+        """
+def x():
+    return 1
+
+def y():
+    return 2
+
+def sum_(args):
+    return sum(args)
+"""
+    )
+
+    Path("script.py").write_text(script)
+
+    track_execution(filename="script.py", database="exps.db", quiet=True)
+
+    tracker = SQLiteTracker("exps.db")
+
+    result = tracker.query(
+        """
+SELECT
+    uuid,
+    json_extract(parameters, '$.sum_') as sum_,
+    json_extract(parameters, '$.x') as x,
+    json_extract(parameters, '$.y') as y
+    FROM experiments
+""",
+        as_frame=False,
+    )
+
+    assert result.rows == [(ANY, 3, 1, 2)]
 
 
 @pytest.mark.parametrize(
