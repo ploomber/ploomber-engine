@@ -162,7 +162,9 @@ def _parse_cli_parameters(parameters):
 
 
 # @telemetry.log_call("track-execution")
-def track_execution(filename, parameters = dict(), database="experiments.db", quiet=False):
+def track_execution(
+    filename, parameters=dict(), database="experiments.db", quiet=False
+):
     """
     Execute a script or notebook and write outputs to a SQLite database
     """
