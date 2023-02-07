@@ -163,7 +163,7 @@ def _parse_cli_parameters(parameters):
 
 @telemetry.log_call("track-execution")
 def track_execution(
-    filename, parameters=dict(), database="experiments.db", quiet=False
+    filename, parameters=None, database="experiments.db", quiet=False
 ):
     """
     Execute a script or notebook and write outputs to a SQLite database
@@ -175,7 +175,7 @@ def track_execution(
         raise click.ClickException(
             "Missing sklearn-evaluation: pip install sklearn-evaluation"
         )
-
+    parameters = parameters if type(parameters) is dict else dict()
     nb = jupytext.read(filename)
     _, idx = find_cell_with_parameters_comment(nb)
 
