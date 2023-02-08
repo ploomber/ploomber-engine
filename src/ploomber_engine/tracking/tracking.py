@@ -175,7 +175,7 @@ def track_execution(
         raise click.ClickException(
             "Missing sklearn-evaluation: pip install sklearn-evaluation"
         )
-    parameters = parameters if type(parameters) is dict else dict()
+    parameters = parameters or dict()
     nb = jupytext.read(filename)
     _, idx = find_cell_with_parameters_comment(nb)
 
