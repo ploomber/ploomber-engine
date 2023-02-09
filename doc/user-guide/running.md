@@ -138,5 +138,19 @@ _ = execute_notebook(
 If there are notebooks you want to remove before execution, tag them and use `remove_tagged_cells`:
 
 ```{code-cell} ipython3
+%%sh
+curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/remove.ipynb \
+    --output running-remove.ipynb
+```
+
+```{code-cell} ipython3
+_ = execute_notebook(
+    "running-remove.ipynb",
+    output_path=None,
+    remove_tagged_cells=["remove"],
+)
+```
+
+```{code-cell} ipython3
 
 ```
