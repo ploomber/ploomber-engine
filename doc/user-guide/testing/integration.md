@@ -43,6 +43,6 @@ namespace
 Now we can check if the variables in the notebook have the values we expected:
 
 ```{code-cell} ipython3
-assert namespace['a'] == 42
-assert namespace['b'] == 200
+assert namespace["a"] == 42
+assert namespace["b"] == 200
 ```
