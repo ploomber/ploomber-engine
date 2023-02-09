@@ -72,9 +72,12 @@ If your notebook contains `print` statements and want to see them in the current
 ```
 
 ```{code-cell} ipython3
-_ = execute_notebook("running-demo.ipynb", output_path="output.ipynb",
-                     log_output=True,
-                     progress_bar=False)
+_ = execute_notebook(
+    "running-demo.ipynb",
+    output_path="output.ipynb",
+    log_output=True,
+    progress_bar=False,
+)
 ```
 
 ## Parametrizing notebooks
@@ -103,9 +106,9 @@ curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/su
 If we don't pass parameters, it uses the default values:
 
 ```{code-cell} ipython3
-_ = execute_notebook("sum-demo.ipynb", output_path=None,
-                     log_output=True,
-                     progress_bar=False)
+_ = execute_notebook(
+    "sum-demo.ipynb", output_path=None, log_output=True, progress_bar=False
+)
 ```
 
 Passing `parameters` overrides the defaults:
@@ -119,7 +122,8 @@ Passing `parameters` overrides the defaults:
 
 ```{code-cell} ipython3
 _ = execute_notebook(
-    "sum-demo.ipynb", output_path=None,
+    "sum-demo.ipynb",
+    output_path=None,
     log_output=True,
     parameters=dict(x=21, y=21),
     progress_bar=False,

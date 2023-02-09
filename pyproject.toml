@@ -6,3 +6,10 @@ github = "ploomber/ploomber-engine"
 
 [tool.pkgmt.check_links]
 extensions = ["md", "rst", "py", "ipynb"]
+
+
+[tool.nbqa.addopts]
+flake8 = [
+    # notebooks allow non-top imports
+    "--extend-ignore=E402",
+]

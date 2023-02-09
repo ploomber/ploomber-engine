@@ -45,8 +45,7 @@ Run the notebook with `debug_later=True` option (note that this notebook crashes
 
 from ploomber_engine import execute_notebook
 
-execute_notebook("debuglater-demo.ipynb", "output.ipynb",
-                 debug_later=True)
+execute_notebook("debuglater-demo.ipynb", "output.ipynb", debug_later=True)
 ```
 
 ```{admonition} Command-line equivalent

@@ -52,9 +52,7 @@ _ = execute_notebook("nb.ipynb", "output.ipynb", parameters=dict(x=1, y=2))
 ## Log print statements
 
 ```{code-cell} ipython3
-_ = execute_notebook("nb.ipynb", "output.ipynb",
-                     log_output=True,
-                     progress_bar=False)
+_ = execute_notebook("nb.ipynb", "output.ipynb", log_output=True, progress_bar=False)
 ```
 
 ## Plot cell's runtime

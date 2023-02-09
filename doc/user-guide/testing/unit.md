@@ -43,8 +43,8 @@ definitions
 Get the `add` and `multiply` function defined in the notebook:
 
 ```{code-cell} ipython3
-add = definitions['add']
-multiply = definitions['multiply']
+add = definitions["add"]
+multiply = definitions["multiply"]
 ```
 
 Test the functions:
