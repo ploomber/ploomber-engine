@@ -190,7 +190,7 @@ class PloomberClient:
         the traceback at ``jupyter.dump``, if a string, it stores the traceback
         there.
 
-    remove_tagged_cells : str or list, deafult=None
+    remove_tagged_cells : str or list, default=None
         Cells with any of the passed tag(s) will be removed from the notebook before
         execution.
 
@@ -281,7 +281,7 @@ class PloomberClient:
             the traceback at ``jupyter.dump``, if a string, it stores the traceback
             there.
 
-        remove_tagged_cells : str or list, deafult=None
+        remove_tagged_cells : str or list, default=None
             Cells with any of the passed tag(s) will be removed from the notebook before
             execution.
 
