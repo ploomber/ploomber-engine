@@ -26,6 +26,7 @@ def execute_notebook(
     progress_bar=True,
     debug_later=False,
     verbose=False,
+    remove_tagged_cells=None,
 ):
     """Executes a notebook. Drop-in replacement for
     ``papermill.execute_notebook`` with enhanced capabilities.
@@ -61,6 +62,10 @@ def execute_notebook(
 
     verbose : bool, default=False
         If True, prints information messages
+
+    remove_tagged_cells : str or list, deafult=None
+        Cells with any of the passed tag(s) will be removed from the notebook before
+        execution.
 
     Returns
     -------
@@ -119,6 +124,7 @@ def execute_notebook(
         display_stdout=log_output,
         progress_bar=progress_bar,
         debug_later=debug_later_,
+        remove_tagged_cells=remove_tagged_cells,
     )
 
     try:
