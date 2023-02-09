@@ -3,6 +3,7 @@
 ## 0.0.21dev
 
 * [Fix] Support for Python 3.7 deprecated.
+* [Feature] `parameters` in `track_execution` is optional (#41)
 
 ## 0.0.20 (2023-01-29)
 
