@@ -24,12 +24,16 @@ kernelspec:
 Install dependencies:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 %pip install ploomber-engine --quiet
 ```
 
 Download sample notebook:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 %%sh
 curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/display.ipynb \
     --output running-demo.ipynb
@@ -44,6 +48,8 @@ Run the notebook and store the executed version:
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 from ploomber_engine import execute_notebook
 
 nb = execute_notebook("running-demo.ipynb", output_path="output.ipynb")
@@ -58,6 +64,8 @@ type(nb)
 Skip storing the output notebook:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 _ = execute_notebook("running-demo.ipynb", output_path=None)
 ```
 
@@ -98,6 +106,8 @@ If you do so, the passed parameters will be injected in a cell below to replace 
 Let's download a sample notebook that prints `x + y`:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 %%sh
 curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/sum.ipynb \
     --output sum-demo.ipynb
@@ -144,12 +154,16 @@ _ = execute_notebook(
 If there are notebooks you want to remove before execution, tag them and use `remove_tagged_cells`. [This sample notebook](https://github.com/ploomber/ploomber-engine/blob/main/examples/remove.ipynb) contains one cell that will fail, if executed; however, the cell contains the tag `"remove"`, so let's remove it before execution:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 %%sh
 curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/remove.ipynb \
     --output running-remove.ipynb
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 _ = execute_notebook(
     "running-remove.ipynb",
     output_path=None,

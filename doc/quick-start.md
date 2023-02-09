@@ -44,6 +44,8 @@ curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/di
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 from ploomber_engine import execute_notebook
 
 _ = execute_notebook("nb.ipynb", "output.ipynb", parameters=dict(x=1, y=2))
@@ -62,7 +64,9 @@ Runtime profiling requires extra dependencies: `pip install matplotlib`
 ```
 
 ```{code-cell} ipython3
-_ = execute_notebook("nb.ipynb", "output.ipynb", profile_runtime=True)
+:tags: []
+
+_ = execute_notebook("nb.ipynb", "output.ipynb", profile_runtime=True, progress_bar=False)
 ```
 
 ```{code-cell} ipython3
@@ -76,7 +80,9 @@ Memory profiling requires extra dependencies: `pip install matplotlib psutil`
 ```
 
 ```{code-cell} ipython3
-_ = execute_notebook("nb.ipynb", "output.ipynb", profile_memory=True)
+:tags: []
+
+_ = execute_notebook("nb.ipynb", "output.ipynb", profile_memory=True, progress_bar=False)
 ```
 
 ```{code-cell} ipython3
