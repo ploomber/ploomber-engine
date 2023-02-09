@@ -74,6 +74,9 @@ def execute_notebook(
 
     Notes
     -----
+    .. versionchanged:: 0.0.21
+        Added ``remove_tagged_cells`` arguments.
+
     .. versionchanged:: 0.0.19
         Added ``parameters``, ``progress_bar``, ``debug_later``, and ``verbose``
         arguments.
