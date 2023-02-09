@@ -63,7 +63,7 @@ def execute_notebook(
     verbose : bool, default=False
         If True, prints information messages
 
-    remove_tagged_cells : str or list, deafult=None
+    remove_tagged_cells : str or list, default=None
         Cells with any of the passed tag(s) will be removed from the notebook before
         execution.
 
