@@ -205,12 +205,28 @@ class PloomberClient:
 
     Examples
     --------
+
+    Execute notebook:
+
     >>> from ploomber_engine.ipython import PloomberClient
     >>> import nbformat
     >>> nb = nbformat.v4.new_notebook()
     >>> cell = nbformat.v4.new_code_cell("1+1")
     >>> nb.cells = [cell]
     >>> client = PloomberClient(nb)
+    >>> out = client.execute()
+    >>> out.cells[0]['outputs'][0]['data']
+    {'text/plain': '2'}
+
+    Remove cells tagged "remove" before execution:
+
+    >>> from ploomber_engine.ipython import PloomberClient
+    >>> import nbformat
+    >>> nb = nbformat.v4.new_notebook()
+    >>> nb.cells = [nbformat.v4.new_code_cell("1+1"),
+    ...             nbformat.v4.new_code_cell("1/0",
+    ...             metadata=dict(tags=["remove"]))]
+    >>> client = PloomberClient(nb, remove_tagged_cells=["remove"])
     >>> out = client.execute()
     >>> out.cells[0]['outputs'][0]['data']
     {'text/plain': '2'}
