@@ -4,6 +4,7 @@
 
 * [Fix] Support for Python 3.7 deprecated.
 * [Feature] `parameters` in `track_execution` is optional (#41)
+* [Feature] Remove cells before execution using `--remove-tagged-cells` in the CLI or `remove_tagged_cells` in the Python API (#37)
 
 ## 0.0.20 (2023-01-29)
 
