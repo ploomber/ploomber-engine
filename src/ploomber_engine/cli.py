@@ -38,6 +38,11 @@ from ploomber_engine import execute_notebook
     default=False,
     help="Serialize traceback for later debugging",
 )
+@click.option(
+    "--remove-tagged-cells",
+    default=None,
+    help="Remove cells with this tag before execution",
+)
 def cli(
     input_path,
     output_path,
@@ -47,6 +52,7 @@ def cli(
     progress_bar,
     parameters,
     debug_later,
+    remove_tagged_cells,
 ):
     """
     Execute my-notebook.ipynb, store results in output.ipynb:
@@ -68,6 +74,11 @@ def cli(
     Store a plot with cell's memory usage:
 
     $ ploomber-engine my-notebook.ipynb output.ipynb --profile-memory
+
+
+    Remove cells before execution:
+
+    $ ploomber-engine my-notebook.ipynb output.ipynb --remove-tagged-cells remove
     """
     execute_notebook(
         input_path,
@@ -79,6 +90,7 @@ def cli(
         parameters=_parse_cli_notebook_parameters(parameters),
         debug_later=debug_later,
         verbose=True,
+        remove_tagged_cells=remove_tagged_cells,
     )
 
 

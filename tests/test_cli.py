@@ -11,134 +11,63 @@ from ploomber_engine import execute_notebook
 from conftest import _make_nb
 
 
+def _make_call(**kwargs):
+    defaults = dict(
+        log_output=False,
+        profile_memory=False,
+        profile_runtime=False,
+        progress_bar=True,
+        parameters=None,
+        debug_later=False,
+        verbose=True,
+        remove_tagged_cells=None,
+    )
+
+    return call("nb.ipynb", "out.ipynb", **{**defaults, **kwargs})
+
+
 @pytest.mark.parametrize(
     "cli_args, call_expected",
     [
         [
             ["nb.ipynb", "out.ipynb", "--no-progress-bar"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=False,
-                profile_memory=False,
-                profile_runtime=False,
-                progress_bar=False,
-                parameters=None,
-                debug_later=False,
-                verbose=True,
-            ),
+            _make_call(progress_bar=False),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--log-output", "--no-progress-bar"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=True,
-                profile_memory=False,
-                profile_runtime=False,
-                progress_bar=False,
-                parameters=None,
-                debug_later=False,
-                verbose=True,
-            ),
+            _make_call(log_output=True, progress_bar=False),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--profile-memory", "--no-progress-bar"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=False,
-                profile_memory=True,
-                profile_runtime=False,
-                progress_bar=False,
-                parameters=None,
-                debug_later=False,
-                verbose=True,
-            ),
+            _make_call(profile_memory=True, progress_bar=False),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--profile-runtime", "--no-progress-bar"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=False,
-                profile_memory=False,
-                profile_runtime=True,
-                progress_bar=False,
-                parameters=None,
-                debug_later=False,
-                verbose=True,
-            ),
+            _make_call(profile_runtime=True, progress_bar=False),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "value"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=False,
-                profile_memory=False,
-                profile_runtime=False,
-                progress_bar=False,
-                parameters=dict(key="value"),
-                debug_later=False,
-                verbose=True,
-            ),
+            _make_call(progress_bar=False, parameters=dict(key="value")),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "1"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=False,
-                profile_memory=False,
-                profile_runtime=False,
-                progress_bar=False,
-                parameters=dict(key=1),
-                debug_later=False,
-                verbose=True,
-            ),
+            _make_call(progress_bar=False, parameters=dict(key=1)),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "1.0"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=False,
-                profile_memory=False,
-                profile_runtime=False,
-                progress_bar=False,
-                parameters=dict(key=1.0),
-                debug_later=False,
-                verbose=True,
-            ),
+            _make_call(progress_bar=False, parameters=dict(key=1.0)),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "{'a': 1}"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=False,
-                profile_memory=False,
-                profile_runtime=False,
-                progress_bar=False,
-                parameters=dict(key=dict(a=1)),
-                debug_later=False,
-                verbose=True,
-            ),
+            _make_call(progress_bar=False, parameters=dict(key=dict(a=1))),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--no-progress-bar", "--debug-later"],
-            call(
-                "nb.ipynb",
-                "out.ipynb",
-                log_output=False,
-                profile_memory=False,
-                profile_runtime=False,
-                progress_bar=False,
-                parameters=None,
-                debug_later=True,
-                verbose=True,
-            ),
+            _make_call(progress_bar=False, debug_later=True),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--remove-tagged-cells", "remove"],
+            _make_call(remove_tagged_cells="remove"),
         ],
     ],
 )

@@ -615,3 +615,80 @@ def test_execute_notebook_debug_later(tmp_empty, debug_later, path):
         client.execute()
 
     assert Path(path).is_file()
+
+
+# test with markdown cells
+@pytest.mark.parametrize(
+    "cells, remove_tagged_cells, source",
+    [
+        [
+            [
+                ("code", "1/0", dict(tags=["remove"])),
+                ("code", "1 + 1"),
+            ],
+            "remove",
+            ["1 + 1"],
+        ],
+        [
+            [
+                ("code", "1/0", dict(tags=["remove"])),
+                ("code", "1 + 1"),
+            ],
+            ["remove"],
+            ["1 + 1"],
+        ],
+        [
+            [
+                ("code", "1/0", dict(tags=["remove"])),
+                ("code", "1/0", dict(tags=["also-remove"])),
+                ("code", "1 + 1"),
+                ("code", "2 + 2"),
+            ],
+            ["remove", "also-remove"],
+            ["1 + 1", "2 + 2"],
+        ],
+        [
+            [
+                ("code", "2 + 2", dict(tags=["stuff"])),
+                ("code", "1 + 1"),
+            ],
+            "remove",
+            ["2 + 2", "1 + 1"],
+        ],
+        [
+            [
+                ("markdown", "# hello", dict(tags=["delete"])),
+                ("code", "1 + 1"),
+            ],
+            "delete",
+            ["1 + 1"],
+        ],
+        [
+            [
+                ("code", "2 + 2", dict(tags=["stuff"])),
+                ("code", "1 + 1"),
+            ],
+            None,
+            ["2 + 2", "1 + 1"],
+        ],
+    ],
+    ids=[
+        "single",
+        "single-list",
+        "multiple",
+        "no-match",
+        "remove-markdown",
+        "nothing",
+    ],
+)
+def test_execute_notebook_remove_tagged_cells(
+    tmp_empty,
+    cells,
+    remove_tagged_cells,
+    source,
+):
+    nb = _make_nb(cells)
+
+    client = PloomberClient(nb, remove_tagged_cells=remove_tagged_cells)
+    out = client.execute()
+    assert [c.source for c in out.cells] == source

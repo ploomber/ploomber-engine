@@ -153,6 +153,24 @@ class PloomberShell(InteractiveShell):
         self.clear_instance()
 
 
+def _remove_cells_with_tags(nb, tags):
+    if not tags:
+        return nb
+
+    if isinstance(tags, str):
+        tags = {tags}
+
+    cells_ = []
+
+    for cell in nb.cells:
+        if not (set(tags) & set(cell.metadata.get("tags", set()))):
+            cells_.append(cell)
+
+    nb.cells = cells_
+
+    return nb
+
+
 class PloomberClient:
     """PloomberClient executes Jupyter notebooks
 
@@ -172,8 +190,16 @@ class PloomberClient:
         the traceback at ``jupyter.dump``, if a string, it stores the traceback
         there.
 
+    remove_tagged_cells : str or list, deafult=None
+        Cells with any of the passed tag(s) will be removed from the notebook before
+        execution.
+
     Notes
     -----
+    .. versionchanged:: 0.0.21
+        Added ``remove_tagged_cells`` arguments.
+
+
     .. versionchanged:: 0.0.19
         Added ``progress_bar`` and ``debug_later`` arguments.
 
@@ -190,8 +216,15 @@ class PloomberClient:
     {'text/plain': '2'}
     """
 
-    def __init__(self, nb, display_stdout=False, progress_bar=True, debug_later=False):
-        self._nb = nb
+    def __init__(
+        self,
+        nb,
+        display_stdout=False,
+        progress_bar=True,
+        debug_later=False,
+        remove_tagged_cells=None,
+    ):
+        self._nb = _remove_cells_with_tags(nb, remove_tagged_cells)
         self._shell = None
         self._display_stdout = display_stdout
         self._debug_later = debug_later
@@ -207,7 +240,12 @@ class PloomberClient:
 
     @classmethod
     def from_path(
-        cls, path, display_stdout=False, progress_bar=True, debug_later=False
+        cls,
+        path,
+        display_stdout=False,
+        progress_bar=True,
+        debug_later=False,
+        remove_tagged_cells=None,
     ):
         """Initialize client from a path to a notebook
 
@@ -227,8 +265,15 @@ class PloomberClient:
             the traceback at ``jupyter.dump``, if a string, it stores the traceback
             there.
 
+        remove_tagged_cells : str or list, deafult=None
+            Cells with any of the passed tag(s) will be removed from the notebook before
+            execution.
+
         Notes
         -----
+        .. versionchanged:: 0.0.21
+            Added ``remove_tagged_cells`` arguments.
+
         .. versionchanged:: 0.0.19
             Added ``progress_bar`` and ``debug_later`` arguments.
 
@@ -248,6 +293,7 @@ class PloomberClient:
             display_stdout=display_stdout,
             progress_bar=progress_bar,
             debug_later=debug_later,
+            remove_tagged_cells=remove_tagged_cells,
         )
 
     def execute_cell(self, cell, cell_index, execution_count, store_history):

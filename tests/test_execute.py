@@ -166,3 +166,16 @@ def test_execute_notebook_debug_later(tmp_empty, out, dump):
         execute_notebook(nb_in, out, debug_later=True)
 
     assert Path(dump).is_file()
+
+
+def test_execute_notebook_remove_tagged_cells(tmp_empty):
+    nb_in = _make_nb(
+        [
+            ("code", "1/0", dict(tags=["remove"])),
+            ("code", "1 + 1"),
+        ]
+    )
+
+    out = execute_notebook(nb_in, "out.ipynb", remove_tagged_cells="remove")
+
+    assert [c.source for c in out.cells] == ["1 + 1"]
