@@ -135,7 +135,13 @@ _ = execute_notebook(
 ```{versionadded} 0.0.21
 ```
 
-If there are notebooks you want to remove before execution, tag them and use `remove_tagged_cells`:
+```{admonition} Command-line equivalent
+:class: dropdown
+
+`ploomber-engine nb.ipynb output.ipynb --remove-tagged-cells remove`
+```
+
+If there are notebooks you want to remove before execution, tag them and use `remove_tagged_cells`. [This sample notebook](https://github.com/ploomber/ploomber-engine/blob/main/examples/remove.ipynb) contains one cell that will fail, if executed; however, the cell contains the tag `"remove"`, so let's remove it before execution:
 
 ```{code-cell} ipython3
 %%sh
@@ -149,8 +155,4 @@ _ = execute_notebook(
     output_path=None,
     remove_tagged_cells=["remove"],
 )
-```
-
-```{code-cell} ipython3
-
 ```
