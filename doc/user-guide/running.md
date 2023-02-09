@@ -129,3 +129,14 @@ _ = execute_notebook(
     progress_bar=False,
 )
 ```
+
+## Removing cells
+
+```{versionadded} 0.0.21
+```
+
+If there are notebooks you want to remove before execution, tag them and use `remove_tagged_cells`:
+
+```{code-cell} ipython3
+
+```
