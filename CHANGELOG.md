@@ -2,6 +2,8 @@
 
 ## 0.0.22dev
 
+* [Feature] Adds `namespace` to `PloomberClient.get_namespce` to pass objects before execution
+
 ## 0.0.21 (2023-02-10)
 
 * [Feature] `parameters` in `track_execution` is optional ([#41](https://github.com/ploomber/ploomber-engine/issues/41))
