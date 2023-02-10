@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 0.0.22dev
+
 ## 0.0.21 (2023-02-10)
 
 * [Feature] `parameters` in `track_execution` is optional ([#41](https://github.com/ploomber/ploomber-engine/issues/41))
