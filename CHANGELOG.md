@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.22dev
+## 0.0.22 (2023-02-10)
 
 * [Feature] Adds `namespace` to `PloomberClient.get_namespce` to pass objects before execution
 
