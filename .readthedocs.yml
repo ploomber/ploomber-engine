@@ -9,6 +9,9 @@ build:
     pre_build:
       - "jupyter-book config sphinx doc/"
 
+    post_create_environment:
+      - "conda env export"
+
 conda:
   environment: doc/environment.yml
 
