@@ -64,8 +64,6 @@ Runtime profiling requires extra dependencies: `pip install matplotlib`
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 _ = execute_notebook(
     "nb.ipynb", "output.ipynb", profile_runtime=True, progress_bar=False
 )
@@ -82,8 +80,6 @@ Memory profiling requires extra dependencies: `pip install matplotlib psutil`
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 _ = execute_notebook(
     "nb.ipynb", "output.ipynb", profile_memory=True, progress_bar=False
 )

@@ -151,7 +151,7 @@ _ = execute_notebook(
 `ploomber-engine nb.ipynb output.ipynb --remove-tagged-cells remove`
 ```
 
-If there are notebooks you want to remove before execution, tag them and use `remove_tagged_cells`. [This sample notebook](https://github.com/ploomber/ploomber-engine/blob/main/examples/remove.ipynb) contains one cell that will fail, if executed; however, the cell contains the tag `"remove"`, so let's remove it before execution:
+If there are cells you want to remove before execution, tag them and use `remove_tagged_cells`. [This sample notebook](https://github.com/ploomber/ploomber-engine/blob/main/examples/remove.ipynb) contains one cell that will fail, if executed; however, the cell contains the tag `"remove"`, so let's remove it before execution:
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -167,6 +167,9 @@ curl https://raw.githubusercontent.com/ploomber/ploomber-engine/main/examples/re
 _ = execute_notebook(
     "running-remove.ipynb",
     output_path=None,
-    remove_tagged_cells=["remove"],
+    remove_tagged_cells="remove",
 )
 ```
+
+You may also pass multiple tags to `remove_tagged_cells` in a list:
+`["remove", "also-remove"]`.
