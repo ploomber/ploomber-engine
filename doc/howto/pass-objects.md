@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-## Passing outputs between notebooks
+# Passing outputs between notebooks
 
 ```{versionadded} 0.0.22
 ```
