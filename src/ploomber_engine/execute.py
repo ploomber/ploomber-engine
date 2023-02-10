@@ -109,7 +109,13 @@ def execute_notebook(
     Remove cells with the tag "remove" before execution:
 
     >>> from ploomber_engine import execute_notebook
-    >>> out = execute_notebook("nb.ipynb", "out.ipynb", remove_tagged_cells=["remove"])
+    >>> out = execute_notebook("nb.ipynb", "out.ipynb", remove_tagged_cells="remove")
+
+    Remove cells with any of the passed tags before execution:
+
+    >>> from ploomber_engine import execute_notebook
+    >>> out = execute_notebook("nb.ipynb", "out.ipynb",
+    ...                        remove_tagged_cells=["remove", "also-remove"])
     """
     path_like_input = isinstance(input_path, (str, Path))
 

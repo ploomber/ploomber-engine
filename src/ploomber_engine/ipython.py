@@ -226,7 +226,24 @@ class PloomberClient:
     >>> nb.cells = [nbformat.v4.new_code_cell("1+1"),
     ...             nbformat.v4.new_code_cell("1/0",
     ...             metadata=dict(tags=["remove"]))]
-    >>> client = PloomberClient(nb, remove_tagged_cells=["remove"])
+    >>> client = PloomberClient(nb, remove_tagged_cells="remove")
+    >>> out = client.execute()
+    >>> out.cells[0]['outputs'][0]['data']
+    {'text/plain': '2'}
+
+
+    Remove cells tagged with any of the passed tags before execution:
+
+    >>> from ploomber_engine.ipython import PloomberClient
+    >>> import nbformat
+    >>> nb = nbformat.v4.new_notebook()
+    >>> nb.cells = [nbformat.v4.new_code_cell("1+1"),
+    ...             nbformat.v4.new_code_cell("1/0",
+    ...             metadata=dict(tags=["remove"])),
+    ...             nbformat.v4.new_code_cell("2/0",
+    ...             metadata=dict(tags=["also-remove"]))
+    ...             ]
+    >>> client = PloomberClient(nb, remove_tagged_cells=["remove", "also-remove"])
     >>> out = client.execute()
     >>> out.cells[0]['outputs'][0]['data']
     {'text/plain': '2'}
