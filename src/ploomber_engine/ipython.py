@@ -418,11 +418,19 @@ class PloomberClient:
 
         return self._nb
 
-    def get_namespace(self):
+    def get_namespace(self, namespace=None):
         """Run the notebook and return all the output variables
+
+        Parameters
+        ----------
+        namespace: dict, default=None
+            The initial namespace. It can be used to set initial values prior to
+            execution.
 
         Examples
         --------
+        Execute notebook and get the output variables:
+
         >>> from ploomber_engine.ipython import PloomberClient
         >>> import nbformat
         >>> nb = nbformat.v4.new_notebook()
@@ -438,9 +446,18 @@ class PloomberClient:
         41
         >>> ns["z"]
         42
+
+        Notes
+        -----
+        .. versionchanged:: 0.0.22
+            Added ``namespace`` arguments.
         """
         with self:
             existing = set(self._shell.user_ns)
+
+            namespace = namespace or {}
+            self._shell.user_ns.update(namespace)
+
             self._execute()
             namespace = {
                 k: v for k, v in self._shell.user_ns.items() if k not in existing

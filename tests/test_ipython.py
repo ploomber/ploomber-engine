@@ -692,3 +692,19 @@ def test_execute_notebook_remove_tagged_cells(
     client = PloomberClient(nb, remove_tagged_cells=remove_tagged_cells)
     out = client.execute()
     assert [c.source for c in out.cells] == source
+
+
+def test_pass_namespace():
+    first = nbformat.v4.new_notebook()
+    first.cells = [nbformat.v4.new_code_cell("x = 1")]
+
+    second = nbformat.v4.new_notebook()
+    second.cells = [nbformat.v4.new_code_cell("y = x + 1")]
+
+    client_first = PloomberClient(first)
+    ns_first = client_first.get_namespace()
+
+    client_second = PloomberClient(second)
+    ns_second = client_second.get_namespace(namespace=ns_first)
+
+    assert ns_second == {"x": 1, "y": 2}

@@ -24,9 +24,15 @@ parts:
       - file: user-guide/profiling/runtime
       - file: user-guide/profiling/cpu
     - file: user-guide/papermill
+
+  - caption: How-To
+    chapters:
+      - file: howto/pass-objects
+
   - caption: API Reference
     chapters:
       - file: api/api
+
   - caption: Community
     chapters:
     - file: community/projects
