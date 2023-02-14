@@ -61,8 +61,8 @@ html_theme_options = {
     "extra_navbar": 'Join us on <a href="https://ploomber.io/community/">Slack!</a>',
     "extra_footer": "",
     "home_page_in_toc": True,
-    "announcement": ("To launch any tutorial in JupyterLab,"
-    "click on the 🚀 button below!"),
+    "announcement": "To launch any tutorial in JupyterLab, \
+    click on the 🚀 button below!",
     "use_repository_button": True,
     "use_edit_page_button": False,
     "use_issues_button": True,
