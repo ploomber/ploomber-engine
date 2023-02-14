@@ -72,7 +72,7 @@ intersphinx_mapping = {
     "matplotlib": ["http://matplotlib.org/", None],
 }
 jupyter_cache = ""
-jupyter_execute_notebooks = "cache"
+jupyter_execute_notebooks = "auto"
 latex_engine = "pdflatex"
 myst_enable_extensions = [
     "colon_fence",
