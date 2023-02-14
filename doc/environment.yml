@@ -18,4 +18,5 @@ dependencies:
     - memory-profiler
     - pytest
     - memory-profiler # required for profiling demo
+    - pkgmt>=0.1.7
     - -e ..

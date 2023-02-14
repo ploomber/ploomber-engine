@@ -6,9 +6,6 @@ build:
     python: "mambaforge-4.10"
 
   jobs:
-    pre_build:
-      - "jupyter-book config sphinx doc/"
-
     post_create_environment:
       - "conda env export"
 
