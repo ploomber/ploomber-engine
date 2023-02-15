@@ -13,7 +13,7 @@ repository_url, repository_branch = get_repo_and_branch_for_readthedocs(
 author = "Ploomber"
 comments_config = {"hypothesis": False, "utterances": False}
 copyright = "2023"
-exclude_patterns = ["README.md"]
+exclude_patterns = ["**.ipynb_checkpoints", ".DS_Store", "Thumbs.db", "_build"]
 execution_allow_errors = False
 execution_excludepatterns = []
 execution_in_temp = True
@@ -32,16 +32,13 @@ extensions = [
     "sphinx_book_theme",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
-    "sphinx.ext.autosummary",
-    "matplotlib.sphinxext.plot_directive",
     "sphinx_jupyterbook_latex",
 ]
-external_toc_exclude_missing = True
+external_toc_exclude_missing = False
 external_toc_path = "_toc.yml"
 html_baseurl = ""
 html_favicon = ""
-html_logo = "logo.jpeg"
-html_show_copyright = True
+html_logo = "square-no-bg-small.png"
 html_sourcelink_suffix = ""
 html_theme = "sphinx_book_theme"
 html_theme_options = {
@@ -53,26 +50,21 @@ html_theme_options = {
         "thebe": False,
         "colab_url": "",
     },
-    "path_to_docs": "docs",
-    "repository_url": repository_url,
-    "repository_branch": repository_branch,
-    "google_analytics_id": "G-3KL9PSJBZZ",
+    "path_to_docs": "doc",
+    "repository_url": "https://github.com/ploomber/ploomber-engine",
+    "repository_branch": "main",
+    "google_analytics_id": "G-64QKMLMJY8",
     "extra_navbar": 'Join us on <a href="https://ploomber.io/community/">Slack!</a>',
     "extra_footer": "",
     "home_page_in_toc": True,
-    "announcement": "To launch any tutorial in JupyterLab, \
-    click on the 🚀 button below!",
+    "announcement": "To launch any tutorial in JupyterLab, click on the 🚀 button below!",
     "use_repository_button": True,
     "use_edit_page_button": False,
     "use_issues_button": True,
 }
 html_title = "ploomber-engine"
-intersphinx_mapping = {
-    "sklearn": ["http://scikit-learn.org/stable", None],
-    "matplotlib": ["http://matplotlib.org/", None],
-}
 jupyter_cache = ""
-jupyter_execute_notebooks = "auto"
+jupyter_execute_notebooks = "cache"
 latex_engine = "pdflatex"
 myst_enable_extensions = [
     "colon_fence",
@@ -84,10 +76,7 @@ myst_enable_extensions = [
 myst_url_schemes = ["mailto", "http", "https"]
 nb_output_stderr = "show"
 numfig = True
-plot_html_show_formats = False
-plot_html_show_source_link = False
-plot_include_source = True
 pygments_style = "sphinx"
-suppress_warnings = ["myst.domains", "myst.header"]
+suppress_warnings = ["myst.domains"]
 use_jupyterbook_latex = True
 use_multitoc_numbering = True
