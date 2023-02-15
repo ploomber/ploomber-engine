@@ -1,6 +1,5 @@
 from pkgmt.github import get_repo_and_branch_for_readthedocs
 
-
 repository_url, repository_branch = get_repo_and_branch_for_readthedocs(
     repository_url="https://github.com/ploomber/ploomber-engine",
     default_branch="master",
@@ -19,7 +18,7 @@ execution_allow_errors = False
 execution_excludepatterns = []
 execution_in_temp = True
 execution_show_tb = True
-execution_timeout = 30
+execution_timeout = 180
 extensions = [
     "sphinx_togglebutton",
     "sphinx_copybutton",
