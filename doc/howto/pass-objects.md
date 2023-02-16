@@ -25,7 +25,6 @@ The first notebook has:
 
 ```python
 x = 1
-print(should_fail)
 ```
 
 While the second notebook contains:
@@ -60,6 +59,8 @@ from ploomber_engine.ipython import PloomberClient
 client_first = PloomberClient.from_path("first.ipynb")
 ns_first = client_first.get_namespace()
 ns_first
+
+print(should_fail)
 ```
 
 Execute the second notebook:
