@@ -2,7 +2,7 @@ from pkgmt.github import get_repo_and_branch_for_readthedocs
 
 repository_url, repository_branch = get_repo_and_branch_for_readthedocs(
     repository_url="https://github.com/ploomber/ploomber-engine",
-    default_branch="master",
+    default_branch="main",
 )
 
 ###############################################################################
@@ -51,8 +51,8 @@ html_theme_options = {
         "colab_url": "",
     },
     "path_to_docs": "doc",
-    "repository_url": "https://github.com/ploomber/ploomber-engine",
-    "repository_branch": "main",
+    "repository_url": repository_url,
+    "repository_branch": repository_branch,
     "google_analytics_id": "G-64QKMLMJY8",
     "extra_navbar": 'Join us on <a href="https://ploomber.io/community/">Slack!</a>',
     "extra_footer": "",
