@@ -25,6 +25,7 @@ The first notebook has:
 
 ```python
 x = 1
+print(should_fail)
 ```
 
 While the second notebook contains:
