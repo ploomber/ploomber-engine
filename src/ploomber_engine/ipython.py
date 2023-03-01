@@ -284,6 +284,7 @@ class PloomberClient:
         progress_bar=True,
         debug_later=False,
         remove_tagged_cells=None,
+        cwd='.',
     ):
         """Initialize client from a path to a notebook
 
@@ -306,6 +307,9 @@ class PloomberClient:
         remove_tagged_cells : str or list, default=None
             Cells with any of the passed tag(s) will be removed from the notebook before
             execution.
+
+        cwd : str or Path, default='.'
+            Working directory to use when executing the notebook
 
         Notes
         -----
