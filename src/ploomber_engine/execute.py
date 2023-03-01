@@ -27,6 +27,7 @@ def execute_notebook(
     debug_later=False,
     verbose=False,
     remove_tagged_cells=None,
+    cwd=None,
 ):
     """Executes a notebook. Drop-in replacement for
     ``papermill.execute_notebook`` with enhanced capabilities.
@@ -66,6 +67,9 @@ def execute_notebook(
     remove_tagged_cells : str or list, default=None
         Cells with any of the passed tag(s) will be removed from the notebook before
         execution.
+
+    cwd : str or Path, optional
+        Working directory to use when executing the notebook
 
     Returns
     -------
