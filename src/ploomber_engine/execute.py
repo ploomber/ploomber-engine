@@ -27,6 +27,7 @@ def execute_notebook(
     debug_later=False,
     verbose=False,
     remove_tagged_cells=None,
+    save_profiling_data=False,
 ):
     """Executes a notebook. Drop-in replacement for
     ``papermill.execute_notebook`` with enhanced capabilities.
@@ -66,6 +67,10 @@ def execute_notebook(
     remove_tagged_cells : str or list, default=None
         Cells with any of the passed tag(s) will be removed from the notebook before
         execution.
+
+    save_profiling_data : bool, default=False
+        If True, saves profiling data generated from profile_memory and profile_runtime
+        (stores a ``.csv`` file in the same folder as ``output_path``)
 
     Returns
     -------
@@ -118,6 +123,9 @@ def execute_notebook(
     ...                        remove_tagged_cells=["remove", "also-remove"])
     """
     path_like_input = isinstance(input_path, (str, Path))
+
+    if save_profiling_data and not(profile_runtime or profile_memory):
+        raise ValueError('save_profiling_data=True requires profile_runtime=True or profile_memory=True')
 
     if profile_memory:
         INIT_FUNCTION = (
@@ -182,6 +190,15 @@ def execute_notebook(
             click.secho(
                 f"Cell memory profile plot stored at: {output_path_memory}", fg="green"
             )
+
+    if save_profiling_data:
+        import csv
+        data = profiling.get_profiling_data(out)
+        output_path_profiling_data = _util.sibling_with_suffix(output_path, "-profiling-data.csv")
+        with open(output_path_profiling_data, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(data.keys())
+            writer.writerows(zip(*data.values()))
 
     if output_path:
         nbformat.write(out, output_path)

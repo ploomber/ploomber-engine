@@ -2,6 +2,8 @@
 
 ## 0.0.23dev
 
+* [Feature] Save profiling data (memory/time per cell) using `--save-profiling-data=` in the CLI or `save_profiling_data` in the Python API  
+
 ## 0.0.22 (2023-02-10)
 
 * [Feature] Adds `namespace` to `PloomberClient.get_namespce` to pass objects before execution
