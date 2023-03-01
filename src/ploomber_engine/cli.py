@@ -45,7 +45,7 @@ from ploomber_engine import execute_notebook
 )
 @click.option(
     "--cwd",
-    default=None, type=click.STRING,
+    default='.', type=click.STRING,
     help="Working directory to run notebook in.",
 )
 def cli(
