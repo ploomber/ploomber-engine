@@ -259,7 +259,7 @@ class PloomberClient:
         progress_bar=True,
         debug_later=False,
         remove_tagged_cells=None,
-        cwd='.',
+        cwd=".",
     ):
         self._nb = _remove_cells_with_tags(nb, remove_tagged_cells)
         self._shell = None
@@ -284,7 +284,7 @@ class PloomberClient:
         progress_bar=True,
         debug_later=False,
         remove_tagged_cells=None,
-        cwd='.',
+        cwd=".",
     ):
         """Initialize client from a path to a notebook
 
@@ -354,7 +354,6 @@ class PloomberClient:
         output = []
 
         if stdout:
-
             if self._display_stdout:
                 print("".join([line.strip() for line in stdout]))
 
@@ -530,7 +529,6 @@ class PloomberClient:
         with add_to_sys_path(self._cwd):
             for index, cell in enumerate(iterator):
                 if cell.cell_type == "code":
-
                     if self._progress_bar:
                         iterator.set_description(f"Executing cell: {execution_count}")
 

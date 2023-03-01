@@ -27,7 +27,7 @@ def execute_notebook(
     debug_later=False,
     verbose=False,
     remove_tagged_cells=None,
-    cwd='.',
+    cwd=".",
 ):
     """Executes a notebook. Drop-in replacement for
     ``papermill.execute_notebook`` with enhanced capabilities.

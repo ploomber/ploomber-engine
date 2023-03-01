@@ -186,6 +186,6 @@ def test_execute_notebook_different_cwd(tmp_empty):
     tmp_dir = Path("tmp_dir")
     tmp_dir.mkdir()
     out = execute_notebook(nb_in, f"{tmp_dir}/out.ipynb", cwd=tmp_dir)
-    cell_printed_cwd = out.cells[1]["outputs"][0]["data"]['text/plain']
+    cell_printed_cwd = out.cells[1]["outputs"][0]["data"]["text/plain"]
     cell_printed_cwd = cell_printed_cwd.strip(" ' ' ")
-    assert  cell_printed_cwd == str(tmp_dir.absolute())
+    assert cell_printed_cwd == str(tmp_dir.absolute())

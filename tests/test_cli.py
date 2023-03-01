@@ -21,7 +21,7 @@ def _make_call(**kwargs):
         debug_later=False,
         verbose=True,
         remove_tagged_cells=None,
-        cwd='.',
+        cwd=".",
     )
 
     return call("nb.ipynb", "out.ipynb", **{**defaults, **kwargs})

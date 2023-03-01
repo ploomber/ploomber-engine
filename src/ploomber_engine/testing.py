@@ -13,14 +13,12 @@ class NotebookTestException(Exception):
 
 
 def _process_output(output):
-
     if output["output_type"] == "stream":
         return output["text"].strip()
     elif output["output_type"] == "execute_result":
         text_plain = output["data"].get("text/plain")
 
         if text_plain:
-
             if "[<matplotlib." in text_plain:
                 return None
             else:

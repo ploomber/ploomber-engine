@@ -45,7 +45,8 @@ from ploomber_engine import execute_notebook
 )
 @click.option(
     "--cwd",
-    default='.', type=click.STRING,
+    default=".",
+    type=click.STRING,
     help="Working directory to run notebook in.",
 )
 def cli(
@@ -58,7 +59,7 @@ def cli(
     parameters,
     debug_later,
     remove_tagged_cells,
-    cwd
+    cwd,
 ):
     """
     Execute my-notebook.ipynb, store results in output.ipynb:
