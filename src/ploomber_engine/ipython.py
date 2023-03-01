@@ -345,7 +345,6 @@ class PloomberClient:
         output = []
 
         if stdout:
-
             if self._display_stdout:
                 print("".join([line.strip() for line in stdout]))
 
@@ -521,7 +520,6 @@ class PloomberClient:
         with add_to_sys_path("."):
             for index, cell in enumerate(iterator):
                 if cell.cell_type == "code":
-
                     if self._progress_bar:
                         iterator.set_description(f"Executing cell: {execution_count}")
 

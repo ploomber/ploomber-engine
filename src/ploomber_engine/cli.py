@@ -47,7 +47,8 @@ from ploomber_engine import execute_notebook
     "--save-profiling-data",
     is_flag=True,
     default=False,
-    help="Save profiling data to a file (requires --profile-runtime and/or --profile-memory)"
+    help="Save profiling data to a file "
+    "(requires --profile-runtime and/or --profile-memory)",
 )
 def cli(
     input_path,

@@ -180,6 +180,7 @@ def test_execute_notebook_remove_tagged_cells(tmp_empty):
 
     assert [c.source for c in out.cells] == ["1 + 1"]
 
+
 def test_execute_notebook_save_profiling_data(tmp_empty):
     nb_in = _make_nb(["1 + 1"])
     with pytest.raises(ValueError):
@@ -196,10 +197,15 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
         assert len(data) == 3, "File should have 3 columns"
         assert data[2] == "NA", "memory should be NA (since not profiled)"
 
-    execute_notebook(nb_in, "out.ipynb", save_profiling_data=True, profile_runtime=True, profile_memory=True)
+    execute_notebook(
+        nb_in,
+        "out.ipynb",
+        save_profiling_data=True,
+        profile_runtime=True,
+        profile_memory=True,
+    )
     outfile = "out-profiling-data.csv"
     with open(outfile, "r") as f:
         lines = f.readlines()
         data = lines[1].strip().split(",")
-        assert data[2]!="NA", "memory should have a non-NA value"
-
+        assert data[2] != "NA", "memory should have a non-NA value"

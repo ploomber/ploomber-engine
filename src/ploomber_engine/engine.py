@@ -130,5 +130,4 @@ class ProfilingEngine(Engine):
         execution_timeout=None,
         **kwargs,
     ):
-
         return PloomberManagedClient(nb_man).execute()

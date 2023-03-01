@@ -124,8 +124,11 @@ def execute_notebook(
     """
     path_like_input = isinstance(input_path, (str, Path))
 
-    if save_profiling_data and not(profile_runtime or profile_memory):
-        raise ValueError('save_profiling_data=True requires profile_runtime=True or profile_memory=True')
+    if save_profiling_data and not (profile_runtime or profile_memory):
+        raise ValueError(
+            "save_profiling_data=True requires "
+            "profile_runtime=True or profile_memory=True"
+        )
 
     if profile_memory:
         INIT_FUNCTION = (
@@ -193,9 +196,12 @@ def execute_notebook(
 
     if save_profiling_data:
         import csv
+
         data = profiling.get_profiling_data(out)
-        output_path_profiling_data = _util.sibling_with_suffix(output_path, "-profiling-data.csv")
-        with open(output_path_profiling_data, 'w') as f:
+        output_path_profiling_data = _util.sibling_with_suffix(
+            output_path, "-profiling-data.csv"
+        )
+        with open(output_path_profiling_data, "w") as f:
             writer = csv.writer(f)
             writer.writerow(data.keys())
             writer.writerows(zip(*data.values()))

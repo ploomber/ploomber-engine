@@ -24,7 +24,7 @@ TIMESTAMP_END = [
     1674998734.923498,
     1674998736.933173,
 ]
-DELTA_TIME = [t1-t0 for t0, t1 in zip(TIMESTAMP_START, TIMESTAMP_END)]
+DELTA_TIME = [t1 - t0 for t0, t1 in zip(TIMESTAMP_START, TIMESTAMP_END)]
 
 
 @pytest.fixture
@@ -115,7 +115,8 @@ def test_plot_memory_usage(nb_metadata, tmp_empty):
 def test_plot_cell_runtime(nb_metadata, tmp_empty):
     profiling.plot_cell_runtime(nb_metadata)
 
+
 def test_get_profiling_data(nb_metadata, tmp_empty):
     data = profiling.get_profiling_data(nb_metadata)
     assert data["memory"] == MEMORY_USAGE
-    assert data['runtime'] == DELTA_TIME
+    assert data["runtime"] == DELTA_TIME
