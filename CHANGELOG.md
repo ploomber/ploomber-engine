@@ -2,6 +2,8 @@
 
 ## 0.0.23dev
 
+* [Feature] Adds `cwd` to allow users to specify the working directory when executing notebooks (#53)
+
 ## 0.0.22 (2023-02-10)
 
 * [Feature] Adds `namespace` to `PloomberClient.get_namespce` to pass objects before execution
