@@ -1,3 +1,7 @@
+.. meta::
+    :description lang=en: API reference for ploomber-engine
+    :keywords: python,jupyter,notebooks,ploomber
+
 API Reference
 =============
 
