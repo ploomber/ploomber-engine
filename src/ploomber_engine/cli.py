@@ -43,6 +43,12 @@ from ploomber_engine import execute_notebook
     default=None,
     help="Remove cells with this tag before execution",
 )
+@click.option(
+    "--cwd",
+    default=".",
+    type=click.STRING,
+    help="Working directory to run notebook in.",
+)
 def cli(
     input_path,
     output_path,
@@ -53,6 +59,7 @@ def cli(
     parameters,
     debug_later,
     remove_tagged_cells,
+    cwd,
 ):
     """
     Execute my-notebook.ipynb, store results in output.ipynb:
@@ -91,6 +98,7 @@ def cli(
         debug_later=debug_later,
         verbose=True,
         remove_tagged_cells=remove_tagged_cells,
+        cwd=cwd,
     )
 
 

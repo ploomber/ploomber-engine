@@ -194,8 +194,14 @@ class PloomberClient:
         Cells with any of the passed tag(s) will be removed from the notebook before
         execution.
 
+    cwd : str or Path, default='.'
+        Working directory to use when executing the notebook
+
     Notes
     -----
+    .. versionchanged:: 0.0.23
+        Added ``cwd`` argument.
+
     .. versionchanged:: 0.0.21
         Added ``remove_tagged_cells`` arguments.
 
@@ -256,11 +262,13 @@ class PloomberClient:
         progress_bar=True,
         debug_later=False,
         remove_tagged_cells=None,
+        cwd=".",
     ):
         self._nb = _remove_cells_with_tags(nb, remove_tagged_cells)
         self._shell = None
         self._display_stdout = display_stdout
         self._debug_later = debug_later
+        self._cwd = cwd
 
         # NOTE: this env var is only used internally so the doctests don't show
         # the progress bar
@@ -279,6 +287,7 @@ class PloomberClient:
         progress_bar=True,
         debug_later=False,
         remove_tagged_cells=None,
+        cwd=".",
     ):
         """Initialize client from a path to a notebook
 
@@ -302,8 +311,14 @@ class PloomberClient:
             Cells with any of the passed tag(s) will be removed from the notebook before
             execution.
 
+        cwd : str or Path, default='.'
+            Working directory to use when executing the notebook
+
         Notes
         -----
+        .. versionchanged:: 0.0.23
+            Added ``cwd`` argument.
+
         .. versionchanged:: 0.0.21
             Added ``remove_tagged_cells`` arguments.
 
@@ -345,7 +360,6 @@ class PloomberClient:
         output = []
 
         if stdout:
-
             if self._display_stdout:
                 print("".join([line.strip() for line in stdout]))
 
@@ -518,10 +532,9 @@ class PloomberClient:
 
         # make sure that the current working directory is in the sys.path
         # in case the user has local modules
-        with add_to_sys_path("."):
+        with add_to_sys_path(self._cwd):
             for index, cell in enumerate(iterator):
                 if cell.cell_type == "code":
-
                     if self._progress_bar:
                         iterator.set_description(f"Executing cell: {execution_count}")
 
@@ -567,7 +580,7 @@ class PloomberManagedClient(PloomberClient):
 
         # make sure that the current working directory is in the sys.path
         # in case the user has local modules
-        with add_to_sys_path("."):
+        with add_to_sys_path(self._cwd):
             for index, cell in enumerate(self._nb.cells):
                 if cell.cell_type == "code":
                     try:
@@ -623,7 +636,7 @@ def patch_sys_std_out_err():
 
 
 @contextlib.contextmanager
-def add_to_sys_path(path, chdir=False):
+def add_to_sys_path(path, chdir=True):
     """
     Add directory to sys.path, optionally making it the working directory
     temporarily

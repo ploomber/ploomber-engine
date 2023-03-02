@@ -76,7 +76,7 @@ class PloomberLogger(PloomberClient):
 
         # make sure that the current working directory is in the sys.path
         # in case the user has local modules
-        with add_to_sys_path("."):
+        with add_to_sys_path(self._cwd):
             for index, cell in enumerate(self._nb.cells):
                 if cell.cell_type == "code":
                     self.execute_cell(
