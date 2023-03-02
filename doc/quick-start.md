@@ -11,7 +11,7 @@ kernelspec:
   language: python
   name: python3
 html_meta:
-  "description lang=en": "A quick-start guide for ploomber-engine, a toolbox for exeuting jupyter notebooks"
+  "description lang=en": "A quick-start guide for ploomber-engine, a toolbox for executing jupyter notebooks"
   "keywords": "python,jupyter,notebooks,ploomber"
   "property=og:locale": "en_US"
 ---
