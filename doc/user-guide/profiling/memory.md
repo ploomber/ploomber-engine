@@ -102,7 +102,10 @@ You can save the profiling data by setting `save_profiling_data=True`.
 
 ```{code-cell} ipython3
 %%capture
-_ = execute_notebook("notebook.ipynb", "output.ipynb", profile_memory=True, save_profiling_data=True);
+_ = execute_notebook(
+  "notebook.ipynb", "output.ipynb", 
+  profile_memory=True, save_profiling_data=True
+);
 ```
 
 ```{code-cell} ipython3
