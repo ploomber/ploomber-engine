@@ -183,7 +183,7 @@ def test_execute_notebook_remove_tagged_cells(tmp_empty):
 
 def test_execute_notebook_save_profiling_data(tmp_empty):
     nb_in = _make_nb(["1 + 1"])
-    with pytest.raises(ValueError):
+    with pytest.warns(UserWarning, match="save_profiling_data requires"):
         # save_profiling_data requires profile_runtime and/or profile_memory
         execute_notebook(nb_in, "out.ipynb", save_profiling_data=True)
 

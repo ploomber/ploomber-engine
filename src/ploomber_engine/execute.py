@@ -1,7 +1,9 @@
 """
 Abstractions for running notebooks with papermill-like interface
 """
+import warnings
 from pathlib import Path
+import csv
 
 import click
 import nbformat
@@ -79,6 +81,9 @@ def execute_notebook(
 
     Notes
     -----
+    .. versionchanged:: 0.0.23
+        Added ``save_profiling_data`` argument.
+
     .. versionchanged:: 0.0.21
         Added ``remove_tagged_cells`` arguments.
 
@@ -125,9 +130,10 @@ def execute_notebook(
     path_like_input = isinstance(input_path, (str, Path))
 
     if save_profiling_data and not (profile_runtime or profile_memory):
-        raise ValueError(
+        warnings.warn(
             "save_profiling_data=True requires "
-            "profile_runtime=True or profile_memory=True"
+            "profile_runtime=True or profile_memory=True",
+            UserWarning
         )
 
     if profile_memory:
@@ -195,8 +201,6 @@ def execute_notebook(
             )
 
     if save_profiling_data:
-        import csv
-
         data = profiling.get_profiling_data(out)
         output_path_profiling_data = _util.sibling_with_suffix(
             output_path, "-profiling-data.csv"
