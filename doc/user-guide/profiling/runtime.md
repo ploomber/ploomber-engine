@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -70,3 +70,19 @@ nb = execute_notebook("notebook.ipynb", "output.ipynb")
 ax = plot_cell_runtime(nb)
 _ = ax.set_title("My custom title")
 ```
+
+## Saving profiling data
+
+You can save the profiling data by setting `save_profiling_data=True`.
+
+```{code-cell} ipython3
+%%capture
+_ = execute_notebook("notebook.ipynb", "output.ipynb", profile_runtime=True, save_profiling_data=True);
+```
+
+```{code-cell} ipython3
+import pandas as pd
+pd.read_csv("output-profiling-data.csv")
+```
+
+Note: you must set `profile_memory=True` to get non-NA data saved for the memory usage.
