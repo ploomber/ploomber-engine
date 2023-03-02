@@ -7,6 +7,25 @@ from matplotlib.testing.decorators import image_comparison
 
 from ploomber_engine import profiling
 
+MEMORY_USAGE = [107.65, 41.84, 44.79, 37.29, 47.39, 48.15]
+TIMESTAMP_START = [
+    1674998730.886695,
+    1674998730.888831,
+    1674998732.901863,
+    1674998732.907168,
+    1674998734.917144,
+    1674998734.923841,
+]
+TIMESTAMP_END = [
+    1674998730.888669,
+    1674998732.900239,
+    1674998732.906827,
+    1674998734.915482,
+    1674998734.923498,
+    1674998736.933173,
+]
+DELTA_TIME = [t1 - t0 for t0, t1 in zip(TIMESTAMP_START, TIMESTAMP_END)]
+
 
 @pytest.fixture
 def cells():
@@ -32,32 +51,16 @@ def nb(cells):
 @pytest.fixture
 def nb_metadata(cells):
     cells_with_metadata = []
-    memory_usage = [107.65, 41.84, 44.79, 37.29, 47.39, 48.15]
-    timestamp_start = [
-        1674998730.886695,
-        1674998730.888831,
-        1674998732.901863,
-        1674998732.907168,
-        1674998734.917144,
-        1674998734.923841,
-    ]
-    timestamp_end = [
-        1674998730.888669,
-        1674998732.900239,
-        1674998732.906827,
-        1674998734.915482,
-        1674998734.923498,
-        1674998736.933173,
-    ]
+
     for ind, cell in enumerate(cells):
         cells_with_metadata.append(
             nbformat.v4.new_code_cell(
                 cell,
                 metadata={
                     "ploomber": {
-                        "memory_usage": memory_usage[ind],
-                        "timestamp_start": timestamp_start[ind],
-                        "timestamp_end": timestamp_end[ind],
+                        "memory_usage": MEMORY_USAGE[ind],
+                        "timestamp_start": TIMESTAMP_START[ind],
+                        "timestamp_end": TIMESTAMP_END[ind],
                     }
                 },
             )
@@ -111,3 +114,9 @@ def test_plot_memory_usage(nb_metadata, tmp_empty):
 )
 def test_plot_cell_runtime(nb_metadata, tmp_empty):
     profiling.plot_cell_runtime(nb_metadata)
+
+
+def test_get_profiling_data(nb_metadata, tmp_empty):
+    data = profiling.get_profiling_data(nb_metadata)
+    assert data["memory"] == MEMORY_USAGE
+    assert data["runtime"] == DELTA_TIME

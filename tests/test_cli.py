@@ -22,6 +22,7 @@ def _make_call(**kwargs):
         verbose=True,
         remove_tagged_cells=None,
         cwd=".",
+        save_profiling_data=False,
     )
 
     return call("nb.ipynb", "out.ipynb", **{**defaults, **kwargs})
@@ -30,6 +31,10 @@ def _make_call(**kwargs):
 @pytest.mark.parametrize(
     "cli_args, call_expected",
     [
+        [
+            ["nb.ipynb", "out.ipynb", "--profile-runtime", "--save-profiling-data"],
+            _make_call(profile_runtime=True, save_profiling_data=True),
+        ],
         [
             ["nb.ipynb", "out.ipynb", "--no-progress-bar"],
             _make_call(progress_bar=False),

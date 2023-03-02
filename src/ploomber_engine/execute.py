@@ -1,7 +1,9 @@
 """
 Abstractions for running notebooks with papermill-like interface
 """
+import warnings
 from pathlib import Path
+import csv
 
 import click
 import nbformat
@@ -28,6 +30,7 @@ def execute_notebook(
     verbose=False,
     remove_tagged_cells=None,
     cwd=".",
+    save_profiling_data=False,
 ):
     """Executes a notebook. Drop-in replacement for
     ``papermill.execute_notebook`` with enhanced capabilities.
@@ -71,6 +74,10 @@ def execute_notebook(
     cwd : str or Path, default='.'
         Working directory to use when executing the notebook
 
+    save_profiling_data : bool, default=False
+        If True, saves profiling data generated from profile_memory and profile_runtime
+        (stores a ``.csv`` file in the same folder as ``output_path``)
+
     Returns
     -------
     nb : NotebookNode
@@ -80,6 +87,7 @@ def execute_notebook(
     -----
     .. versionchanged:: 0.0.23
         Added ``cwd`` argument.
+        Added ``save_profiling_data`` argument.
 
     .. versionchanged:: 0.0.21
         Added ``remove_tagged_cells`` arguments.
@@ -125,6 +133,13 @@ def execute_notebook(
     ...                        remove_tagged_cells=["remove", "also-remove"])
     """
     path_like_input = isinstance(input_path, (str, Path))
+
+    if save_profiling_data and not (profile_runtime or profile_memory):
+        warnings.warn(
+            "save_profiling_data=True requires "
+            "profile_runtime=True or profile_memory=True",
+            UserWarning,
+        )
 
     if profile_memory:
         INIT_FUNCTION = (
@@ -190,6 +205,16 @@ def execute_notebook(
             click.secho(
                 f"Cell memory profile plot stored at: {output_path_memory}", fg="green"
             )
+
+    if save_profiling_data:
+        data = profiling.get_profiling_data(out)
+        output_path_profiling_data = _util.sibling_with_suffix(
+            output_path, "-profiling-data.csv"
+        )
+        with open(output_path_profiling_data, "w") as f:
+            writer = csv.writer(f)
+            writer.writerow(data.keys())
+            writer.writerows(zip(*data.values()))
 
     if output_path:
         nbformat.write(out, output_path)

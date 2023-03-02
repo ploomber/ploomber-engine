@@ -95,3 +95,20 @@ nb = execute_notebook("notebook.ipynb", "output.ipynb", profile_memory=True)
 ax = plot_memory_usage(nb)
 _ = ax.set_title("My custom title")
 ```
+
+## Saving profiling data
+
+You can save the profiling data by setting `save_profiling_data=True`.
+
+```{code-cell} ipython3
+%%capture
+_ = execute_notebook(
+    "notebook.ipynb", "output.ipynb",
+    profile_memory=True, save_profiling_data=True
+)
+```
+
+```{code-cell} ipython3
+import pandas as pd
+pd.read_csv("output-profiling-data.csv")
+```

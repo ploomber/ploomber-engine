@@ -49,6 +49,13 @@ from ploomber_engine import execute_notebook
     type=click.STRING,
     help="Working directory to run notebook in.",
 )
+@click.option(
+    "--save-profiling-data",
+    is_flag=True,
+    default=False,
+    help="Save profiling data to a file "
+    "(requires --profile-runtime and/or --profile-memory)",
+)
 def cli(
     input_path,
     output_path,
@@ -60,6 +67,7 @@ def cli(
     debug_later,
     remove_tagged_cells,
     cwd,
+    save_profiling_data,
 ):
     """
     Execute my-notebook.ipynb, store results in output.ipynb:
@@ -99,6 +107,7 @@ def cli(
         verbose=True,
         remove_tagged_cells=remove_tagged_cells,
         cwd=cwd,
+        save_profiling_data=save_profiling_data,
     )
 
 

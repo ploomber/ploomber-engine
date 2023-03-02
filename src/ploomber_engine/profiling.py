@@ -115,3 +115,27 @@ def plot_cell_runtime(nb):
     ax.figure.tight_layout()
 
     return ax
+
+
+def get_profiling_data(nb):
+    """
+    Collect profiling data from the notebook and return as a dictionary
+
+    Parameters
+    ----------
+    nb : NotebookNode
+        Notebook to collect profiling data from
+
+    Returns
+    -------
+    dict: dictionary with the following keys:
+        cell: list of cell indexes
+        runtime: list of cell runtimes
+        memory: list of cell memory usage
+    """
+    code_cells = [cell for cell in nb.cells if cell.cell_type == "code"]
+    return dict(
+        cell=list(range(1, len(code_cells) + 1)),
+        runtime=[_compute_runtime(c) for c in code_cells],
+        memory=[c.metadata["ploomber"].get("memory_usage", "NA") for c in code_cells],
+    )
