@@ -138,7 +138,7 @@ def execute_notebook(
         warnings.warn(
             "save_profiling_data=True requires "
             "profile_runtime=True or profile_memory=True",
-            UserWarning
+            UserWarning,
         )
 
     if profile_memory:

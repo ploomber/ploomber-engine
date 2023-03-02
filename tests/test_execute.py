@@ -210,6 +210,7 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
         data = lines[1].strip().split(",")
         assert data[2] != "NA", "memory should have a non-NA value"
 
+
 def test_execute_notebook_different_cwd(tmp_empty):
     nb_in = _make_nb(["import os", "os.getcwd()"])
     tmp_dir = Path("tmp_dir")
