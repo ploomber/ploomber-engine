@@ -199,6 +199,9 @@ class PloomberClient:
 
     Notes
     -----
+    .. versionchanged:: 0.0.23
+        Added ``cwd`` argument.
+
     .. versionchanged:: 0.0.21
         Added ``remove_tagged_cells`` arguments.
 
@@ -313,6 +316,9 @@ class PloomberClient:
 
         Notes
         -----
+        .. versionchanged:: 0.0.23
+            Added ``cwd`` argument.
+
         .. versionchanged:: 0.0.21
             Added ``remove_tagged_cells`` arguments.
 
