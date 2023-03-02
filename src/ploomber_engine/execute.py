@@ -29,6 +29,7 @@ def execute_notebook(
     debug_later=False,
     verbose=False,
     remove_tagged_cells=None,
+    cwd=".",
     save_profiling_data=False,
 ):
     """Executes a notebook. Drop-in replacement for
@@ -70,6 +71,9 @@ def execute_notebook(
         Cells with any of the passed tag(s) will be removed from the notebook before
         execution.
 
+    cwd : str or Path, default='.'
+        Working directory to use when executing the notebook
+
     save_profiling_data : bool, default=False
         If True, saves profiling data generated from profile_memory and profile_runtime
         (stores a ``.csv`` file in the same folder as ``output_path``)
@@ -82,6 +86,7 @@ def execute_notebook(
     Notes
     -----
     .. versionchanged:: 0.0.23
+        Added ``cwd`` argument.
         Added ``save_profiling_data`` argument.
 
     .. versionchanged:: 0.0.21
@@ -156,6 +161,7 @@ def execute_notebook(
         progress_bar=progress_bar,
         debug_later=debug_later_,
         remove_tagged_cells=remove_tagged_cells,
+        cwd=cwd,
     )
 
     try:

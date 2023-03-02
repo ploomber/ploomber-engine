@@ -44,6 +44,12 @@ from ploomber_engine import execute_notebook
     help="Remove cells with this tag before execution",
 )
 @click.option(
+    "--cwd",
+    default=".",
+    type=click.STRING,
+    help="Working directory to run notebook in.",
+)
+@click.option(
     "--save-profiling-data",
     is_flag=True,
     default=False,
@@ -60,6 +66,7 @@ def cli(
     parameters,
     debug_later,
     remove_tagged_cells,
+    cwd,
     save_profiling_data,
 ):
     """
@@ -99,6 +106,7 @@ def cli(
         debug_later=debug_later,
         verbose=True,
         remove_tagged_cells=remove_tagged_cells,
+        cwd=cwd,
         save_profiling_data=save_profiling_data,
     )
 

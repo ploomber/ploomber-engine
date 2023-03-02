@@ -10,6 +10,10 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+html_meta:
+  "description lang=en": "A quick-start guide for ploomber-engine, a toolbox for executing jupyter notebooks"
+  "keywords": "python,jupyter,notebooks,ploomber"
+  "property=og:locale": "en_US"
 ---
 
 # Quick Start

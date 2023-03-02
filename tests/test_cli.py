@@ -21,6 +21,7 @@ def _make_call(**kwargs):
         debug_later=False,
         verbose=True,
         remove_tagged_cells=None,
+        cwd=".",
         save_profiling_data=False,
     )
 

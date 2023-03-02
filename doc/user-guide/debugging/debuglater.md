@@ -10,11 +10,16 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+html_meta:
+  "description lang=en": "How to use ploomber-engine with the debuglater package."
+  "keywords": "python,jupyter,notebooks,ploomber"
+  "property=og:locale": "en_US"
 ---
 
 # Debug later
 
 ```{versionadded} 0.0.19
+
 ```
 
 ploomber-engine uses our [debuglater](https://github.com/ploomber/debuglater) package to serialize the error traceback so you can start a debugging session after your notebook crashes.
@@ -66,7 +71,6 @@ We can use the `dltr` command (from our [debuglater](https://github.com/ploomber
 ```sh
 dltr output.dump
 ```
-
 
 ```{tip}
 By default, only built-in data structures are serialized, for other types, only their string representation is stored. If you want to serialize every data type: `pip install 'debuglater[all]'`

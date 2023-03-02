@@ -10,11 +10,16 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+html_meta:
+  "description lang=en": "Pass objects between notebooks using ploomber-engine"
+  "keywords": "python,jupyter,notebooks,ploomber"
+  "property=og:locale": "en_US"
 ---
 
 # Passing outputs between notebooks
 
 ```{versionadded} 0.0.22
+
 ```
 
 +++

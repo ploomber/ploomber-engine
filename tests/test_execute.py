@@ -209,3 +209,12 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
         lines = f.readlines()
         data = lines[1].strip().split(",")
         assert data[2] != "NA", "memory should have a non-NA value"
+
+def test_execute_notebook_different_cwd(tmp_empty):
+    nb_in = _make_nb(["import os", "os.getcwd()"])
+    tmp_dir = Path("tmp_dir")
+    tmp_dir.mkdir()
+    out = execute_notebook(nb_in, f"{tmp_dir}/out.ipynb", cwd=tmp_dir)
+    cell_printed_cwd = out.cells[1]["outputs"][0]["data"]["text/plain"]
+    cell_printed_cwd = cell_printed_cwd.strip(" ' ' ")
+    assert cell_printed_cwd == str(tmp_dir.absolute())

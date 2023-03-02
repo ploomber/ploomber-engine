@@ -2,7 +2,8 @@
 
 ## 0.0.23dev
 
-* [Feature] Save profiling data (memory/time per cell) using `--save-profiling-data=` in the CLI or `save_profiling_data` in the Python API  
+* [Feature] Save profiling data (memory/time per cell) using `--save-profiling-data=` in the CLI or `save_profiling_data` in the Python API
+* [Feature] Adds `cwd` to allow users to specify the working directory when executing notebooks (#53)
 
 ## 0.0.22 (2023-02-10)
 
