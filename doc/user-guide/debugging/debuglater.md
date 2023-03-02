@@ -11,7 +11,7 @@ kernelspec:
   language: python
   name: python3
 html_meta:
-  "description lang=en": "How to use the debuglater package."
+  "description lang=en": "How to use ploomber-engine with the debuglater package."
   "keywords": "python,jupyter,notebooks,ploomber"
   "property=og:locale": "en_US"
 ---
