@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 0.0.24dev
+
 ## 0.0.23 (2023-03-01)
 
 * [Feature] Save profiling data (memory/time per cell) using `--save-profiling-data=` in the CLI or `save_profiling_data` in the Python API
