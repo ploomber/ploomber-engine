@@ -1,9 +1,9 @@
 # CHANGELOG
 
-## 0.0.23dev
+## 0.0.23 (2023-03-01)
 
 * [Feature] Save profiling data (memory/time per cell) using `--save-profiling-data=` in the CLI or `save_profiling_data` in the Python API
-* [Feature] Adds `cwd` to allow users to specify the working directory when executing notebooks (#53)
+* [Feature] Adds `cwd` to allow users to specify the working directory when executing notebooks ([#53](https://github.com/ploomber/ploomber-engine/issues/53))
 
 ## 0.0.22 (2023-02-10)
 
