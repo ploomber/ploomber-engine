@@ -212,10 +212,18 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
 
 
 def test_execute_notebook_different_cwd(tmp_empty):
-    nb_in = _make_nb(["import os", "os.getcwd()"])
-    tmp_dir = Path("tmp_dir")
-    tmp_dir.mkdir()
-    out = execute_notebook(nb_in, f"{tmp_dir}/out.ipynb", cwd=tmp_dir)
-    cell_printed_cwd = out.cells[1]["outputs"][0]["data"]["text/plain"]
-    cell_printed_cwd = cell_printed_cwd.strip(" ' ' ")
-    assert cell_printed_cwd == str(tmp_dir.absolute())
+    # setup
+    run_dir = Path("run_dir")
+    run_dir.mkdir()
+    nb_in = _make_nb(["import os; print(os.getcwd())"])
+    nb_fname = f"{run_dir}/out.ipynb"
+
+    # test using nb_node
+    cell = execute_notebook(nb_in, nb_fname, cwd=run_dir).cells[-1]
+    cell_cwd = cell["outputs"][-1]["text"].strip()
+    assert cell_cwd == str(run_dir.absolute())
+
+    # test using path to nb
+    cell = execute_notebook(nb_fname, nb_fname, cwd=run_dir).cells[-1]
+    cell_cwd = cell["outputs"][-1]["text"].strip()
+    assert cell_cwd == str(run_dir.absolute())
