@@ -342,6 +342,7 @@ class PloomberClient:
             progress_bar=progress_bar,
             debug_later=debug_later,
             remove_tagged_cells=remove_tagged_cells,
+            cwd=cwd
         )
 
     def execute_cell(self, cell, cell_index, execution_count, store_history):
