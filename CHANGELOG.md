@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## 0.0.24dev
+## 0.0.24 (2023-03-05)
+
+* [Fix] Fix a bug that caused the `cwd` to be ignored when using `.from_path` ([#57](https://github.com/ploomber/ploomber-engine/issues/57))
 
 ## 0.0.23 (2023-03-01)
 
