@@ -694,6 +694,60 @@ def test_execute_notebook_remove_tagged_cells(
     assert [c.source for c in out.cells] == source
 
 
+def test_execute_notebook_remove_outputs():
+    nb = nbformat.NotebookNode()
+    cell = nbformat.v4.new_code_cell(
+        'print("Testing Output")',
+        execution_count=4,
+        outputs=[
+            {"name": "stdout", "output_type": "stream", "text": ["Testing Output\n"]}
+        ],
+    )
+    nb.cells = [cell]
+
+    out = ipython._remove_cells_outputs(nb)
+    assert out.cells == [
+        {
+            "id": ANY,
+            "cell_type": "code",
+            "metadata": {},
+            "execution_count": 4,
+            "source": 'print("Testing Output")',
+            "outputs": [],
+        }
+    ]
+
+
+def test_execute_notebook_remove_cells_execution_count():
+    nb = nbformat.NotebookNode()
+    cell = nbformat.v4.new_code_cell(
+        'print("Testing Output")',
+        execution_count=4,
+        outputs=[
+            {"name": "stdout", "output_type": "stream", "text": ["Testing Output\n"]}
+        ],
+    )
+    nb.cells = [cell]
+
+    out = ipython._remove_cells_execution_count(nb)
+    assert out.cells == [
+        {
+            "id": ANY,
+            "cell_type": "code",
+            "metadata": {},
+            "execution_count": None,
+            "source": 'print("Testing Output")',
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": ["Testing Output\n"],
+                }
+            ],
+        }
+    ]
+
+
 def test_pass_namespace():
     first = nbformat.v4.new_notebook()
     first.cells = [nbformat.v4.new_code_cell("x = 1")]
