@@ -171,6 +171,20 @@ def _remove_cells_with_tags(nb, tags):
     return nb
 
 
+def _remove_cells_outputs(nb):
+    for cell in nb.cells:
+        if "outputs" in cell:
+            cell["outputs"] = []
+    return nb
+
+
+def _remove_cells_execution_count(nb):
+    for cell in nb.cells:
+        if "execution_count" in cell:
+            cell["execution_count"] = None
+    return nb
+
+
 class PloomberClient:
     """PloomberClient executes Jupyter notebooks
 
@@ -199,6 +213,9 @@ class PloomberClient:
 
     Notes
     -----
+    .. versionchanged:: 0.0.25dev
+        Removed cell outputs and execution count
+
     .. versionchanged:: 0.0.23
         Added ``cwd`` argument.
 
@@ -265,6 +282,8 @@ class PloomberClient:
         cwd=".",
     ):
         self._nb = _remove_cells_with_tags(nb, remove_tagged_cells)
+        self._nb = _remove_cells_outputs(self._nb)
+        self._nb = _remove_cells_execution_count(self._nb)
         self._shell = None
         self._display_stdout = display_stdout
         self._debug_later = debug_later
@@ -342,7 +361,7 @@ class PloomberClient:
             progress_bar=progress_bar,
             debug_later=debug_later,
             remove_tagged_cells=remove_tagged_cells,
-            cwd=cwd
+            cwd=cwd,
         )
 
     def execute_cell(self, cell, cell_index, execution_count, store_history):
