@@ -213,7 +213,7 @@ class PloomberClient:
 
     Notes
     -----
-    .. versionchanged:: 0.0.25
+    .. versionchanged:: 0.0.25dev
         Removed cell outputs and execution count
 
     .. versionchanged:: 0.0.23
