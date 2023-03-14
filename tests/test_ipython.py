@@ -748,6 +748,78 @@ def test_execute_notebook_remove_cells_execution_count():
     ]
 
 
+def test_execute_crash():
+    # Test case when the jupyter notebook crashes
+    nb = nbformat.NotebookNode()
+    cell_1 = nbformat.v4.new_code_cell(
+        "print(1+5)",
+        execution_count=4,
+        outputs=[{"name": "stdout", "output_type": "stream", "text": ["6\n"]}],
+    )
+
+    cell_2 = nbformat.v4.new_code_cell(
+        'raise NameError("Crash Test")',
+        execution_count=9,
+        outputs=[
+            {"name": "stdout", "output_type": "stream", "text": ["Random Output"]}
+        ],
+    )
+
+    cell_3 = nbformat.v4.new_code_cell(
+        'print("Notebook has crashed")',
+        execution_count=3,
+        outputs=[
+            {
+                "name": "stdout",
+                "output_type": "stream",
+                "text": ["Notebook has crashed\n"],
+            }
+        ],
+    )
+
+    nb.cells = [cell_1, cell_2, cell_3]
+    client = PloomberClient(nb)
+
+    with pytest.raises(NameError) as excinfo:
+        client.execute()
+
+    # Not checking Traceback
+    assert str(excinfo.value) == "Crash Test"
+    assert client._nb.cells == [
+        {
+            "id": ANY,
+            "cell_type": "code",
+            "metadata": {"ploomber": {"timestamp_start": ANY, "timestamp_end": ANY}},
+            "execution_count": 1,
+            "source": "print(1+5)",
+            "outputs": [{"output_type": "stream", "name": "stdout", "text": "6\n"}],
+        },
+        {
+            "id": ANY,
+            "cell_type": "code",
+            "metadata": {"ploomber": {"timestamp_start": ANY, "timestamp_end": ANY}},
+            "execution_count": 2,
+            "source": 'raise NameError("Crash Test")',
+            "outputs": [
+                {
+                    "output_type": "error",
+                    "ename": "NameError",
+                    "evalue": "Crash Test",
+                    "traceback": ANY,
+                }
+            ],
+        },
+        {
+            "id": ANY,
+            "cell_type": "code",
+            "metadata": {},
+            "execution_count": None,
+            "source": 'print("Notebook has crashed")',
+            "outputs": [],
+        },
+    ]
+
+
 def test_pass_namespace():
     first = nbformat.v4.new_notebook()
     first.cells = [nbformat.v4.new_code_cell("x = 1")]
