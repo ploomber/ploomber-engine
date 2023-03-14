@@ -214,7 +214,7 @@ class PloomberClient:
     Notes
     -----
     .. versionchanged:: 0.0.25dev
-        Removed cell outputs and execution count 
+        Removed cell outputs and execution count
 
     .. versionchanged:: 0.0.23
         Added ``cwd`` argument.
@@ -361,7 +361,7 @@ class PloomberClient:
             progress_bar=progress_bar,
             debug_later=debug_later,
             remove_tagged_cells=remove_tagged_cells,
-            cwd=cwd
+            cwd=cwd,
         )
 
     def execute_cell(self, cell, cell_index, execution_count, store_history):
