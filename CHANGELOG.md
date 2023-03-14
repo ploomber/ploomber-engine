@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 0.0.25dev
+* [API Change] While initializing the Ploomber Client, the output and execution count of each cell of the notebook is removed.
 
 ## 0.0.24 (2023-03-05)
 
