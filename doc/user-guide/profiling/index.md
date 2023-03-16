@@ -1,8 +1,9 @@
 ---
-html_meta:
-  "description lang=en": "A toolbox for Jupyter notebooks: testing, experiment tracking, debugging, profiling, and more!"
-  "keywords": "python,jupyter,notebooks,ploomber"
-  "property=og:locale": "en_US"
+myst:
+  html_meta:
+    "description lang=en": "A toolbox for Jupyter notebooks: testing, experiment tracking, debugging, profiling, and more!"
+    "keywords": "python,jupyter,notebooks,ploomber"
+    "property=og:locale": "en_US"
 ---
 
 # Profiling notebooks

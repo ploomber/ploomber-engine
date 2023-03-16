@@ -12,7 +12,7 @@ dependencies:
   - scikit-learn # required for experiment tracker feature
   - pip
   - pip:
-    - jupyter-book<0.14
+    - jupyter-book
     - jupytext           # required for experiment tracker feature
     - sklearn-evaluation # required for experiment tracker feature
     - memory-profiler
