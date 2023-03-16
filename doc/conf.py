@@ -59,13 +59,10 @@ html_theme_options = {
                      "<a href='https://ploomber.io/community/'>Slack!</a>"),
     "extra_footer": "",
     "home_page_in_toc": True,
-    "announcement": "To launch any tutorial in JupyterLab, \
-        click on the 🚀 button below!",
     "use_repository_button": True,
     "use_edit_page_button": False,
     "use_issues_button": True,
 }
-html_title = "ploomber-engine"
 nb_execution_cache_path = ""
 nb_execution_mode = "cache"
 latex_engine = "pdflatex"
