@@ -381,7 +381,7 @@ class PloomberClient:
 
         if stdout:
             if self._display_stdout:
-                print("".join([line.strip() for line in stdout]))
+                print("".join([line for line in stdout]),end='')
 
             output.extend(_process_stdout(stdout, result=result))
 
