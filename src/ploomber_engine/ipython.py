@@ -370,7 +370,7 @@ class PloomberClient:
 
         # results are published in different places. Here we grab all of them
         # and return them
-        with patch_sys_std_out_err() as (stdout_stream, stderr_stream):
+        with patch_sys_std_out_err(self._display_stdout) as (stdout_stream, stderr_stream):
             self.hook_cell_pre(cell)
             result = self._shell.run_cell(cell["source"])
             self.hook_cell_post(cell)
@@ -381,7 +381,8 @@ class PloomberClient:
 
         if stdout:
             if self._display_stdout:
-                print("".join([line for line in stdout]),end='')
+                pass
+                # print("".join([line for line in stdout]),end='')
 
             output.extend(_process_stdout(stdout, result=result))
 
@@ -626,12 +627,17 @@ class PloomberManagedClient(PloomberClient):
 
 
 class IO(StringIO):
-    def __init__(self, initial_value="", newline="\n"):
+    def __init__(self, default,std_type,display = True, newline="\n", initial_value="" ):
         super().__init__(initial_value=initial_value, newline=newline)
+        self.default = default
+        self.std_type = std_type
+        self.display = display
         self._values = []
 
     def write(self, s):
         self._values.append(s)
+        if self.display:
+            self.default.write(s)
         super().write(s)
 
     def get_separated_values(self):
@@ -639,13 +645,14 @@ class IO(StringIO):
 
 
 @contextlib.contextmanager
-def patch_sys_std_out_err():
+def patch_sys_std_out_err(display_output):
     """Path sys.{stout, sterr} to capture output"""
     # keep a reference to the system ones
     stdout, stderr = sys.stdout, sys.stderr
 
     # patch them
-    stdout_stream, stderr_stream = IO(), StringIO()
+    stdout_stream = IO(default = stdout,std_type='out', display = display_output)
+    stderr_stream = IO(default = stderr, std_type='err')
     sys.stdout, sys.stderr = stdout_stream, stderr_stream
 
     try:
