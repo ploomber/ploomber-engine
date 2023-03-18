@@ -787,12 +787,11 @@ def test_execute_crash():
     assert str(excinfo.value) == "Crash Test"
     assert client._nb.cells == [
         {
-        "cell_type": "markdown",
-        "id": ANY,
-        "metadata": {
-            "tags": ["ploomber-engine-error-cell"]
-        },
-        "source": "## <span style=\"color:red\">An Exception has occured at cell 2</span>"
+            "cell_type": "markdown",
+            "id": ANY,
+            "metadata": {"tags": ["ploomber-engine-error-cell"]},
+            "source": '## <span style="color:red">An Exception has '
+            + "occured at cell 2</span>",
         },
         {
             "id": ANY,
@@ -803,14 +802,11 @@ def test_execute_crash():
             "outputs": [{"output_type": "stream", "name": "stdout", "text": "6\n"}],
         },
         {
-        "cell_type": "markdown",
-        "id": ANY,
-        "metadata": {
-            "tags": [
-            "ploomber-engine-error-cell"
-            ]
-        },
-        "source": "## <span style=\"color:red\">Ploomber Engine raised an exception due to the cell below </span>"
+            "cell_type": "markdown",
+            "id": ANY,
+            "metadata": {"tags": ["ploomber-engine-error-cell"]},
+            "source": '## <span style="color:red">Ploomber Engine raised an '
+            + "exception due to the cell below </span>",
         },
         {
             "id": ANY,
