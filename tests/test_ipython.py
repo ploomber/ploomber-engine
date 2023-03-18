@@ -4,6 +4,7 @@ from pathlib import Path
 from copy import copy
 from unittest.mock import ANY
 
+import sys
 import pytest
 import nbformat
 from IPython.core.interactiveshell import InteractiveShell
@@ -533,12 +534,27 @@ def test_flushing():
     PloomberClient(nb).execute()
 
 
-def test_io():
-    io = ipython.IO()
+def test_stdout_io(capsys):
+    io = ipython.IO(default=sys.stdout, std_type="out")
 
     io.write("a")
     io.writelines(["b", "c"])
 
+    captured = capsys.readouterr()
+    
+    assert captured.out == '\na\n\nb\n\nc\n'
+    assert io.get_separated_values() == ["a", "b", "c"]
+    assert io.getvalue() == "abc"
+
+def test_stderr_io(capsys):
+    io = ipython.IO(default=sys.stderr, std_type='err')
+
+    io.write("a")
+    io.writelines(["b", "c"])
+
+    captured = capsys.readouterr()
+    
+    assert captured.err == 'abc'
     assert io.get_separated_values() == ["a", "b", "c"]
     assert io.getvalue() == "abc"
 
@@ -553,7 +569,7 @@ def test_log_print_statements(capsys):
     PloomberClient(nb, display_stdout=True, progress_bar=False).execute()
 
     captured = capsys.readouterr()
-    assert captured.out == "a\nb\n"
+    assert captured.out == "\na\n\nb\n"
 
 
 def test_log_print_statements_init_from_path(tmp_empty, capsys):
@@ -570,7 +586,7 @@ def test_log_print_statements_init_from_path(tmp_empty, capsys):
     ).execute()
 
     captured = capsys.readouterr()
-    assert captured.out == "a\nb\n"
+    assert captured.out == "\na\n\nb\n"
 
 
 @pytest.mark.parametrize(
