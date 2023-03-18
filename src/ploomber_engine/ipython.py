@@ -216,6 +216,7 @@ class PloomberClient:
     .. versionchanged:: 0.0.25dev
         Removed cell outputs and execution count
         Added error messages to output notebook during an exception
+        Temporary Fixed the stderr and stdout streams of ploomber engine
 
     .. versionchanged:: 0.0.23
         Added ``cwd`` argument.
