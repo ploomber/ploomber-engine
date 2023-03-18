@@ -97,13 +97,13 @@ crash()
         PloomberClient(nb).execute()
 
     assert str(excinfo.value) == "something went wrong"
-    assert nb.cells[0].outputs[0] == {
+    assert nb.cells[2].outputs[0] == {
         "output_type": "error",
         "ename": "ValueError",
         "evalue": "something went wrong",
         "traceback": ANY,
     }
-    assert "something went wrong" in "\n".join(nb.cells[0].outputs[0]["traceback"])
+    assert "something went wrong" in "\n".join(nb.cells[2].outputs[0]["traceback"])
 
 
 def test_displays_then_raises_exception():
@@ -126,7 +126,7 @@ crash()
         PloomberClient(nb).execute()
 
     assert str(excinfo.value) == "something went wrong"
-    assert nb.cells[0].outputs == [
+    assert nb.cells[2].outputs == [
         {"output_type": "stream", "name": "stdout", "text": "hello!\nhello!"},
         {
             "output_type": "error",
@@ -135,7 +135,7 @@ crash()
             "traceback": ANY,
         },
     ]
-    assert "something went wrong" in "\n".join(nb.cells[0].outputs[1]["traceback"])
+    assert "something went wrong" in "\n".join(nb.cells[2].outputs[1]["traceback"])
 
 
 def test_client_execute(tmp_assets):
