@@ -215,6 +215,7 @@ class PloomberClient:
     -----
     .. versionchanged:: 0.0.25dev
         Removed cell outputs and execution count
+        Added error messages to output notebook during an exception
 
     .. versionchanged:: 0.0.23
         Added ``cwd`` argument.
@@ -404,6 +405,26 @@ class PloomberClient:
         cell.execution_count = execution_count
 
         if not result.success:
+
+            # Append to the position above cell
+            self._nb.cells.insert(
+                cell_index,
+                nbformat.v4.new_markdown_cell(
+                    source='## <span style="color:red">Ploomber Engine raised an'
+                    + " exception due to the cell below </span>",
+                    metadata={"tags": ["ploomber-engine-error-cell"]},
+                ),
+            )
+
+            # Append to the start
+            self._nb.cells.insert(
+                0,
+                nbformat.v4.new_markdown_cell(
+                    source='## <span style="color:red">An Exception has'
+                    + f" occured at cell {cell.execution_count}</span>",
+                    metadata={"tags": ["ploomber-engine-error-cell"]},
+                ),
+            )
             result.raise_error()
 
         return output
@@ -418,6 +439,9 @@ class PloomberClient:
 
         Notes
         -----
+        .. versionchanged:: 0.0.25dev
+            Added error messages to output notebook during an exception
+
         .. versionchanged:: 0.0.19
             Added ``parameters`` argument
         """
