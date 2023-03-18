@@ -559,6 +559,26 @@ def test_stderr_io(capsys):
     assert io.getvalue() == "abc"
 
 
+def test_tqdm_io(capsys):
+    nb = nbformat.v4.new_notebook()
+    nb.cells = [nbformat.v4.new_code_cell(
+    source = """
+from tqdm import tqdm
+import time
+for i in tqdm(range(0,6)):
+    time.sleep(0.01)
+    if i%2==0:
+        print(i)
+    """,
+    )]
+
+    PloomberClient(nb,display_stdout=True, progress_bar=False).execute()
+
+    captured = capsys.readouterr()
+    assert captured.out == '\n0\n\n2\n\n4\n'
+    assert '0%|          | 0/6' in captured.err
+    assert '100%|##########| 6/6' in captured.err
+
 def test_log_print_statements(capsys):
     nb = nbformat.v4.new_notebook()
     nb.cells = [
