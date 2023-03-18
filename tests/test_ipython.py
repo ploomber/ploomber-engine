@@ -97,13 +97,13 @@ crash()
         PloomberClient(nb).execute()
 
     assert str(excinfo.value) == "something went wrong"
-    assert nb.cells[0].outputs[0] == {
+    assert nb.cells[2].outputs[0] == {
         "output_type": "error",
         "ename": "ValueError",
         "evalue": "something went wrong",
         "traceback": ANY,
     }
-    assert "something went wrong" in "\n".join(nb.cells[0].outputs[0]["traceback"])
+    assert "something went wrong" in "\n".join(nb.cells[2].outputs[0]["traceback"])
 
 
 def test_displays_then_raises_exception():
@@ -126,7 +126,7 @@ crash()
         PloomberClient(nb).execute()
 
     assert str(excinfo.value) == "something went wrong"
-    assert nb.cells[0].outputs == [
+    assert nb.cells[2].outputs == [
         {"output_type": "stream", "name": "stdout", "text": "hello!\nhello!"},
         {
             "output_type": "error",
@@ -135,7 +135,7 @@ crash()
             "traceback": ANY,
         },
     ]
-    assert "something went wrong" in "\n".join(nb.cells[0].outputs[1]["traceback"])
+    assert "something went wrong" in "\n".join(nb.cells[2].outputs[1]["traceback"])
 
 
 def test_client_execute(tmp_assets):
@@ -787,12 +787,26 @@ def test_execute_crash():
     assert str(excinfo.value) == "Crash Test"
     assert client._nb.cells == [
         {
+            "cell_type": "markdown",
+            "id": ANY,
+            "metadata": {"tags": ["ploomber-engine-error-cell"]},
+            "source": '## <span style="color:red">An Exception has '
+            + "occured at cell 2</span>",
+        },
+        {
             "id": ANY,
             "cell_type": "code",
             "metadata": {"ploomber": {"timestamp_start": ANY, "timestamp_end": ANY}},
             "execution_count": 1,
             "source": "print(1+5)",
             "outputs": [{"output_type": "stream", "name": "stdout", "text": "6\n"}],
+        },
+        {
+            "cell_type": "markdown",
+            "id": ANY,
+            "metadata": {"tags": ["ploomber-engine-error-cell"]},
+            "source": '## <span style="color:red">Ploomber Engine raised an '
+            + "exception due to the cell below </span>",
         },
         {
             "id": ANY,

@@ -143,8 +143,8 @@ def test_stores_partially_executed_notebook(tmp_empty):
 
     out = _read_nb("output.ipynb")
 
-    assert out.cells[0]["outputs"][0]["data"] == {"text/plain": "2"}
-    assert out.cells[1]["outputs"][0] == {
+    assert out.cells[1]["outputs"][0]["data"] == {"text/plain": "2"}
+    assert out.cells[3]["outputs"][0] == {
         "ename": "ZeroDivisionError",
         "evalue": "division by zero",
         "output_type": "error",
