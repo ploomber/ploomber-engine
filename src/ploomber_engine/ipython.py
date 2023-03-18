@@ -215,6 +215,7 @@ class PloomberClient:
     -----
     .. versionchanged:: 0.0.25dev
         Removed cell outputs and execution count
+        Added error messages to output notebook during an exception
 
     .. versionchanged:: 0.0.23
         Added ``cwd`` argument.
@@ -430,6 +431,9 @@ class PloomberClient:
 
         Notes
         -----
+        .. versionchanged:: 0.0.25dev
+            Added error messages to output notebook during an exception
+
         .. versionchanged:: 0.0.19
             Added ``parameters`` argument
         """
