@@ -404,6 +404,18 @@ class PloomberClient:
         cell.execution_count = execution_count
 
         if not result.success:
+
+            # Append to the position above cell
+            self._nb.cells.insert(cell_index, nbformat.v4.new_markdown_cell(
+                source=f'## <span style="color:red">Ploomber Engine raised an exception due to the cell below </span>',
+                metadata = {'tags': ['ploomber-engine-error-cell']}
+            ))
+
+            # Append to the start
+            self._nb.cells.insert(0,nbformat.v4.new_markdown_cell(
+                source=f'## <span style="color:red">An Exception has occured at cell {cell.execution_count}</span>',
+                metadata = {'tags': ['ploomber-engine-error-cell']}
+            ))
             result.raise_error()
 
         return output
