@@ -31,13 +31,10 @@ jobs:
           pip install ".[dev]"
           pip install "matplotlib<3.7"
 
-      - name: Lint with flake8
+      - name: Lint
         run: |
-          flake8
-
-          # run flake8 on notebooks (.ipynb, .md, etc)
-          pip install jupytext nbqa
-          nbqa flake8 .
+          pip install pkgmt
+          pkgmt lint
 
       - name: Unit tests
         run: |
