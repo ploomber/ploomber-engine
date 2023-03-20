@@ -14,7 +14,7 @@ kernelspec:
 # Running notebooks
 
 ```{versionadded} 0.0.18
-`execute_notebook` was introduced in `0.0.18`. If using an older version, check out [`PloomberClient` docs](../api/api.html#ploomberclient)
+`execute_notebook` was introduced in `0.0.18`. If using an older version, check out `PloomberClient` docs.
 ```
 
 `ploomber-engine` allows you to run Jupyter notebooks programmatically. It is a drop-in replacement for `papermill.execute_notebook` with enhanced support for debugging, profiling, experiment tracking and more!

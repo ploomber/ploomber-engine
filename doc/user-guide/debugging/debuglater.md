@@ -10,10 +10,11 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-html_meta:
-  "description lang=en": "How to use ploomber-engine with the debuglater package."
-  "keywords": "python,jupyter,notebooks,ploomber"
-  "property=og:locale": "en_US"
+myst:
+  html_meta:
+    "description lang=en": "How to use ploomber-engine with the debuglater package."
+    "keywords": "python,jupyter,notebooks,ploomber"
+    "property=og:locale": "en_US"
 ---
 
 # Debug later

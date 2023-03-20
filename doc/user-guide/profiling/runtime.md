@@ -14,7 +14,7 @@ kernelspec:
 # Cell runtime
 
 ```{versionadded} 0.0.18
-[`execute_notebook`](../../api/api.html#execute-notebook)
+`execute_notebook`
 ```
 
 Install requirements:
