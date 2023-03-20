@@ -82,8 +82,8 @@ def test_execute_notebook_log_stdout(tmp_empty, capsys):
     execute_notebook(nb_in, "out.ipynb", log_output=True, progress_bar=False)
 
     captured = capsys.readouterr()
-    assert captured.out == "hello\n"
-    assert captured.err == ""
+    assert captured.out == "\nhello\n"
+    assert captured.err == "world\n"
 
 
 @pytest.mark.xfail(reason="not implemented")

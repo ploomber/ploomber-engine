@@ -3,6 +3,7 @@
 ## 0.0.25dev
 * [Feature] Added error messages to output notebook in case of an exception or crash
 * [Fix] While initializing the Ploomber Client, the output and execution count of each cell of the notebook is removed.
+* [Fix] Temporary Fixed `stdout` and `stderr` stream. Ploomber Engine now flush both `stdout` and `stderr` as soon as it got from the notebook
 
 ## 0.0.24 (2023-03-05)
 

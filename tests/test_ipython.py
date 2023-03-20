@@ -4,6 +4,7 @@ from pathlib import Path
 from copy import copy
 from unittest.mock import ANY
 
+import sys
 import pytest
 import nbformat
 from IPython.core.interactiveshell import InteractiveShell
@@ -533,14 +534,53 @@ def test_flushing():
     PloomberClient(nb).execute()
 
 
-def test_io():
-    io = ipython.IO()
+def test_stdout_io(capsys):
+    io = ipython.IO(default=sys.stdout, std_type="out")
 
     io.write("a")
     io.writelines(["b", "c"])
 
+    captured = capsys.readouterr()
+
+    assert captured.out == "\na\n\nb\n\nc\n"
     assert io.get_separated_values() == ["a", "b", "c"]
     assert io.getvalue() == "abc"
+
+
+def test_stderr_io(capsys):
+    io = ipython.IO(default=sys.stderr, std_type="err")
+
+    io.write("a")
+    io.writelines(["b", "c"])
+
+    captured = capsys.readouterr()
+
+    assert captured.err == "abc"
+    assert io.get_separated_values() == ["a", "b", "c"]
+    assert io.getvalue() == "abc"
+
+
+def test_tqdm_io(capsys):
+    nb = nbformat.v4.new_notebook()
+    nb.cells = [
+        nbformat.v4.new_code_cell(
+            source="""
+from tqdm import tqdm
+import time
+for i in tqdm(range(0,6)):
+    time.sleep(0.01)
+    if i%2==0:
+        print(i)
+    """,
+        )
+    ]
+
+    PloomberClient(nb, display_stdout=True, progress_bar=False).execute()
+
+    captured = capsys.readouterr()
+    assert captured.out == "\n0\n\n2\n\n4\n"
+    assert "0%|          | 0/6" in captured.err
+    assert "100%|##########| 6/6" in captured.err
 
 
 def test_log_print_statements(capsys):
@@ -553,7 +593,7 @@ def test_log_print_statements(capsys):
     PloomberClient(nb, display_stdout=True, progress_bar=False).execute()
 
     captured = capsys.readouterr()
-    assert captured.out == "a\nb\n"
+    assert captured.out == "\na\n\nb\n"
 
 
 def test_log_print_statements_init_from_path(tmp_empty, capsys):
@@ -570,7 +610,7 @@ def test_log_print_statements_init_from_path(tmp_empty, capsys):
     ).execute()
 
     captured = capsys.readouterr()
-    assert captured.out == "a\nb\n"
+    assert captured.out == "\na\n\nb\n"
 
 
 @pytest.mark.parametrize(
