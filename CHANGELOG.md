@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 0.0.26dev
+
 ## 0.0.25 (2023-03-22)
 
 * [Feature] Added error messages to output notebook in case of an exception or crash
