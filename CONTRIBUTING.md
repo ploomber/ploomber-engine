@@ -1,4 +1,4 @@
 # Contributing to ploomber-engine
 
-For general information, see [Ploombers' contributing guidelines.](https://github.com/ploomber/contributing/blob/main/CONTRIBUTING.md)
+For general information, see [Ploombers' contributing guidelines.](https://ploomber-contributing.readthedocs.io)
 
