@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.1
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -79,13 +79,13 @@ You can save the profiling data by setting `save_profiling_data=True`.
 ```{code-cell} ipython3
 %%capture
 _ = execute_notebook(
-    "notebook.ipynb", "output.ipynb",
-    profile_runtime=True, save_profiling_data=True
+    "notebook.ipynb", "output.ipynb", profile_runtime=True, save_profiling_data=True
 )
 ```
 
 ```{code-cell} ipython3
 import pandas as pd
+
 pd.read_csv("output-profiling-data.csv")
 ```
 
