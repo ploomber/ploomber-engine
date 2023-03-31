@@ -410,7 +410,6 @@ class PloomberClient:
         cell.execution_count = execution_count
 
         if not result.success:
-
             # Append to the position above cell
             self._nb.cells.insert(
                 cell_index,

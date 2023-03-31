@@ -54,9 +54,11 @@ html_theme_options = {
     "repository_url": repository_url,
     "repository_branch": repository_branch,
     "analytics": {"google_analytics_id": "G-64QKMLMJY8"},
-    "announcement": ("To launch a tutorial, click on the 🚀 button "
-                     "below! Join us on "
-                     "<a href='https://ploomber.io/community/'>Slack!</a>"),
+    "announcement": (
+        "To launch a tutorial, click on the 🚀 button "
+        "below! Join us on "
+        "<a href='https://ploomber.io/community/'>Slack!</a>"
+    ),
     "extra_footer": "",
     "home_page_in_toc": True,
     "use_repository_button": True,

@@ -1,20 +1,20 @@
 ---
 jupytext:
-  formats: md:myst
+  notebook_metadata_filter: myst
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 myst:
   html_meta:
-    "description lang=en": "Pass objects between notebooks using ploomber-engine"
-    "keywords": "python,jupyter,notebooks,ploomber"
-    "property=og:locale": "en_US"
+    description lang=en: Pass objects between notebooks using ploomber-engine
+    keywords: python,jupyter,notebooks,ploomber
+    property=og:locale: en_US
 ---
 
 # Passing outputs between notebooks
@@ -52,8 +52,10 @@ first.cells = [nbformat.v4.new_code_cell("x = 1")]
 Path("first.ipynb").write_text(nbformat.v4.writes(first), encoding="utf-8")
 
 second = nbformat.v4.new_notebook()
-second.cells = [nbformat.v4.new_code_cell("x = 0", metadata=dict(tags=["defaults"])),
-                nbformat.v4.new_code_cell("y = x + 1")]
+second.cells = [
+    nbformat.v4.new_code_cell("x = 0", metadata=dict(tags=["defaults"])),
+    nbformat.v4.new_code_cell("y = x + 1"),
+]
 Path("second.ipynb").write_text(nbformat.v4.writes(second), encoding="utf-8")
 ```
 
