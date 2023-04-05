@@ -193,6 +193,8 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
     with open(outfile, "r") as f:
         read_lines = f.readlines()
         lines = []
+        # In case of Windows there are
+        # extra '\n' characters, so skipping those
         for line in read_lines:
             if line.strip():
                 lines.append(line)
@@ -212,6 +214,8 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
     with open(outfile, "r") as f:
         read_lines = f.readlines()
         lines = []
+        # In case of Windows there are
+        # extra '\n' characters, so skipping those
         for line in read_lines:
             if line.strip():
                 lines.append(line)
