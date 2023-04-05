@@ -191,7 +191,13 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
     outfile = "out-profiling-data.csv"
     assert Path(outfile).is_file()
     with open(outfile, "r") as f:
-        lines = f.readlines()
+        read_lines = f.readlines()
+        lines = []
+        # In case of Windows there are
+        # extra '\n' characters, so skipping those
+        for line in read_lines:
+            if line.strip():
+                lines.append(line)
         assert len(lines) == 2, "File should have 2 lines"
         data = lines[1].strip().split(",")
         assert len(data) == 3, "File should have 3 columns"
@@ -206,9 +212,17 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
     )
     outfile = "out-profiling-data.csv"
     with open(outfile, "r") as f:
-        lines = f.readlines()
+        read_lines = f.readlines()
+        lines = []
+        # In case of Windows there are
+        # extra '\n' characters, so skipping those
+        for line in read_lines:
+            if line.strip():
+                lines.append(line)
+        assert len(lines) == 2, "File should have 2 lines"
         data = lines[1].strip().split(",")
-        assert data[2] != "NA", "memory should have a non-NA value"
+        assert len(data) == 3, "File should have 3 columns"
+        assert data[2] != "NA", "memory is profiled and should not be NA"
 
 
 def test_execute_notebook_different_cwd(tmp_empty):
