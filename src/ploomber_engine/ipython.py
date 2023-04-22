@@ -152,24 +152,23 @@ class PloomberShell(InteractiveShell):
     def __exit__(self, exc_type, exc_value, traceback):
         self.clear_instance()
 
-    def get_interactive_variable(self,parameter_s=''):
+    def get_interactive_variable(self):
         """
-            alias of methos who_ls of 'https://github.com/ipython/ipython/blob/main/IPython/core/magics/namespace.py'
+        alias of methos who_ls of,it returns
+        a sequence of all interactive variables
         """
         user_ns = self.user_ns
         user_ns_hidden = self.user_ns_hidden
         nonmatching = object()  # This can never be in user_ns
-        out = [ i for i in user_ns
-                if not i.startswith('_') \
-                and (user_ns[i] is not user_ns_hidden.get(i, nonmatching)) ]
-
-        typelist = parameter_s.split()
-        if typelist:
-            typeset = set(typelist)
-            out = [i for i in out if type(user_ns[i]).__name__ in typeset]
-
+        out = [
+            i
+            for i in user_ns
+            if not i.startswith("_")
+            and (user_ns[i] is not user_ns_hidden.get(i, nonmatching))
+        ]
         out.sort()
         return out
+
 
 def _remove_cells_with_tags(nb, tags):
     if not tags:
