@@ -1,14 +1,19 @@
 import pytest
 import nbformat
 from pathlib import Path
+from ploomber_engine.ipython import PloomberClient
 
 
 def print_memory():
     """helper to get free and used memory"""
     import psutil
-    print("free",psutil._common.bytes2human(psutil.virtual_memory().free),"used",psutil._common.bytes2human(psutil.virtual_memory().used))
 
-
+    print(
+        "free",
+        psutil._common.bytes2human(psutil.virtual_memory().free),
+        "used",
+        psutil._common.bytes2human(psutil.virtual_memory().used),
+    )
 
 
 @pytest.fixture
@@ -25,16 +30,13 @@ def path_notebook(tmpdir):
     nbformat.write(nb, path_notebook)
     return path_notebook
 
+
 def test_if_memory_leak_within_notebook(path_notebook):
-    from pathlib import Path
-    from ploomber_engine.ipython import PloomberClient
-
-
     for _ in range(3):
         print_memory()
-        
+
         client = PloomberClient.from_path(path_notebook)
         namespace = client.get_namespace()
         del client
         del namespace
-    print_memory()    
+    print_memory()
