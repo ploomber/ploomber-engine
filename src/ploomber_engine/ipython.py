@@ -629,9 +629,8 @@ class PloomberClient:
     def __exit__(self, exc_type, exc_value, traceback):
         """Clear shell"""
         # delete interactive variables
-        self._shell.delete_interactive_variables()
-
         self._shell.clear_instance()
+        self._shell.delete_interactive_variables()
         self._shell = None
 
     def hook_cell_pre(self, cell):
