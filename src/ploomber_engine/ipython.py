@@ -152,7 +152,7 @@ class PloomberShell(InteractiveShell):
     def __exit__(self, exc_type, exc_value, traceback):
         self.clear_instance()
 
-    def get_interactive_variable(self):
+    def _get_interactive_variables(self):
         """
         alias of methos who_ls of,it returns
         a sequence of all interactive variables
@@ -168,6 +168,11 @@ class PloomberShell(InteractiveShell):
         ]
         out.sort()
         return out
+
+    def delete_interactive_variables(self):
+        keys = self._get_interactive_variables()
+        for key in keys:
+            del self.user_ns[key]
 
 
 def _remove_cells_with_tags(nb, tags):
@@ -624,9 +629,7 @@ class PloomberClient:
     def __exit__(self, exc_type, exc_value, traceback):
         """Clear shell"""
         # delete interactive variables
-        keys = self._shell.get_interactive_variable()
-        for key in keys:
-            del self._shell.user_ns[key]
+        self._shell.delete_interactive_variables()
 
         self._shell.clear_instance()
         self._shell = None
