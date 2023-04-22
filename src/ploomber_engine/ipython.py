@@ -154,7 +154,7 @@ class PloomberShell(InteractiveShell):
 
     def _get_interactive_variables(self):
         """
-        alias of methos who_ls of,it returns
+        similar to the method %who of,it returns
         a sequence of all interactive variables
         """
         user_ns = self.user_ns
@@ -166,10 +166,10 @@ class PloomberShell(InteractiveShell):
             if not i.startswith("_")
             and (user_ns[i] is not user_ns_hidden.get(i, nonmatching))
         ]
-        out.sort()
         return out
 
     def delete_interactive_variables(self):
+        """delete all the variables defined by the user within the Interactive shell"""
         keys = self._get_interactive_variables()
         for key in keys:
             del self.user_ns[key]
