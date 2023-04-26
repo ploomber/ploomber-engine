@@ -2,27 +2,18 @@ import pytest
 import nbformat
 from pathlib import Path
 from ploomber_engine.ipython import PloomberClient
+import copy
 
 
-def get_current_memory_usage(and_print=True):
+def get_current_memory_usage():
     """helper to get free and used expressed in GB"""
     import psutil
 
-    memory_usage = {
-        "free": psutil.virtual_memory().free,
-        "used": psutil.virtual_memory().used,
-    }
+    memory_usage = psutil.virtual_memory().used
 
-    memory_usage = {
-        key: float(psutil._common.bytes2human(val)[:-1])
-        for key, val in memory_usage.items()
-    }
+    memory_usage = float(psutil._common.bytes2human(memory_usage)[:-1])
 
-    if and_print:
-        for key, val in memory_usage.items():
-            print(key, val)
     return memory_usage
-
 
 @pytest.fixture
 def path_notebook(tmpdir):
@@ -38,7 +29,14 @@ def path_notebook(tmpdir):
     nbformat.write(nb, path_notebook)
     return path_notebook
 
+def copy_shell(exit_method):
 
+    def new_exit(self, exc_type, exc_value, traceback):
+        self.user_ns_copy = self._shell.user_ns.keys()
+        self.user_ns_before_deletion = copy.deepcopy(tuple(self.user_ns_copy))
+        exit_method(self,exc_type, exc_value, traceback)
+        self.user_ns_after_deletion = copy.deepcopy(tuple(self.user_ns_copy))
+    return new_exit
 
 def test_if_memory_leak_within_notebook(path_notebook):
     """
@@ -50,6 +48,7 @@ def test_if_memory_leak_within_notebook(path_notebook):
     # memory_usages.append(get_current_memory_usage())
     client = PloomberClient.from_path(path_notebook)
 
+    PloomberClient.__exit__ = copy_shell(PloomberClient.__exit__)
 
     new_variables = dict(a=[1 for _ in range(10**7)], b=[1 for _ in range(10**7)])
     # injecting new variables in namespace
@@ -62,6 +61,10 @@ def test_if_memory_leak_within_notebook(path_notebook):
 
     mem_usage_before_deletion = get_current_memory_usage()
 
+    deleted_objets =  set(client.user_ns_before_deletion).difference(set(client.user_ns_after_deletion))
+
+    assert deleted_objets == {'array1', 'array', 'arrays'}
+    
     del nb_node
     del namespace
     del client
@@ -77,4 +80,3 @@ def test_if_memory_leak_within_notebook(path_notebook):
     mem_rate_consumption = (mem_usage_end-mem_usage_start)/(mem_usage_before_deletion-mem_usage_start)
     print(mem_rate_consumption)
 
-    
