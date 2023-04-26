@@ -15,6 +15,7 @@ def get_current_memory_usage():
 
     return memory_usage
 
+
 @pytest.mark.memory
 @pytest.fixture
 def path_notebook(tmpdir):
@@ -30,14 +31,16 @@ def path_notebook(tmpdir):
     nbformat.write(nb, path_notebook)
     return path_notebook
 
-def copy_shell(exit_method):
 
+def copy_shell(exit_method):
     def new_exit(self, exc_type, exc_value, traceback):
         self.user_ns_copy = self._shell.user_ns.keys()
         self.user_ns_before_deletion = copy.deepcopy(tuple(self.user_ns_copy))
-        exit_method(self,exc_type, exc_value, traceback)
+        exit_method(self, exc_type, exc_value, traceback)
         self.user_ns_after_deletion = copy.deepcopy(tuple(self.user_ns_copy))
+
     return new_exit
+
 
 def test_if_memory_leak_within_notebook(path_notebook):
     """
@@ -53,18 +56,18 @@ def test_if_memory_leak_within_notebook(path_notebook):
 
     new_variables = dict(a=[1 for _ in range(10**7)], b=[1 for _ in range(10**7)])
     # injecting new variables in namespace
-    namespace = client.get_namespace(
-        namespace=new_variables
-    )
+    namespace = client.get_namespace(namespace=new_variables)
     # executing notebook with execute method
 
     nb_node = client.execute()
 
     mem_usage_before_deletion = get_current_memory_usage()
 
-    deleted_objets =  set(client.user_ns_before_deletion).difference(set(client.user_ns_after_deletion))
+    deleted_objets = set(client.user_ns_before_deletion).difference(
+        set(client.user_ns_after_deletion)
+    )
 
-    assert deleted_objets == {'array1', 'array', 'arrays'}
+    assert deleted_objets == {"array1", "array", "arrays"}
 
     del nb_node
     del namespace
@@ -73,11 +76,12 @@ def test_if_memory_leak_within_notebook(path_notebook):
 
     mem_usage_end = get_current_memory_usage()
 
-
-    # mem_rate_consumption represents the rate of memory consumtion after the beginning of the test
-    # until the deletion of  the created variables within the test (which should be negligeable in case 
-    # of absence of memory leak) , and the memory usage from the beginning of the test until the 
+    # mem_rate_consumption represents the rate of memory consumtion after the
+    # beginning until the deletion of  the created variables within the test
+    # (which should be negligeable in case of absence of memory leak) , and
+    # the memory usage from the beginning of the test until the
     # creation of all the (memory heavy) variables.
-    mem_rate_consumption = (mem_usage_end-mem_usage_start)/(mem_usage_before_deletion-mem_usage_start)
+    mem_rate_consumption = (mem_usage_end - mem_usage_start) / (
+        mem_usage_before_deletion - mem_usage_start
+    )
     print(mem_rate_consumption)
-
