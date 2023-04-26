@@ -15,6 +15,7 @@ def get_current_memory_usage():
 
     return memory_usage
 
+@pytest.mark.memory
 @pytest.fixture
 def path_notebook(tmpdir):
     nb = nbformat.v4.new_notebook()
@@ -64,7 +65,7 @@ def test_if_memory_leak_within_notebook(path_notebook):
     deleted_objets =  set(client.user_ns_before_deletion).difference(set(client.user_ns_after_deletion))
 
     assert deleted_objets == {'array1', 'array', 'arrays'}
-    
+
     del nb_node
     del namespace
     del client
