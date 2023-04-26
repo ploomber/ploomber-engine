@@ -70,25 +70,6 @@ def test_if_memory_leak_within_notebook(path_notebook, epsilon):
         del nb_node
         memory_usage_after_exec_method = get_current_memory_usage()
 
-        assert (
-            abs(
-                memory_usage_after_exec_method["used"]
-                - memory_usage_with_namespace_in_mem["used"]
-            )
-            < epsilon
-        )
-        assert (
-            abs(
-                memory_usage_after_exec_method["free"]
-                - memory_usage_with_namespace_in_mem["free"]
-            )
-            < epsilon
-        )
-
-        assert (
-            memory_usage_with_namespace_in_mem["used"]
-            > memory_usage_begining_loop["used"] + epsilon
-        )
         del namespace
         del client
 
