@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## 0.0.26dev
-* [Fix] Memory leak when running notebooks
+* [Fix] Memory leak when running notebooks (by @amine-ammor)
 
 ## 0.0.25 (2023-03-22)
 
