@@ -2,9 +2,11 @@
 
 ## 0.0.28dev
 
+*No changes. Testing the release workflow*
+
 ## 0.0.27 (2023-04-28)
 
-*No changes, testing release workflow*
+*This was never released. We were testing the release workflow*
 
 ## 0.0.26 (2023-04-28)
 
