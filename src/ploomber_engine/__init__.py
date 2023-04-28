@@ -1,6 +1,6 @@
 from ploomber_engine.execute import execute_notebook
 
-__version__ = "0.0.28dev"
+__version__ = "0.0.28"
 
 
 # NOTE: fully initialize papermill here to prevent circular import

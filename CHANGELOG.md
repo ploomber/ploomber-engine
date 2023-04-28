@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.28dev
+## 0.0.28 (2023-04-28)
 
 *No changes. Testing the release workflow*
 
