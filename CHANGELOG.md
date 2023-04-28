@@ -4,7 +4,7 @@
 
 ## 0.0.26 (2023-04-28)
 
-* [Fix] Memory leak when running notebooks (by [@amine](https://github.com/amine)-ammor)
+* [Fix] Memory leak when running notebooks (by [@amine-ammor](https://github.com/amine-ammor))
 
 ## 0.0.25 (2023-03-22)
 
