@@ -20,7 +20,8 @@ REQUIRES = [
     "debuglater>=1.4.4",
     # used for our debug now feature (PloomberNotebookClient)
     "nbclient",
-    # used in PloomberClient
+    # used in PloomberClient (IPython dropped compatibility for Python 3.8)
+    "ipython<=8.12.0; python_version <= '3.8'",
     "ipython",
     # used in the experiment tracker
     "parso",

@@ -152,6 +152,38 @@ class PloomberShell(InteractiveShell):
     def __exit__(self, exc_type, exc_value, traceback):
         self.clear_instance()
 
+    def _get_interactive_variables(self):
+        """
+        Similar to the "%who" magic: it returns a sequence of all interactive
+        variables (variables declared by the user)
+        """
+        # this code is based on the "%who" implementation (who_ls) function
+
+        user_ns = self.user_ns
+        # IPython stores non-interactive variables here
+        user_ns_hidden = self.user_ns_hidden
+
+        # this will never be in the user's namespace because we're declaring it here
+        nonmatching = object()
+
+        # get all the variables the user created in their notebook
+        out = [
+            i
+            # for every variable in the user namespace
+            for i in user_ns
+            # ignore variables that start with underscore
+            if not i.startswith("_")
+            # and ignore the variable if it's in the hidden namespace
+            and (user_ns[i] is not user_ns_hidden.get(i, nonmatching))
+        ]
+        return out
+
+    def delete_interactive_variables(self):
+        """delete all the variables defined by the user within the Interactive shell"""
+        keys = self._get_interactive_variables()
+        for key in keys:
+            del self.user_ns[key]
+
 
 def _remove_cells_with_tags(nb, tags):
     if not tags:
@@ -606,7 +638,9 @@ class PloomberClient:
 
     def __exit__(self, exc_type, exc_value, traceback):
         """Clear shell"""
+        # delete interactive variables
         self._shell.clear_instance()
+        self._shell.delete_interactive_variables()
         self._shell = None
 
     def hook_cell_pre(self, cell):
