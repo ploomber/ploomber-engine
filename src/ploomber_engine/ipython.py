@@ -154,16 +154,26 @@ class PloomberShell(InteractiveShell):
 
     def _get_interactive_variables(self):
         """
-        similar to the method %who of,it returns
-        a sequence of all interactive variables
+        Similar to the "%who" magic: it returns a sequence of all interactive
+        variables (variables declared by the user)
         """
+        # this code is based on the "%who" implementation (who_ls) function
+
         user_ns = self.user_ns
+        # IPython stores non-interactive variables here
         user_ns_hidden = self.user_ns_hidden
-        nonmatching = object()  # This can never be in user_ns
+
+        # this will never be in the user's namespace because we're declaring it here
+        nonmatching = object()
+
+        # get all the variables the user created in their notebook
         out = [
             i
+            # for every variable in the user namespace
             for i in user_ns
+            # ignore variables that start with underscore
             if not i.startswith("_")
+            # and ignore the variable if it's in the hidden namespace
             and (user_ns[i] is not user_ns_hidden.get(i, nonmatching))
         ]
         return out
