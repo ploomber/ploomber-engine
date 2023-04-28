@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 0.0.27dev
+
 ## 0.0.26 (2023-04-28)
 
 * [Fix] Memory leak when running notebooks (by [@amine](https://github.com/amine)-ammor)
