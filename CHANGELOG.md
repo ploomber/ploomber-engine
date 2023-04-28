@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 0.0.26dev
+* [Fix] Memory leak when running notebooks
 
 ## 0.0.25 (2023-03-22)
 
