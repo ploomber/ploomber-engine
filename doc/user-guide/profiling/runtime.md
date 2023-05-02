@@ -14,9 +14,11 @@ kernelspec:
 
 # Cell runtime
 
-```{versionadded} 0.0.18
-`execute_notebook`
+````{versionadded} 0.0.18
+```{eval-rst}
+``execute_notebook``: :ref:`../../api/api.html#execute-notebook` 
 ```
+````
 
 Install requirements:
 

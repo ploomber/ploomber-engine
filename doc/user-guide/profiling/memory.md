@@ -15,9 +15,11 @@ kernelspec:
 # Memory usage
 
 
-```{versionadded} 0.0.18
-`execute_notebook`
+````{versionadded} 0.0.18
+```{eval-rst}
+``execute_notebook``: :ref:`../../api/api.html#execute-notebook` 
 ```
+````
 
 With ploomber-engine you can profile Jupyter notebook's memory usage. Unlike papermill, which isn't capable of doing it.
 
