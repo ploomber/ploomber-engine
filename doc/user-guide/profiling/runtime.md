@@ -16,7 +16,7 @@ kernelspec:
 
 ````{versionadded} 0.0.18
 ```{eval-rst}
-``execute_notebook``: :ref:`../../api/api.html#execute-notebook` 
+``execute_notebook`` (:doc:`../../api/api`) 
 ```
 ````
 

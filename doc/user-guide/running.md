@@ -16,7 +16,7 @@ kernelspec:
 
 ````{versionadded} 0.0.18
 ```{eval-rst}
-``execute_notebook`` was introduced in ``0.0.18``. If using an older version, check out ``PloomberClient`` docs :ref:`../../api/api.html#execute-notebook`
+``execute_notebook`` was introduced in ``0.0.18``. If using an older version, check out ``PloomberClient`` (:doc:`../api/api`)
 ```
 ````
 
