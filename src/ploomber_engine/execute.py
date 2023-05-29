@@ -133,7 +133,6 @@ def execute_notebook(
     ...                        remove_tagged_cells=["remove", "also-remove"])
     """
     path_like_input = isinstance(input_path, (str, Path))
-
     if save_profiling_data and not (profile_runtime or profile_memory):
         warnings.warn(
             "save_profiling_data=True requires "
@@ -211,12 +210,18 @@ def execute_notebook(
         output_path_profiling_data = _util.sibling_with_suffix(
             output_path, "-profiling-data.csv"
         )
+        if isinstance(save_profiling_data, (str, Path)):
+            if save_profiling_data.endswith(".csv"):
+                output_path_profiling_data = save_profiling_data
+            else:
+                raise ValueError("The save_profiling_data path must be ended with .csv")
+
         with open(output_path_profiling_data, "w") as f:
             writer = csv.writer(f)
             writer.writerow(data.keys())
             writer.writerows(zip(*data.values()))
+            print("Profiling data saved as ", output_path_profiling_data)
 
     if output_path:
         nbformat.write(out, output_path)
-
     return out

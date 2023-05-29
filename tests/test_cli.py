@@ -138,3 +138,31 @@ def test_cli_progress_bar(tmp_empty):
 )
 def test_parse_cli_notebook_parameters(params, expected):
     assert cli._parse_cli_notebook_parameters(params) == expected
+
+
+@pytest.mark.parametrize(
+    "saved_path",
+    [
+        "./abc",
+        "./abc.py",
+        "./abc.txt",
+        "./abc.png",
+    ],
+)
+def test_cli_save_profiling_not_valid_path(tmp_empty, saved_path):
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.cli,
+        [
+            "nb.ipynb",
+            "out.ipynb",
+            "--profile-runtime",
+            f"--save-profiling-data={saved_path}",
+        ],
+    )
+    assert result.exit_code == 2
+    assert (
+        f"Error: Invalid value for '--save-profiling-data':\
+ Path '{saved_path}' does not exist."
+        in result.output
+    )
