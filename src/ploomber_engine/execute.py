@@ -27,7 +27,7 @@ def execute_notebook(
     profile_memory=False,
     progress_bar=True,
     debug_later=False,
-    verbose=False, 
+    verbose=False,
     remove_tagged_cells=None,
     cwd=".",
     save_profiling_data=False,
