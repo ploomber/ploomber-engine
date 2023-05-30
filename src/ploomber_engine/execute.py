@@ -27,7 +27,7 @@ def execute_notebook(
     profile_memory=False,
     progress_bar=True,
     debug_later=False,
-    verbose=False,
+    verbose=False, 
     remove_tagged_cells=None,
     cwd=".",
     save_profiling_data=False,
@@ -210,7 +210,7 @@ def execute_notebook(
         output_path_profiling_data = _util.sibling_with_suffix(
             output_path, "-profiling-data.csv"
         )
-        if isinstance(save_profiling_data, (str, Path)):
+        if isinstance(save_profiling_data, (str)):
             if save_profiling_data.endswith(".csv"):
                 output_path_profiling_data = save_profiling_data
             else:

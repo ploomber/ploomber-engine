@@ -52,7 +52,7 @@ from ploomber_engine import execute_notebook
 @click.option(
     "--save-profiling-data",
     default=False,
-    type=click.Path(exists=True),
+    type=click.Path(exists=False),
     help="Save profiling data to a file "
     "(requires --profile-runtime and/or --profile-memory)",
 )
