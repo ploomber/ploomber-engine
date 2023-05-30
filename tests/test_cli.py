@@ -162,4 +162,6 @@ def test_cli_save_profiling_not_valid_path(tmp_empty, saved_path):
         ],
     )
     # assert result.exit_code == 2
-    assert "^^" in (result.output)
+    # print ("result.output: ", result.exception)
+    assert isinstance(result.exception, ValueError)
+    assert "must be ended" in str(result.exception)
