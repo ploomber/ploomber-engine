@@ -78,7 +78,9 @@ _ = ax.set_title("My custom title")
 
 You can save the profiling data by setting `save_profiling_data=True`, or providing custom path to save
 
-### Default path as `output-profiling-data.csv`, when setting `save_profiling_data=True`
+### Enable save_profiling_data by setting as `True`
+
+The file will be saved as `output-profiling-data.csv` by default
 
 ```{code-cell} ipython3
 %%capture
@@ -93,7 +95,9 @@ import pandas as pd
 pd.read_csv("output-profiling-data.csv")
 ```
 
-### Custom path, when setting `save_profiling_data={path.csv}`
+### Enable save_profiling_data with custom file path
+
+Please be aware that the file path must end with the `.csv` format.
 
 ```{code-cell} ipython3
 %%capture
