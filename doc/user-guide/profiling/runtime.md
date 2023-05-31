@@ -76,7 +76,9 @@ _ = ax.set_title("My custom title")
 
 ## Saving profiling data
 
-You can save the profiling data by setting `save_profiling_data=True`.
+You can save the profiling data by setting `save_profiling_data=True`, or providing custom path to save
+
+### Default path as `output-profiling-data.csv`, when setting `save_profiling_data=True`
 
 ```{code-cell} ipython3
 %%capture
@@ -89,6 +91,21 @@ _ = execute_notebook(
 import pandas as pd
 
 pd.read_csv("output-profiling-data.csv")
+```
+
+### Custom path, when setting `save_profiling_data={path.csv}`
+
+```{code-cell} ipython3
+%%capture
+_ = execute_notebook(
+    "notebook.ipynb", "output.ipynb", profile_runtime=True, save_profiling_data="./my_output.csv"
+)
+```
+
+```{code-cell} ipython3
+import pandas as pd
+
+pd.read_csv("my_output.csv")
 ```
 
 Note: you must set `profile_memory=True` to get non-NA data 
