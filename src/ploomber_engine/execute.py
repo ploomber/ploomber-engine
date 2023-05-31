@@ -74,9 +74,10 @@ def execute_notebook(
     cwd : str or Path, default='.'
         Working directory to use when executing the notebook
 
-    save_profiling_data : bool, default=False
+    save_profiling_data : bool or Path, default=False
         If True, saves profiling data generated from profile_memory and profile_runtime
         (stores a ``.csv`` file in the same folder as ``output_path``)
+        If Path, saves profiling data to the given Path
 
     Returns
     -------
