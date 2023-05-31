@@ -207,6 +207,7 @@ def execute_notebook(
 
     if save_profiling_data:
         data = profiling.get_profiling_data(out)
+        # Customized save_profiling_data path
         if isinstance(save_profiling_data, str):
             if save_profiling_data.endswith(".csv"):
                 output_path_profiling_data = save_profiling_data
@@ -214,6 +215,7 @@ def execute_notebook(
                 raise ValueError(
                     "Invalid save_profiling_data, path must be ended with .csv"
                 )
+        # Default save_profiling_data path
         elif isinstance(save_profiling_data, bool):
             output_path_profiling_data = _util.sibling_with_suffix(
                 output_path, "-profiling-data.csv"
@@ -228,7 +230,6 @@ def execute_notebook(
             writer = csv.writer(f)
             writer.writerow(data.keys())
             writer.writerows(zip(*data.values()))
-            print("Profiling data saved as ", output_path_profiling_data)
 
     if output_path:
         nbformat.write(out, output_path)
