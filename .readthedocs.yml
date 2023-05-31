@@ -6,9 +6,10 @@ build:
     python: "mambaforge-4.10"
 
   jobs:
+    pre_build:
+      - export PLOOMBER_VERSION_CHECK_DISABLED=true
     post_create_environment:
       - "conda env export"
-      - PLOOMBER_VERSION_CHECK_DISABLED=true
 
 conda:
   environment: doc/environment.yml
