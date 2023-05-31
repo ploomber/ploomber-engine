@@ -6,6 +6,13 @@ import click
 
 from ploomber_engine import execute_notebook
 
+def handle_bool_string_option(ctx, param, value):
+    if isinstance(value, bool):
+        return value
+    elif isinstance(value, str) and value.endswith(".csv"):
+        return value
+    else:
+        raise click.BadParameter('Invalid value type. Please provide either a boolean or a string.')
 
 @click.command()
 @click.argument("input_path", type=click.Path(exists=True))
@@ -52,6 +59,10 @@ from ploomber_engine import execute_notebook
 @click.option(
     "--save-profiling-data",
     default=False,
+    # is_flag=True,
+    # flag_value="--save-profiling-data",
+    required=False,
+    callback=handle_bool_string_option,
     type=click.UNPROCESSED,
     help="Save profiling data to a file "
     "(requires --profile-runtime and/or --profile-memory)",
@@ -95,6 +106,7 @@ def cli(
 
     $ ploomber-engine my-notebook.ipynb output.ipynb --remove-tagged-cells remove
     """
+    print ("Before: ", save_profiling_data)
     execute_notebook(
         input_path,
         output_path,
