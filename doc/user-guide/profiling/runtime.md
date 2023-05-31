@@ -98,7 +98,10 @@ pd.read_csv("output-profiling-data.csv")
 ```{code-cell} ipython3
 %%capture
 _ = execute_notebook(
-    "notebook.ipynb", "output.ipynb", profile_runtime=True, save_profiling_data="./my_output.csv"
+    "notebook.ipynb",
+    "output.ipynb",
+    profile_runtime=True,
+    save_profiling_data="./my_output.csv",
 )
 ```
 
