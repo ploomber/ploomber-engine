@@ -32,8 +32,13 @@ def _make_call(**kwargs):
     "cli_args, call_expected",
     [
         [
-            ["nb.ipynb", "out.ipynb", "--profile-runtime", "--save-profiling-data",
-              True],
+            [
+                "nb.ipynb",
+                "out.ipynb",
+                "--profile-runtime",
+                "--save-profiling-data",
+                True,
+            ],
             _make_call(profile_runtime=True, save_profiling_data=True),
         ],
         [
@@ -87,8 +92,8 @@ def test_cli(tmp_empty, monkeypatch, cli_args, call_expected):
     runner = CliRunner()
     result = runner.invoke(cli.cli, cli_args)
 
-    print ("result.exception: ", result.exception)
-    print ("result.output: ", result.output)
+    print("result.exception: ", result.exception)
+    print("result.output: ", result.output)
 
     assert result.exit_code == 0
     assert mock.call_args_list == [call_expected]
@@ -166,6 +171,6 @@ def test_cli_save_profiling_not_valid_path(tmp_empty, saved_path):
         ],
     )
     assert result.exit_code == 2
-    print ("result.output: ", result.output)
+    print("result.output: ", result.output)
     # assert isinstance(result.exception, ValueError)
     # assert "must be ended" in str(result)

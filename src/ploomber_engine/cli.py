@@ -6,13 +6,17 @@ import click
 
 from ploomber_engine import execute_notebook
 
+
 def handle_bool_string_option(ctx, param, value):
     if isinstance(value, bool):
         return value
     elif isinstance(value, str) and value.endswith(".csv"):
         return value
     else:
-        raise click.BadParameter('Invalid value type. Please provide either a boolean or a string.')
+        raise click.BadParameter(
+            "Invalid value type. Please provide either a boolean or a string."
+        )
+
 
 @click.command()
 @click.argument("input_path", type=click.Path(exists=True))
@@ -106,7 +110,7 @@ def cli(
 
     $ ploomber-engine my-notebook.ipynb output.ipynb --remove-tagged-cells remove
     """
-    print ("Before: ", save_profiling_data)
+    print("Before: ", save_profiling_data)
     execute_notebook(
         input_path,
         output_path,
