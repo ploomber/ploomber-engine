@@ -207,14 +207,22 @@ def execute_notebook(
 
     if save_profiling_data:
         data = profiling.get_profiling_data(out)
-        output_path_profiling_data = _util.sibling_with_suffix(
-            output_path, "-profiling-data.csv"
-        )
-        if isinstance(save_profiling_data, (str)):
+        if isinstance(save_profiling_data, str):
             if save_profiling_data.endswith(".csv"):
                 output_path_profiling_data = save_profiling_data
             else:
-                raise ValueError("The save_profiling_data path must be ended with .csv")
+                raise ValueError(
+                    "Invalid save_profiling_data, path must be ended with .csv"
+                )
+        elif isinstance(save_profiling_data, bool):
+            output_path_profiling_data = _util.sibling_with_suffix(
+                output_path, "-profiling-data.csv"
+            )
+        else:
+            raise ValueError(
+                "Invalid save_profiling_data. Please provide either a\
+ boolean or a string"
+            )
 
         with open(output_path_profiling_data, "w") as f:
             writer = csv.writer(f)

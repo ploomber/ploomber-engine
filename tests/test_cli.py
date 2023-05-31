@@ -92,9 +92,6 @@ def test_cli(tmp_empty, monkeypatch, cli_args, call_expected):
     runner = CliRunner()
     result = runner.invoke(cli.cli, cli_args)
 
-    print("result.exception: ", result.exception)
-    print("result.output: ", result.output)
-
     assert result.exit_code == 0
     assert mock.call_args_list == [call_expected]
 
@@ -150,15 +147,48 @@ def test_parse_cli_notebook_parameters(params, expected):
 
 
 @pytest.mark.parametrize(
-    "saved_path",
+    "saved_path, exception_msg, exception_type",
     [
-        "./abc",
-        "./abc.py",
-        "./abc.txt",
-        "./abc.png",
+        (
+            "./abc",
+            "Invalid save_profiling_data, path must be ended with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.py",
+            "Invalid save_profiling_data, path must be ended with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.txt",
+            "Invalid save_profiling_data, path must be ended with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.png",
+            "Invalid save_profiling_data, path must be ended with .csv",
+            ValueError,
+        ),
+        (
+            float(123.0),
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
+        (
+            {"brand": "Ford"},
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
+        (
+            (1, 2, 3, 4),
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
     ],
 )
-def test_cli_save_profiling_not_valid_path(tmp_empty, saved_path):
+def test_cli_save_profiling_not_valid_csv_path(
+    tmp_empty, saved_path, exception_msg, exception_type
+):
     _make_nb(["1 + 1"])
     runner = CliRunner()
     result = runner.invoke(
@@ -167,10 +197,10 @@ def test_cli_save_profiling_not_valid_path(tmp_empty, saved_path):
             "nb.ipynb",
             "out.ipynb",
             "--profile-runtime",
-            f"--save-profiling-data={saved_path}",
+            "--save-profiling-data",
+            saved_path,
         ],
     )
-    assert result.exit_code == 2
-    print("result.output: ", result.output)
-    # assert isinstance(result.exception, ValueError)
-    # assert "must be ended" in str(result)
+    assert result.exit_code == 1
+    assert exception_msg in str(result.exception)
+    assert isinstance(result.exception, exception_type)

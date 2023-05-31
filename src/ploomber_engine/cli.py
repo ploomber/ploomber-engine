@@ -7,17 +7,6 @@ import click
 from ploomber_engine import execute_notebook
 
 
-def handle_bool_string_option(ctx, param, value):
-    if isinstance(value, bool):
-        return value
-    elif isinstance(value, str) and value.endswith(".csv"):
-        return value
-    else:
-        raise click.BadParameter(
-            "Invalid value type. Please provide either a boolean or a string."
-        )
-
-
 @click.command()
 @click.argument("input_path", type=click.Path(exists=True))
 @click.argument("output_path", type=click.Path(exists=False))
@@ -63,10 +52,7 @@ def handle_bool_string_option(ctx, param, value):
 @click.option(
     "--save-profiling-data",
     default=False,
-    # is_flag=True,
-    # flag_value="--save-profiling-data",
     required=False,
-    callback=handle_bool_string_option,
     type=click.UNPROCESSED,
     help="Save profiling data to a file "
     "(requires --profile-runtime and/or --profile-memory)",
