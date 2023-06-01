@@ -180,15 +180,15 @@ def test_execute_notebook_remove_tagged_cells(tmp_empty):
 
     assert [c.source for c in out.cells] == ["1 + 1"]
 
-
-def test_execute_notebook_save_profiling_data(tmp_empty):
+@pytest.mark.parametrize("save_profiling_data_value, save_profiling_output", [(True, "out-profiling-data.csv"), ("test.csv", "test.csv")])
+def test_execute_notebook_save_profiling_data(tmp_empty, save_profiling_data_value, save_profiling_output):
     nb_in = _make_nb(["1 + 1"])
     with pytest.warns(UserWarning, match="save_profiling_data=True requires"):
         # save_profiling_data requires profile_runtime and/or profile_memory
-        execute_notebook(nb_in, "out.ipynb", save_profiling_data=True)
+        execute_notebook(nb_in, "out.ipynb", save_profiling_data=save_profiling_data_value)
 
-    execute_notebook(nb_in, "out.ipynb", save_profiling_data=True, profile_runtime=True)
-    outfile = "out-profiling-data.csv"
+    execute_notebook(nb_in, "out.ipynb", save_profiling_data=save_profiling_data_value, profile_runtime=True)
+    outfile = save_profiling_output
     assert Path(outfile).is_file()
     with open(outfile, "r") as f:
         read_lines = f.readlines()
@@ -206,11 +206,11 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
     execute_notebook(
         nb_in,
         "out.ipynb",
-        save_profiling_data=True,
+        save_profiling_data=save_profiling_data_value,
         profile_runtime=True,
         profile_memory=True,
     )
-    outfile = "out-profiling-data.csv"
+    outfile = save_profiling_output
     with open(outfile, "r") as f:
         read_lines = f.readlines()
         lines = []
