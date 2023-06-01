@@ -15,8 +15,5 @@ kernelspec:
 # Testing whether version check is disabled
 
 ```{code-cell} ipython3
-from os import environ
-
-var = environ.get("PLOOMBER_VERSION_CHECK_DISABLED")
-print(var)
+!cat ~/.ploomber/stats/config.yaml
 ```
