@@ -95,7 +95,6 @@ def cli(
 
     $ ploomber-engine my-notebook.ipynb output.ipynb --remove-tagged-cells remove
     """
-    print("Before: ", save_profiling_data)
     execute_notebook(
         input_path,
         output_path,

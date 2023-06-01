@@ -214,7 +214,7 @@ def execute_notebook(
                 output_path_profiling_data = save_profiling_data
             else:
                 raise ValueError(
-                    "Invalid save_profiling_data, path must be ended with .csv"
+                    "Invalid save_profiling_data, path must end with .csv"
                 )
         # Default save_profiling_data path
         elif isinstance(save_profiling_data, bool):

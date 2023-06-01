@@ -151,22 +151,22 @@ def test_parse_cli_notebook_parameters(params, expected):
     [
         (
             "./abc",
-            "Invalid save_profiling_data, path must be ended with .csv",
+            "Invalid save_profiling_data, path must end with .csv",
             ValueError,
         ),
         (
             "./abc.py",
-            "Invalid save_profiling_data, path must be ended with .csv",
+            "Invalid save_profiling_data, path must end with .csv",
             ValueError,
         ),
         (
             "./abc.txt",
-            "Invalid save_profiling_data, path must be ended with .csv",
+            "Invalid save_profiling_data, path must end with .csv",
             ValueError,
         ),
         (
             "./abc.png",
-            "Invalid save_profiling_data, path must be ended with .csv",
+            "Invalid save_profiling_data, path must end with .csv",
             ValueError,
         ),
         (
