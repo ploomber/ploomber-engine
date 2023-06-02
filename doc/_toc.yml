@@ -13,7 +13,6 @@ parts:
       - file: user-guide/testing/integration
       - file: user-guide/testing/outputs
       - file: user-guide/testing/pytest
-      - file: user-guide/testing/vcheck
     - file: user-guide/tracking
     - file: user-guide/debugging/index
       sections:
