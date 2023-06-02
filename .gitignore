@@ -7,6 +7,8 @@ nb.ipynb
 tmp*.ipynb
 doc/_build
 
+# macos files
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
