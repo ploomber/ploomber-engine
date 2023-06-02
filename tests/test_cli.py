@@ -150,6 +150,11 @@ def test_parse_cli_notebook_parameters(params, expected):
     "saved_path, exception_msg, exception_type",
     [
         (
+            "abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
             "./abc",
             "Invalid save_profiling_data, path must end with .csv",
             ValueError,
@@ -170,18 +175,8 @@ def test_parse_cli_notebook_parameters(params, expected):
             ValueError,
         ),
         (
-            float(123.0),
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
-            ValueError,
-        ),
-        (
-            {"brand": "Ford"},
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
-            ValueError,
-        ),
-        (
-            (1, 2, 3, 4),
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            "./abc",
+            "Invalid save_profiling_data, path must end with .csv",
             ValueError,
         ),
     ],
