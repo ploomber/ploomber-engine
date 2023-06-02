@@ -237,6 +237,65 @@ def test_execute_notebook_save_profiling_data(
         assert len(data) == 3, "File should have 3 columns"
         assert data[2] != "NA", "memory is profiled and should not be NA"
 
+@pytest.mark.parametrize(
+    "saved_path, exception_msg, exception_type",
+    [
+        (
+            "abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.py",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.txt",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.png",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            float(123.0),
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
+        (
+            {"test": "test123"},
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
+        (
+            set(["test", "test123"]),
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
+    ],
+)
+def test_execute_notebook_invalid_save_profiling_data(saved_path, exception_msg, exception_type):
+    nb_in = _make_nb(["1 + 1"])
+    with pytest.raises(exception_type, match=exception_msg):
+        execute_notebook(
+        nb_in,
+        "out.ipynb",
+        save_profiling_data=saved_path,
+        profile_runtime=True,
+    )
 
 def test_execute_notebook_different_cwd(tmp_empty):
     # setup
