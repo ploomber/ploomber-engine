@@ -7,8 +7,8 @@ build:
 
   jobs:
     pre_build:
-      - mkdir -p $HOME/.ploomber/stats/
-      - echo "version_check_enabled: false" >> $HOME/.ploomber/stats/config.yaml
+      - 'mkdir -p $HOME/.ploomber/stats/'
+      - 'echo "version_check_enabled: false" >> $HOME/.ploomber/stats/config.yaml'
     post_create_environment:
       - "conda env export"
 
