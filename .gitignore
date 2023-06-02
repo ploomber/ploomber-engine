@@ -139,3 +139,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 *.xml
+
+# .DS_Store
+.DS_Store 
