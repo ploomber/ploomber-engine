@@ -181,14 +181,27 @@ def test_execute_notebook_remove_tagged_cells(tmp_empty):
     assert [c.source for c in out.cells] == ["1 + 1"]
 
 
-def test_execute_notebook_save_profiling_data(tmp_empty):
+@pytest.mark.parametrize(
+    "save_profiling_data_value, save_profiling_output",
+    [(True, "out-profiling-data.csv"), ("test.csv", "test.csv")],
+)
+def test_execute_notebook_save_profiling_data(
+    tmp_empty, save_profiling_data_value, save_profiling_output
+):
     nb_in = _make_nb(["1 + 1"])
     with pytest.warns(UserWarning, match="save_profiling_data=True requires"):
         # save_profiling_data requires profile_runtime and/or profile_memory
-        execute_notebook(nb_in, "out.ipynb", save_profiling_data=True)
+        execute_notebook(
+            nb_in, "out.ipynb", save_profiling_data=save_profiling_data_value
+        )
 
-    execute_notebook(nb_in, "out.ipynb", save_profiling_data=True, profile_runtime=True)
-    outfile = "out-profiling-data.csv"
+    execute_notebook(
+        nb_in,
+        "out.ipynb",
+        save_profiling_data=save_profiling_data_value,
+        profile_runtime=True,
+    )
+    outfile = save_profiling_output
     assert Path(outfile).is_file()
     with open(outfile, "r") as f:
         read_lines = f.readlines()
@@ -206,11 +219,11 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
     execute_notebook(
         nb_in,
         "out.ipynb",
-        save_profiling_data=True,
+        save_profiling_data=save_profiling_data_value,
         profile_runtime=True,
         profile_memory=True,
     )
-    outfile = "out-profiling-data.csv"
+    outfile = save_profiling_output
     with open(outfile, "r") as f:
         read_lines = f.readlines()
         lines = []
@@ -223,6 +236,69 @@ def test_execute_notebook_save_profiling_data(tmp_empty):
         data = lines[1].strip().split(",")
         assert len(data) == 3, "File should have 3 columns"
         assert data[2] != "NA", "memory is profiled and should not be NA"
+
+
+@pytest.mark.parametrize(
+    "saved_path, exception_msg, exception_type",
+    [
+        (
+            "abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.py",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.txt",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.png",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            float(123.0),
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
+        (
+            {"test": "test123"},
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
+        (
+            set(["test", "test123"]),
+            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            ValueError,
+        ),
+    ],
+)
+def test_execute_notebook_invalid_save_profiling_data(
+    saved_path, exception_msg, exception_type
+):
+    nb_in = _make_nb(["1 + 1"])
+    with pytest.raises(exception_type, match=exception_msg):
+        execute_notebook(
+            nb_in,
+            "out.ipynb",
+            save_profiling_data=saved_path,
+            profile_runtime=True,
+        )
 
 
 def test_execute_notebook_different_cwd(tmp_empty):

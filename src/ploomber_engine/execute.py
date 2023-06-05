@@ -74,9 +74,10 @@ def execute_notebook(
     cwd : str or Path, default='.'
         Working directory to use when executing the notebook
 
-    save_profiling_data : bool, default=False
+    save_profiling_data : bool or Path, default=False
         If True, saves profiling data generated from profile_memory and profile_runtime
-        (stores a ``.csv`` file in the same folder as ``output_path``)
+        (stores a ``.csv`` file in the same folder as ``output_path``).
+        If Path, saves profiling data to the given Path
 
     Returns
     -------
@@ -133,7 +134,6 @@ def execute_notebook(
     ...                        remove_tagged_cells=["remove", "also-remove"])
     """
     path_like_input = isinstance(input_path, (str, Path))
-
     if save_profiling_data and not (profile_runtime or profile_memory):
         warnings.warn(
             "save_profiling_data=True requires "
@@ -208,9 +208,23 @@ def execute_notebook(
 
     if save_profiling_data:
         data = profiling.get_profiling_data(out)
-        output_path_profiling_data = _util.sibling_with_suffix(
-            output_path, "-profiling-data.csv"
-        )
+        # Customized save_profiling_data path
+        if isinstance(save_profiling_data, str):
+            if save_profiling_data.endswith(".csv"):
+                output_path_profiling_data = save_profiling_data
+            else:
+                raise ValueError("Invalid save_profiling_data, path must end with .csv")
+        # Default save_profiling_data path
+        elif isinstance(save_profiling_data, bool):
+            output_path_profiling_data = _util.sibling_with_suffix(
+                output_path, "-profiling-data.csv"
+            )
+        else:
+            raise ValueError(
+                "Invalid save_profiling_data. Please provide either a\
+ boolean or a string"
+            )
+
         with open(output_path_profiling_data, "w") as f:
             writer = csv.writer(f)
             writer.writerow(data.keys())
@@ -218,5 +232,4 @@ def execute_notebook(
 
     if output_path:
         nbformat.write(out, output_path)
-
     return out

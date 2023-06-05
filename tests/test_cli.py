@@ -32,7 +32,13 @@ def _make_call(**kwargs):
     "cli_args, call_expected",
     [
         [
-            ["nb.ipynb", "out.ipynb", "--profile-runtime", "--save-profiling-data"],
+            [
+                "nb.ipynb",
+                "out.ipynb",
+                "--profile-runtime",
+                "--save-profiling-data",
+                True,
+            ],
             _make_call(profile_runtime=True, save_profiling_data=True),
         ],
         [
@@ -138,3 +144,58 @@ def test_cli_progress_bar(tmp_empty):
 )
 def test_parse_cli_notebook_parameters(params, expected):
     assert cli._parse_cli_notebook_parameters(params) == expected
+
+
+@pytest.mark.parametrize(
+    "saved_path, exception_msg, exception_type",
+    [
+        (
+            "abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.py",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.txt",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc.png",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+        (
+            "./abc",
+            "Invalid save_profiling_data, path must end with .csv",
+            ValueError,
+        ),
+    ],
+)
+def test_cli_save_profiling_not_valid_csv_path(
+    tmp_empty, saved_path, exception_msg, exception_type
+):
+    _make_nb(["1 + 1"])
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.cli,
+        [
+            "nb.ipynb",
+            "out.ipynb",
+            "--profile-runtime",
+            "--save-profiling-data",
+            saved_path,
+        ],
+    )
+    assert result.exit_code == 1
+    assert exception_msg in str(result.exception)
+    assert isinstance(result.exception, exception_type)

@@ -51,8 +51,8 @@ from ploomber_engine import execute_notebook
 )
 @click.option(
     "--save-profiling-data",
-    is_flag=True,
     default=False,
+    type=click.UNPROCESSED,
     help="Save profiling data to a file "
     "(requires --profile-runtime and/or --profile-memory)",
 )
