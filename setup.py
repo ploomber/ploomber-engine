@@ -88,7 +88,9 @@ setup(
     package_dir={"": "src"},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
-    classifiers=[],
+    classifiers=[
+        "License :: OSI Approved :: Apache Software License",
+    ],
     keywords=[],
     install_requires=REQUIRES,
     extras_require={
