@@ -89,7 +89,7 @@ setup(
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
     classifiers=[
-        "License :: OSI Approved :: BSD 3-Clause License",
+        "License :: OSI Approved :: BSD License",
     ],
     keywords=[],
     install_requires=REQUIRES,

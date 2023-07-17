@@ -2,7 +2,11 @@
 
 ## 0.0.30dev
 
+* [Fix] Fixes license metadata in `setup.py`
+
 ## 0.0.29 (2023-07-16)
+
+*Note:* this was never released due to an error in `setup.py`'s metadata.
 
 * [Feature] Supported `save_profiling_data` option with file path
 
