@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.30dev
+## 0.0.30 (2023-07-16)
 
 * [Fix] Fixes license metadata in `setup.py`
 
