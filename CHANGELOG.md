@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.29dev
+## 0.0.29 (2023-07-16)
 
 * [Feature] Supported `save_profiling_data` option with file path
 
