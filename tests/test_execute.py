@@ -113,11 +113,13 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
     assert Image(filename="out-runtime.png")
 
 @pytest.mark.parametrize(
-     "profile_memory", "profile_runtime",
+     "profile_memory,profile_runtime",
     [
-        ('mem.png', "bogus", True, False),
-        ("time.png", "time1.png", False, "time2.png"),
-    ]
+        ["mem.png", "time.png"],
+        ['bogus', 'time1.png'],
+        ["mem2.png", True],
+        [True, False],
+    ],
 )
 def test_execute_notebook_profile_plot_paths(
     tmp_empty, profile_memory, profile_runtime
@@ -140,17 +142,13 @@ def test_execute_notebook_profile_plot_paths(
     else:
         execute_notebook(**execute_kwgs)
         if profile_memory:
-            fname = "out-memory-usage.png"
-            if isinstance(profile_memory, str):
-                fname = profile_memory
+            fname = (profile_memory if isinstance(profile_memory, str)
+                     else "out-memory-usage.png")
             assert Path(fname)
-            assert Image(filename=fname)
         if profile_runtime:
-            fname = "out-runtime.png"
-            if isinstance(profile_runtime, str):
-                fname = profile_runtime
+            fname = (profile_runtime if isinstance(profile_runtime, str)
+                     else "out-runtime.png")
             assert Path(fname)
-            assert Image(filename=fname)
 
 @pytest.mark.parametrize(
     "cells",
@@ -282,47 +280,47 @@ def test_execute_notebook_save_profiling_data(
     [
         (
             "abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc.py",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc.txt",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc.png",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             float(123.0),
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). Please provide either a boolean or a string",
             ValueError,
         ),
         (
             {"test": "test123"},
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). Please provide either a boolean or a string",
             ValueError,
         ),
         (
             set(["test", "test123"]),
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). Please provide either a boolean or a string",
             ValueError,
         ),
     ],

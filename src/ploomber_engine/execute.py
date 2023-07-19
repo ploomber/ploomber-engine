@@ -247,9 +247,9 @@ def _parse_bool_or_path(arg_key, arg_value, default_path):
     """
 
     if isinstance(arg_value, str):
-        expected_file_extension = default_path.split('.')[-1]
+        expected_file_extension = Path(default_path).suffix
         if not arg_value.endswith(expected_file_extension):
-            raise ValueError(f"Invalid {arg_key}, path must end with .{expected_file_extension}")
+            raise ValueError(f"Invalid {arg_key}:{arg_value}, path must end with {expected_file_extension}")
         parsed_bool = True
         parsed_path = arg_value
 
