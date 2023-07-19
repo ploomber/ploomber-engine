@@ -197,12 +197,13 @@ def execute_notebook(
 
         raise
 
-    profile_runtime, output_path_memory = _parse_bool_or_path(
-        arg_key="profile_runtime",
-        arg_value=profile_runtime,
-        default_path=_util.sibling_with_suffix(output_path, "-runtime.png"),
-    )
+
     if profile_runtime:
+        profile_runtime, output_path_memory = _parse_bool_or_path(
+            arg_key="profile_runtime",
+            arg_value=profile_runtime,
+            default_path=_util.sibling_with_suffix(output_path, "-runtime.png"),
+        )
         ax = profiling.plot_cell_runtime(out)
         output_path_runtime = _util.sibling_with_suffix(output_path, "-runtime.png")
         ax.figure.savefig(output_path_runtime)
@@ -212,12 +213,12 @@ def execute_notebook(
                 f"Cell runtime plot stored at: {output_path_runtime}", fg="green"
             )
 
-    profile_memory, output_path_memory = _parse_bool_or_path(
-        arg_key="profile_memory",
-        arg_value=profile_memory,
-        default_path=_util.sibling_with_suffix(output_path, "-memory-usage.png"),
-    )
     if profile_memory:
+        profile_memory, output_path_memory = _parse_bool_or_path(
+            arg_key="profile_memory",
+            arg_value=profile_memory,
+            default_path=_util.sibling_with_suffix(output_path, "-memory-usage.png"),
+        )
         ax = profiling.plot_memory_usage(out)
         ax.figure.savefig(output_path_memory)
 
@@ -226,12 +227,12 @@ def execute_notebook(
                 f"Cell memory profile plot stored at: {output_path_memory}", fg="green"
             )
 
-    save_profiling_data, output_path_profiling_data = _parse_bool_or_path(
-        arg_key="save_profiling_data",
-        arg_value=save_profiling_data,
-        default_path=_util.sibling_with_suffix(output_path, "-profiling-data.csv"),
-    )
     if save_profiling_data:
+        save_profiling_data, output_path_profiling_data = _parse_bool_or_path(
+            arg_key="save_profiling_data",
+            arg_value=save_profiling_data,
+            default_path=_util.sibling_with_suffix(output_path, "-profiling-data.csv"),
+        )
         data = profiling.get_profiling_data(out)
         with open(output_path_profiling_data, "w") as f:
             writer = csv.writer(f)
