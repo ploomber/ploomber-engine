@@ -197,7 +197,6 @@ def execute_notebook(
 
         raise
 
-
     if profile_runtime:
         profile_runtime, output_path_memory = _parse_bool_or_path(
             arg_key="profile_runtime",
