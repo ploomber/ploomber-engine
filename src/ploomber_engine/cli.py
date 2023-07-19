@@ -20,13 +20,15 @@ from ploomber_engine import execute_notebook
     "--profile-runtime",
     default=False,
     type=click.UNPROCESSED,
-    help="Profile cell's runtime (a path for the runtime profile plot can additionally be passed)",
+    help="Profile cell's runtime "
+         "(a path for the runtime profile plot can additionally be passed)",
 )
 @click.option(
     "--profile-memory",
     default=False,
     type=click.UNPROCESSED,
-    help="Profile cell's memory usage  (a path for the runtime memory plot can additionally be passed)",
+    help="Profile cell's memory usage  "
+         "(a path for the runtime memory plot can additionally be passed)",
 )
 @click.option(
     "--progress-bar/--no-progress-bar", default=True, help="Display a progress bar"

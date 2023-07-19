@@ -320,17 +320,20 @@ def test_execute_notebook_save_profiling_data(
         ),
         (
             float(123.0),
-            "Invalid save_profiling_data(.*). Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). "
+            "Please provide either a boolean or a string",
             ValueError,
         ),
         (
             {"test": "test123"},
-            "Invalid save_profiling_data(.*). Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). "
+            "Please provide either a boolean or a string",
             ValueError,
         ),
         (
             set(["test", "test123"]),
-            "Invalid save_profiling_data(.*). Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). "
+            "Please provide either a boolean or a string",
             ValueError,
         ),
     ],

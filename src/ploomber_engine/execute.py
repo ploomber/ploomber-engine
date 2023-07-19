@@ -130,7 +130,7 @@ def execute_notebook(
     Store a plot with cell's memory usage at a custom path:
 
     >>> from ploomber_engine import execute_notebook
-    >>> out = execute_notebook("nb.ipynb", "out.ipynb", profile_memory='memory_per_cell.png')
+    >>> out = execute_notebook("nb.ipynb", "out.ipynb", profile_memory='memory.png')
 
 
     Remove cells with the tag "remove" before execution:
@@ -253,7 +253,8 @@ def _parse_bool_or_path(arg_key, arg_value, default_path):
         expected_file_extension = Path(default_path).suffix
         if not arg_value.endswith(expected_file_extension):
             raise ValueError(
-                f"Invalid {arg_key}:{arg_value}, path must end with {expected_file_extension}"
+                f"Invalid {arg_key}:{arg_value}, "
+                f"path must end with {expected_file_extension}"
             )
         parsed_bool = True
         parsed_path = arg_value
