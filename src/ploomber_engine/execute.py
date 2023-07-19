@@ -198,13 +198,12 @@ def execute_notebook(
         raise
 
     if profile_runtime:
-        profile_runtime, output_path_memory = _parse_bool_or_path(
+        profile_runtime, output_path_runtime = _parse_bool_or_path(
             arg_key="profile_runtime",
             arg_value=profile_runtime,
             default_path=_util.sibling_with_suffix(output_path, "-runtime.png"),
         )
         ax = profiling.plot_cell_runtime(out)
-        output_path_runtime = _util.sibling_with_suffix(output_path, "-runtime.png")
         ax.figure.savefig(output_path_runtime)
 
         if verbose:
