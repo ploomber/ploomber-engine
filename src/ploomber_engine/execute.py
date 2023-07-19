@@ -198,8 +198,9 @@ def execute_notebook(
         raise
 
     profile_runtime, output_path_memory = _parse_bool_or_path(
-        arg_key="profile_runtime", arg_value=profile_runtime,
-        default_path=_util.sibling_with_suffix(output_path, "-runtime.png")
+        arg_key="profile_runtime",
+        arg_value=profile_runtime,
+        default_path=_util.sibling_with_suffix(output_path, "-runtime.png"),
     )
     if profile_runtime:
         ax = profiling.plot_cell_runtime(out)
@@ -212,8 +213,9 @@ def execute_notebook(
             )
 
     profile_memory, output_path_memory = _parse_bool_or_path(
-        arg_key="profile_memory", arg_value=profile_memory,
-        default_path=_util.sibling_with_suffix(output_path, "-memory-usage.png")
+        arg_key="profile_memory",
+        arg_value=profile_memory,
+        default_path=_util.sibling_with_suffix(output_path, "-memory-usage.png"),
     )
     if profile_memory:
         ax = profiling.plot_memory_usage(out)
@@ -224,10 +226,10 @@ def execute_notebook(
                 f"Cell memory profile plot stored at: {output_path_memory}", fg="green"
             )
 
-
     save_profiling_data, output_path_profiling_data = _parse_bool_or_path(
-        arg_key="save_profiling_data", arg_value=save_profiling_data,
-        default_path=_util.sibling_with_suffix(output_path, "-profiling-data.csv")
+        arg_key="save_profiling_data",
+        arg_value=save_profiling_data,
+        default_path=_util.sibling_with_suffix(output_path, "-profiling-data.csv"),
     )
     if save_profiling_data:
         data = profiling.get_profiling_data(out)
@@ -240,6 +242,7 @@ def execute_notebook(
         nbformat.write(out, output_path)
     return out
 
+
 def _parse_bool_or_path(arg_key, arg_value, default_path):
     """Parse a boolean or a path argument (arg_val).
     If a boolean is passed, return the bool and the default path.
@@ -249,7 +252,9 @@ def _parse_bool_or_path(arg_key, arg_value, default_path):
     if isinstance(arg_value, str):
         expected_file_extension = Path(default_path).suffix
         if not arg_value.endswith(expected_file_extension):
-            raise ValueError(f"Invalid {arg_key}:{arg_value}, path must end with {expected_file_extension}")
+            raise ValueError(
+                f"Invalid {arg_key}:{arg_value}, path must end with {expected_file_extension}"
+            )
         parsed_bool = True
         parsed_path = arg_value
 
