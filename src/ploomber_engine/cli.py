@@ -27,7 +27,7 @@ from ploomber_engine import execute_notebook
     "--profile-memory",
     default=False,
     type=click.UNPROCESSED,
-    help="Profile cell's memory usage  "
+    help="Profile cell's memory usage "
     "(a path for the runtime memory plot can additionally be passed)",
 )
 @click.option(
