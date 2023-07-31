@@ -112,17 +112,15 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
     assert Path("out-runtime.png")
     assert Image(filename="out-runtime.png")
 
-
 @pytest.mark.parametrize(
     "profile_memory,profile_runtime",
     [
-        ["mem.png", "time.png"],
         ["bogus", "time1.png"],
-        ["mem2.png", True],
-        [True, False],
+        ["mem1", True],
+        ["mem1", 2],
     ],
 )
-def test_execute_notebook_profile_plot_paths(
+def test_invalid_profile_plot_args(
     tmp_empty, profile_memory, profile_runtime
 ):
     nb_in = _make_nb(["1 + 1"])
@@ -132,32 +130,46 @@ def test_execute_notebook_profile_plot_paths(
         profile_memory=profile_memory,
         profile_runtime=profile_runtime,
     )
-
-    # if any arg is a string, then the string must end with .png for args to be valid
-    args_valid = True
-    for arg in [profile_memory, profile_runtime]:
-        if isinstance(arg, str) and not arg.endswith(".png"):
-            args_valid = False
-
-    if not args_valid:
-        with pytest.raises(ValueError):
-            execute_notebook(**execute_kwgs)
-    else:
+    with pytest.raises(ValueError):
         execute_notebook(**execute_kwgs)
-        if profile_memory:
-            fname = (
-                profile_memory
-                if isinstance(profile_memory, str)
-                else "out-memory-usage.png"
-            )
-            assert Path(fname)
-        if profile_runtime:
-            fname = (
-                profile_runtime
-                if isinstance(profile_runtime, str)
-                else "out-runtime.png"
-            )
-            assert Path(fname)
+
+
+@pytest.mark.parametrize(
+    "profile_memory,profile_runtime",
+    [
+        ["mem.png", "time.png"],
+        ["mem2.png", True],
+        [True, False],
+        [True, True],
+    ],
+)
+def test_valid_profile_plot_args(
+    tmp_empty, profile_memory, profile_runtime
+):
+    nb_in = _make_nb(["1 + 1"])
+    label = "out"
+    execute_kwgs = dict(
+        input_path=nb_in,
+        output_path=f"{label}.ipynb",
+        profile_memory=profile_memory,
+        profile_runtime=profile_runtime,
+    )
+
+    execute_notebook(**execute_kwgs)
+    if profile_memory:
+        fname = (
+            profile_memory
+            if isinstance(profile_memory, str)
+            else f"{label}-memory-usage.png"
+        )
+        assert Path(fname).exists()
+    if profile_runtime:
+        fname = (
+            profile_runtime
+            if isinstance(profile_runtime, str)
+            else f"{label}-runtime.png"
+        )
+        assert Path(fname).exists()
 
 
 @pytest.mark.parametrize(
