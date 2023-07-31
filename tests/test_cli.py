@@ -152,37 +152,39 @@ def test_parse_cli_notebook_parameters(params, expected):
     assert cli._parse_cli_notebook_parameters(params) == expected
 
 
+INVALID_PROFILING_PATH_REGEX ="Invalid save_profiling_data(.*), path must end with .csv"
+
 @pytest.mark.parametrize(
     "saved_path, exception_msg, exception_type",
     [
         (
             "abc",
-            "Invalid save_profiling_data:(.*), path must end with .csv",
+            INVALID_PROFILING_PATH_REGEX,
             ValueError,
         ),
         (
             "./abc",
-            "Invalid save_profiling_data:(.*), path must end with .csv",
+            INVALID_PROFILING_PATH_REGEX,
             ValueError,
         ),
         (
             "./abc.py",
-            "Invalid save_profiling_data:(.*), path must end with .csv",
+            INVALID_PROFILING_PATH_REGEX,
             ValueError,
         ),
         (
             "./abc.txt",
-            "Invalid save_profiling_data:(.*), path must end with .csv",
+            INVALID_PROFILING_PATH_REGEX,
             ValueError,
         ),
         (
             "./abc.png",
-            "Invalid save_profiling_data:(.*), path must end with .csv",
+            INVALID_PROFILING_PATH_REGEX,
             ValueError,
         ),
         (
             "./abc",
-            "Invalid save_profiling_data:(.*), path must end with .csv",
+            INVALID_PROFILING_PATH_REGEX,
             ValueError,
         ),
     ],
