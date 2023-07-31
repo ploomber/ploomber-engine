@@ -112,6 +112,7 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
     assert Path("out-runtime.png")
     assert Image(filename="out-runtime.png")
 
+
 @pytest.mark.parametrize(
     "profile_memory,profile_runtime",
     [
@@ -120,9 +121,7 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
         ["mem1", 2],
     ],
 )
-def test_invalid_profile_plot_args(
-    tmp_empty, profile_memory, profile_runtime
-):
+def test_invalid_profile_plot_args(tmp_empty, profile_memory, profile_runtime):
     nb_in = _make_nb(["1 + 1"])
     execute_kwgs = dict(
         input_path=nb_in,
@@ -143,9 +142,7 @@ def test_invalid_profile_plot_args(
         [True, True],
     ],
 )
-def test_valid_profile_plot_args(
-    tmp_empty, profile_memory, profile_runtime
-):
+def test_valid_profile_plot_args(tmp_empty, profile_memory, profile_runtime):
     nb_in = _make_nb(["1 + 1"])
     label = "out"
     execute_kwgs = dict(
