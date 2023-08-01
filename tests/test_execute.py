@@ -116,12 +116,12 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
 @pytest.mark.parametrize(
     "profile_memory,profile_runtime,err_check",
     [
-        ["bogus", "time1.png", r"Invalid .*, path must end with .png"],
-        ["mem1", True, r"Invalid .*, path must end with .png"],
-        ["mem1", 2,  r"Invalid profile_.* provide either a boolean or a string"],
+        ["bogus", "time1.png", r"Invalid .* path must end with .png"],
+        ["mem1", True, r"Invalid .* path must end with .png"],
+        ["mem1", 2,  r"Invalid .* provide either a boolean or a string"],
     ],
 )
-def test_invalid_profile_plot_args(tmp_empty, profile_memory, profile_runtime,err_check):
+def test_invalid_profile_plot_args(tmp_empty, profile_memory, profile_runtime, err_check):
     nb_in = _make_nb(["1 + 1"])
     execute_kwgs = dict(
         input_path=nb_in,
