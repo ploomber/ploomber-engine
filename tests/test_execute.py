@@ -129,7 +129,7 @@ def test_invalid_profile_plot_args(tmp_empty, profile_memory, profile_runtime):
         profile_memory=profile_memory,
         profile_runtime=profile_runtime,
     )
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="STRING_TO_COMPARE"):
         execute_notebook(**execute_kwgs)
 
 
