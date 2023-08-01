@@ -121,8 +121,10 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
         ["mem1", 2,  r"Invalid .* provide either a boolean or a string"],
     ],
 )
-def test_invalid_profile_plot_args(tmp_empty, profile_memory, profile_runtime, err_check):
-    nb_in = _make_nb(["1 + 1"])
+def test_invalid_profile_plot_args(
+        tmp_empty, profile_memory, profile_runtime, err_check
+):
+    nb_in = _make_nb(["1 + 1"])s
     execute_kwgs = dict(
         input_path=nb_in,
         output_path="out.ipynb",
