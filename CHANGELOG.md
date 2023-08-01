@@ -2,6 +2,8 @@
 
 ## 0.0.31dev
 
+* [Feature] Supported `profile_memory` and `profile_runtime` options with file path
+
 ## 0.0.30 (2023-07-16)
 
 * [Fix] Fixes license metadata in `setup.py`
