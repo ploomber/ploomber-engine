@@ -112,6 +112,10 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
     assert Path("out-runtime.png")
     assert Image(filename="out-runtime.png")
 
+    custom_path = str(Path(tmp_empty + "/new_dir/custom.png"))
+    execute_notebook(nb_in, "out.ipynb", profile_runtime=custom_path)
+    assert Path(custom_path).is_file()
+
 
 @pytest.mark.parametrize(
     "profile_memory,profile_runtime",

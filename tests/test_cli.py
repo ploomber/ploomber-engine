@@ -52,6 +52,18 @@ def _make_call(**kwargs):
             _make_call(log_output=True, progress_bar=False),
         ],
         [
+            ["nb.ipynb", "out.ipynb", "--profile-memory"],
+            _make_call(profile_memory=True),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--profile-runtime"],
+            _make_call(profile_runtime=True),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--profile-runtime", "--save-profiling-data"],
+            _make_call(profile_runtime=True, save_profiling_data=True),
+        ],
+        [
             ["nb.ipynb", "out.ipynb", "--profile-memory", True, "--no-progress-bar"],
             _make_call(profile_memory=True, progress_bar=False),
         ],
