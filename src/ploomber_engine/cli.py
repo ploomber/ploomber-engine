@@ -19,6 +19,8 @@ from ploomber_engine import execute_notebook
 @click.option(
     "--profile-runtime",
     default=False,
+    is_flag=False,
+    flag_value=True,
     type=click.UNPROCESSED,
     help="Profile cell's runtime "
     "(a path for the runtime profile plot can additionally be passed)",
@@ -26,6 +28,8 @@ from ploomber_engine import execute_notebook
 @click.option(
     "--profile-memory",
     default=False,
+    is_flag=False,
+    flag_value=True,
     type=click.UNPROCESSED,
     help="Profile cell's memory usage "
     "(a path for the runtime memory plot can additionally be passed)",
@@ -54,6 +58,8 @@ from ploomber_engine import execute_notebook
 @click.option(
     "--save-profiling-data",
     default=False,
+    is_flag=False,
+    flag_value=True,
     type=click.UNPROCESSED,
     help="Save profiling data to a file "
     "(requires --profile-runtime and/or --profile-memory)",

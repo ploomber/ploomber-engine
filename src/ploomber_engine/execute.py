@@ -268,4 +268,8 @@ def _parse_bool_or_path(arg_key, arg_value, default_path):
             f"Please provide either a boolean or a string"
         )
 
+    # make sure the path's parent directory exists
+    parsed_path = Path(parsed_path)
+    parsed_path.parent.mkdir(parents=True, exist_ok=True)
+
     return parsed_bool, parsed_path
