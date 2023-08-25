@@ -112,6 +112,68 @@ def test_execute_notebook_profile_runtime(cells, tmp_empty):
     assert Path("out-runtime.png")
     assert Image(filename="out-runtime.png")
 
+    custom_path = str(Path(tmp_empty + "/new_dir/custom.png"))
+    execute_notebook(nb_in, "out.ipynb", profile_runtime=custom_path)
+    assert Path(custom_path).is_file()
+
+
+@pytest.mark.parametrize(
+    "profile_memory,profile_runtime,err_check",
+    [
+        ["bogus", "time1.png", r"Invalid .* path must end with .png"],
+        ["mem1", True, r"Invalid .* path must end with .png"],
+        ["mem1", 2, r"Invalid .* provide either a boolean or a string"],
+    ],
+)
+def test_invalid_profile_plot_args(
+    tmp_empty, profile_memory, profile_runtime, err_check
+):
+    nb_in = _make_nb(["1 + 1"])
+    execute_kwgs = dict(
+        input_path=nb_in,
+        output_path="out.ipynb",
+        profile_memory=profile_memory,
+        profile_runtime=profile_runtime,
+    )
+    with pytest.raises(ValueError, match=err_check):
+        execute_notebook(**execute_kwgs)
+
+
+@pytest.mark.parametrize(
+    "profile_memory,profile_runtime",
+    [
+        ["mem.png", "time.png"],
+        ["mem2.png", True],
+        [True, False],
+        [True, True],
+    ],
+)
+def test_valid_profile_plot_args(tmp_empty, profile_memory, profile_runtime):
+    nb_in = _make_nb(["1 + 1"])
+    label = "out"
+    execute_kwgs = dict(
+        input_path=nb_in,
+        output_path=f"{label}.ipynb",
+        profile_memory=profile_memory,
+        profile_runtime=profile_runtime,
+    )
+
+    execute_notebook(**execute_kwgs)
+    if profile_memory:
+        fname = (
+            profile_memory
+            if isinstance(profile_memory, str)
+            else f"{label}-memory-usage.png"
+        )
+        assert Path(fname).exists()
+    if profile_runtime:
+        fname = (
+            profile_runtime
+            if isinstance(profile_runtime, str)
+            else f"{label}-runtime.png"
+        )
+        assert Path(fname).exists()
+
 
 @pytest.mark.parametrize(
     "cells",
@@ -243,47 +305,50 @@ def test_execute_notebook_save_profiling_data(
     [
         (
             "abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc.py",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc.txt",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc.png",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             "./abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            "Invalid save_profiling_data(.*), path must end with .csv",
             ValueError,
         ),
         (
             float(123.0),
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). "
+            "Please provide either a boolean or a string",
             ValueError,
         ),
         (
             {"test": "test123"},
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). "
+            "Please provide either a boolean or a string",
             ValueError,
         ),
         (
             set(["test", "test123"]),
-            "Invalid save_profiling_data. Please provide either a boolean or a string",
+            "Invalid save_profiling_data(.*). "
+            "Please provide either a boolean or a string",
             ValueError,
         ),
     ],

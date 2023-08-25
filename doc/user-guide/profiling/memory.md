@@ -76,6 +76,8 @@ Let's execute the notebook with `profile_memory=True`
 _ = execute_notebook("notebook.ipynb", "output.ipynb", profile_memory=True)
 ```
 
+We can also set the path for the plot with `profile_memory=<path_to_png>`
+
 We can see that after running cells 1-2, there isn't any important increment in memory usage. However, when finishing execution of cell 3, we see a bump of 1MB, since we allocated the array there. Cell 4 doesn't increase memory usage, since it only contains a call to `time.sleep`, but cell 5 has a 10MB bump since we allocated the second (larger) array.
 
 If you want to look at the executed notebook, it's available at `output.ipynb`.

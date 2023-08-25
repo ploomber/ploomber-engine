@@ -49,13 +49,15 @@ def execute_notebook(
     log_output : bool, optional, default=False
         Flag for whether or not to write notebook output to stdout
 
-    profile_runtime : bool, optional, default=False
+    profile_runtime : bool or Path, default=False
         If True, profile cell's runtime (stores plot in a ``.png``
-        file in the same folder as ``output_path``)
+        file in the same folder as ``output_path``).
+        If Path, profiles and stores the plot to the given Path.
 
-    profile_memory : bool, optional, default=False
+    profile_memory : bool or Path, default=False
         If True, profile cell's memory usage (stores plot in a ``.png``
-        file in the same folder as ``output_path``)
+        file in the same folder as ``output_path``).
+        If Path, profiles and stores the plot to the given Path.
 
     progress_bar : bool, default=True
         Display a progress bar.
@@ -86,6 +88,10 @@ def execute_notebook(
 
     Notes
     -----
+    .. versionchanged:: 0.0.31
+        Allow paths to be passed to ``profile_runtime``, ``profile_memory``
+        arguments.
+
     .. versionchanged:: 0.0.23
         Added ``cwd`` argument.
         Added ``save_profiling_data`` argument.
@@ -120,6 +126,11 @@ def execute_notebook(
 
     >>> from ploomber_engine import execute_notebook
     >>> out = execute_notebook("nb.ipynb", "out.ipynb", profile_memory=True)
+
+    Store a plot with cell's memory usage at a custom path:
+
+    >>> from ploomber_engine import execute_notebook
+    >>> out = execute_notebook("nb.ipynb", "out.ipynb", profile_memory='memory.png')
 
 
     Remove cells with the tag "remove" before execution:
@@ -187,8 +198,12 @@ def execute_notebook(
         raise
 
     if profile_runtime:
+        profile_runtime, output_path_runtime = _parse_bool_or_path(
+            arg_key="profile_runtime",
+            arg_value=profile_runtime,
+            default_path=_util.sibling_with_suffix(output_path, "-runtime.png"),
+        )
         ax = profiling.plot_cell_runtime(out)
-        output_path_runtime = _util.sibling_with_suffix(output_path, "-runtime.png")
         ax.figure.savefig(output_path_runtime)
 
         if verbose:
@@ -197,8 +212,12 @@ def execute_notebook(
             )
 
     if profile_memory:
+        profile_memory, output_path_memory = _parse_bool_or_path(
+            arg_key="profile_memory",
+            arg_value=profile_memory,
+            default_path=_util.sibling_with_suffix(output_path, "-memory-usage.png"),
+        )
         ax = profiling.plot_memory_usage(out)
-        output_path_memory = _util.sibling_with_suffix(output_path, "-memory-usage.png")
         ax.figure.savefig(output_path_memory)
 
         if verbose:
@@ -207,24 +226,12 @@ def execute_notebook(
             )
 
     if save_profiling_data:
+        save_profiling_data, output_path_profiling_data = _parse_bool_or_path(
+            arg_key="save_profiling_data",
+            arg_value=save_profiling_data,
+            default_path=_util.sibling_with_suffix(output_path, "-profiling-data.csv"),
+        )
         data = profiling.get_profiling_data(out)
-        # Customized save_profiling_data path
-        if isinstance(save_profiling_data, str):
-            if save_profiling_data.endswith(".csv"):
-                output_path_profiling_data = save_profiling_data
-            else:
-                raise ValueError("Invalid save_profiling_data, path must end with .csv")
-        # Default save_profiling_data path
-        elif isinstance(save_profiling_data, bool):
-            output_path_profiling_data = _util.sibling_with_suffix(
-                output_path, "-profiling-data.csv"
-            )
-        else:
-            raise ValueError(
-                "Invalid save_profiling_data. Please provide either a\
- boolean or a string"
-            )
-
         with open(output_path_profiling_data, "w") as f:
             writer = csv.writer(f)
             writer.writerow(data.keys())
@@ -233,3 +240,36 @@ def execute_notebook(
     if output_path:
         nbformat.write(out, output_path)
     return out
+
+
+def _parse_bool_or_path(arg_key, arg_value, default_path):
+    """Parse a boolean or a path argument (arg_val).
+    If a boolean is passed, return the bool and the default path.
+    If a string is passed, return True and the string as the path.
+    """
+
+    if isinstance(arg_value, str):
+        expected_file_extension = Path(default_path).suffix
+        if not arg_value.endswith(expected_file_extension):
+            raise ValueError(
+                f"Invalid {arg_key}:{arg_value}, "
+                f"path must end with {expected_file_extension}"
+            )
+        parsed_bool = True
+        parsed_path = arg_value
+
+    elif isinstance(arg_value, bool):
+        parsed_bool = arg_value
+        parsed_path = default_path
+
+    else:
+        raise ValueError(
+            f"Invalid {arg_key} type ({type(arg_value)}). "
+            f"Please provide either a boolean or a string"
+        )
+
+    # make sure the path's parent directory exists
+    parsed_path = Path(parsed_path)
+    parsed_path.parent.mkdir(parents=True, exist_ok=True)
+
+    return parsed_bool, parsed_path

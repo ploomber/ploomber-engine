@@ -59,6 +59,8 @@ from ploomber_engine import execute_notebook
 _ = execute_notebook("notebook.ipynb", "output", profile_runtime=True)
 ```
 
+We can also set the path for the plot with `profile_runtime=<path_to_png>`
+
 ## Customize plot
 
 You might customize the plot by calling the `plot_cell_runtime` function and passing the output notebook, the returned object is a `matplotlib.Axes`.

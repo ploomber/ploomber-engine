@@ -9,6 +9,7 @@ from click.testing import CliRunner
 from ploomber_engine import cli
 from ploomber_engine import execute_notebook
 from conftest import _make_nb
+import re
 
 
 def _make_call(**kwargs):
@@ -36,6 +37,7 @@ def _make_call(**kwargs):
                 "nb.ipynb",
                 "out.ipynb",
                 "--profile-runtime",
+                True,
                 "--save-profiling-data",
                 True,
             ],
@@ -50,12 +52,28 @@ def _make_call(**kwargs):
             _make_call(log_output=True, progress_bar=False),
         ],
         [
-            ["nb.ipynb", "out.ipynb", "--profile-memory", "--no-progress-bar"],
+            ["nb.ipynb", "out.ipynb", "--profile-memory"],
+            _make_call(profile_memory=True),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--profile-runtime"],
+            _make_call(profile_runtime=True),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--profile-runtime", "--save-profiling-data"],
+            _make_call(profile_runtime=True, save_profiling_data=True),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--profile-memory", True, "--no-progress-bar"],
             _make_call(profile_memory=True, progress_bar=False),
         ],
         [
-            ["nb.ipynb", "out.ipynb", "--profile-runtime", "--no-progress-bar"],
+            ["nb.ipynb", "out.ipynb", "--profile-runtime", True, "--no-progress-bar"],
             _make_call(profile_runtime=True, progress_bar=False),
+        ],
+        [
+            ["nb.ipynb", "out.ipynb", "--profile-runtime", "runtime.png"],
+            _make_call(profile_runtime="runtime.png"),
         ],
         [
             ["nb.ipynb", "out.ipynb", "--no-progress-bar", "-p", "key", "value"],
@@ -92,7 +110,7 @@ def test_cli(tmp_empty, monkeypatch, cli_args, call_expected):
     runner = CliRunner()
     result = runner.invoke(cli.cli, cli_args)
 
-    assert result.exit_code == 0
+    assert result.exit_code == 0, cli_args
     assert mock.call_args_list == [call_expected]
 
 
@@ -146,37 +164,40 @@ def test_parse_cli_notebook_parameters(params, expected):
     assert cli._parse_cli_notebook_parameters(params) == expected
 
 
+INVALID_PROFILING_PATH_MSG = "Invalid save_profiling_data(.*), path must end with .csv"
+
+
 @pytest.mark.parametrize(
     "saved_path, exception_msg, exception_type",
     [
         (
             "abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            INVALID_PROFILING_PATH_MSG,
             ValueError,
         ),
         (
             "./abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            INVALID_PROFILING_PATH_MSG,
             ValueError,
         ),
         (
             "./abc.py",
-            "Invalid save_profiling_data, path must end with .csv",
+            INVALID_PROFILING_PATH_MSG,
             ValueError,
         ),
         (
             "./abc.txt",
-            "Invalid save_profiling_data, path must end with .csv",
+            INVALID_PROFILING_PATH_MSG,
             ValueError,
         ),
         (
             "./abc.png",
-            "Invalid save_profiling_data, path must end with .csv",
+            INVALID_PROFILING_PATH_MSG,
             ValueError,
         ),
         (
             "./abc",
-            "Invalid save_profiling_data, path must end with .csv",
+            INVALID_PROFILING_PATH_MSG,
             ValueError,
         ),
     ],
@@ -192,10 +213,11 @@ def test_cli_save_profiling_not_valid_csv_path(
             "nb.ipynb",
             "out.ipynb",
             "--profile-runtime",
+            True,
             "--save-profiling-data",
             saved_path,
         ],
     )
     assert result.exit_code == 1
-    assert exception_msg in str(result.exception)
+    assert re.search(exception_msg, str(result.exception))
     assert isinstance(result.exception, exception_type)
