@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.0.31dev
+## 0.0.31 (2023-08-24)
 
 * [Feature] Supported `profile_memory` and `profile_runtime` options with file path
 
