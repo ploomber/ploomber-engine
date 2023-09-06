@@ -8,6 +8,7 @@ env_name = "engine"
 
 [tool.pkgmt.check_links]
 extensions = ["md", "rst", "py", "ipynb"]
+ignore_substrings = ["platform.ploomber.io"]
 
 
 [tool.nbqa.addopts]
