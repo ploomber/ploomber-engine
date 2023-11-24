@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## 0.0.32dev
+
+* [Feature] Implement `translate_parameters` in `PloomberClient` to facilitate custom parameter translation
 * [Feature] Add benchmarking CLI `python -m ploomber_engine.benchmark`
 
 ## 0.0.31 (2023-08-24)
