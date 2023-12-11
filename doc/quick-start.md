@@ -23,6 +23,8 @@ myst:
 
 It provides enhanced capabilities such as debugging, profiling and experiment tracking.
 
+A presentation showing features and use can be watched [here](https://www.youtube.com/watch?v=rlEy_JoOye0), from JupyterCon 2023.
+
 ## Installation
 
 ```bash
