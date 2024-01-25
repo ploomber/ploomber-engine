@@ -3,6 +3,8 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+> [!TIP]
+> Deploy AI apps for free on [Ploomber Cloud!](https://ploomber.io/?utm_medium=github&utm_source=ploomber-engine)
 
 <p align="center">
   <a href="https://ploomber.io/community">Join our community</a>
