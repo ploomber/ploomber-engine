@@ -1,7 +1,9 @@
 # CHANGELOG
 
 ## 0.0.32dev
+
 * [Feature] Add benchmarking CLI `python -m ploomber_engine.benchmark`
+* [Feature] Add `ploomber-extension` as a dependency
 
 ## 0.0.31 (2023-08-24)
 
