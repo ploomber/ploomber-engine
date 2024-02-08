@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 0.0.33dev
+
 ## 0.0.32 (2024-02-07)
 
 * [Feature] Add benchmarking CLI `python -m ploomber_engine.benchmark`
