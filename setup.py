@@ -38,7 +38,8 @@ REQUIRES = [
 
 DEV = [
     "pkgmt",
-    "pytest",
+    # using pytest 7 because of an issue when using @pytest.mark.memory
+    "pytest<8",
     "flake8",
     "invoke",
     "twine",
