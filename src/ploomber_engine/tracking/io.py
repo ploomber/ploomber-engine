@@ -2,6 +2,7 @@
 NOTE: this was copied from
 https://github.com/ploomber/jupyblog/blob/master/src/jupyblog/execute.py
 """
+
 from pathlib import Path
 import base64
 import re

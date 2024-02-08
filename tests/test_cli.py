@@ -1,6 +1,7 @@
 """
 Command-line interface tests
 """
+
 from unittest.mock import Mock, call
 
 import pytest

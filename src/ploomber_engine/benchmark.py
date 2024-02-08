@@ -1,6 +1,7 @@
 """
 A module to benchmark notebooks in a directory.
 """
+
 from pathlib import Path
 
 import click
