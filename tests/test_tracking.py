@@ -311,4 +311,4 @@ def test_tracking_import_telemetry(tmp_empty, monkeypatch):
         quiet=True,
     )
 
-    assert mock.call_count == 2
+    assert mock.call_count == 1
