@@ -489,9 +489,11 @@ class PloomberClient:
         if self._debug_later:
             add_debuglater_cells(
                 self._nb,
-                path_to_dump=self._debug_later
-                if isinstance(self._debug_later, (str, Path))
-                else None,
+                path_to_dump=(
+                    self._debug_later
+                    if isinstance(self._debug_later, (str, Path))
+                    else None
+                ),
             )
 
         with self:

@@ -1,6 +1,7 @@
 """
 Testing notebooks against their recorded outputs
 """
+
 import warnings
 
 import nbformat
