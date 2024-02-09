@@ -55,8 +55,10 @@ html_theme_options = {
     "repository_branch": repository_branch,
     "analytics": {"google_analytics_id": "G-64QKMLMJY8"},
     "announcement": (
-        "Host Voilà and Streamlit apps for free with "
-        "<a href='https://www.platform.ploomber.io/register/'>Ploomber Cloud!</a>"
+        "Deploy AI apps for free on "
+        "<a href='https://ploomber.io/?utm_medium=readthedocs&utm_source=ploomber-engine' "  # noqa
+        "style='color:#7CB9E8;' >"
+        "Ploomber Cloud!</a>"
     ),
     "extra_footer": "",
     "home_page_in_toc": True,
