@@ -12,12 +12,8 @@ import nbformat
 from ploomber_engine.ipython import PloomberClient
 from ploomber_engine import profiling
 from ploomber_engine import _util
-from ploomber_engine._telemetry import telemetry
 
 
-@telemetry.log_call(
-    log_args=True, ignore_args={"input_path", "output_path", "parameters"}
-)
 def execute_notebook(
     input_path,
     output_path,

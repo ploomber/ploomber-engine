@@ -16,7 +16,6 @@ from IPython.core.interactiveshell import InteractiveShell
 
 from ploomber_engine.ipython import PloomberClient, add_to_sys_path
 from ploomber_engine.tracking.io import _process_content_data
-from ploomber_engine._telemetry import telemetry
 from ploomber_engine._util import find_cell_with_parameters_comment
 
 try:
@@ -161,7 +160,6 @@ def _parse_cli_parameters(parameters):
     return {k: _parse_param(v) for k, v in pairs}
 
 
-@telemetry.log_call("track-execution")
 def track_execution(filename, parameters=None, database="experiments.db", quiet=False):
     """
     Execute a script or notebook and write outputs to a SQLite database
