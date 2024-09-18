@@ -9,14 +9,12 @@ from papermill.clientwrap import PapermillNotebookClient
 
 from ploomber_engine.papermill import PapermillPloomberNotebookClient
 from ploomber_engine.ipython import PloomberManagedClient
-from ploomber_engine._telemetry import telemetry
 
 
 class DebugEngine(Engine):
     """An engine that starts a debugging session once the notebook fails"""
 
     @classmethod
-    @telemetry.log_call("debug-execute-managed-nb")
     def execute_managed_notebook(
         cls,
         nb_man,
@@ -57,7 +55,6 @@ class DebugLaterEngine(Engine):
     """An engine that stores the traceback object for later debugging"""
 
     @classmethod
-    @telemetry.log_call("debuglater-execute-managed-nb")
     def execute_managed_notebook(
         cls,
         nb_man,
@@ -118,7 +115,6 @@ class ProfilingEngine(Engine):
     """
 
     @classmethod
-    @telemetry.log_call("embedded-execute-managed-nb")
     def execute_managed_notebook(
         cls,
         nb_man,

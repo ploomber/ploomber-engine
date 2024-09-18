@@ -408,6 +408,7 @@ class PloomberClient:
             stdout_stream,
             stderr_stream,
         ):
+
             self.hook_cell_pre(cell)
             result = self._shell.run_cell(cell["source"])
             self.hook_cell_post(cell)

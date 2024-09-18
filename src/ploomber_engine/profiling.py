@@ -7,7 +7,7 @@ from ploomber_core.dependencies import requires
 
 from ploomber_engine.ipython import PloomberClient
 from ploomber_engine._util import recursive_update
-from ploomber_engine._telemetry import telemetry
+
 
 try:
     import psutil
@@ -43,7 +43,6 @@ class PloomberMemoryProfilerClient(PloomberClient):
         recursive_update(cell.metadata, metadata)
 
 
-@telemetry.log_call("memory-profile")
 def memory_profile(path, output):
     path = Path(path)
     target = path.with_name(path.stem + "-memory-usage.png")
