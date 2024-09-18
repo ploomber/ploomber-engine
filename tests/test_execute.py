@@ -369,10 +369,7 @@ def test_execute_notebook_invalid_save_profiling_data(
 # seems like we have some shared state, we're getting a plot even though the
 # code is only printing the current working directory, the problem is in the line:
 # self._shell._get_output()
-# this started happening after removing the matplotlib<3.7 pin
-@pytest.mark.skip(
-    reason="skip. this started failing after we removed the matplotlib<3.7 pin"
-)
+# this happens if we remove the pip install "matplotlib<3.7" "numpy<1.24.2" from ci.yml
 def test_execute_notebook_different_cwd(tmp_empty):
     # setup
     run_dir = Path("run_dir")

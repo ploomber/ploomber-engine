@@ -31,9 +31,6 @@ def edit_nb(cells):
     nbformat.write(nb, "nb.ipynb")
 
 
-@pytest.mark.skip(
-    reason="skip. this started failing after we removed the matplotlib<3.7 pin"
-)
 def test_no_outputs(tmp_empty):
     make_and_execute_nb(["x = 1", "y = 2"])
 

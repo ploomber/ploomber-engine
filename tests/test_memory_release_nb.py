@@ -42,9 +42,6 @@ def copy_shell(exit_method):
     return new_exit
 
 
-@pytest.mark.skip(
-    reason="skip. this started failing after we removed the matplotlib<3.7 pin"
-)
 def test_if_memory_leak_within_notebook(path_notebook):
     """
     epsilon is an amount of memory that is negligeable with respect
