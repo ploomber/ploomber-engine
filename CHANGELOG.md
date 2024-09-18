@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 0.0.34dev
+
 ## 0.0.33 (2024-09-18)
 
 * [Feature] Remove telemetry
