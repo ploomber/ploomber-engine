@@ -42,7 +42,6 @@ jobs:
           python -c "import ploomber_engine.ipython"
 
           pip install ".[dev]"
-          pip install "matplotlib<3.7"
 
       - name: Lint
         run: |
